@@ -20,7 +20,7 @@ $configFile = __DIR__ . '/config.php';
 if (file_exists($configFile)) {
     $cfg = include $configFile;
     if (is_array($cfg)) {
-        foreach (['ZOHO_EMAIL', 'ZOHO_PASSWORD', 'ADMIN_EMAIL', 'CAREERS_EMAIL', 'TURNSTILE_SECRET_KEY'] as $k) {
+        foreach (['ZOHO_EMAIL', 'ZOHO_PASSWORD', 'ADMIN_EMAIL', 'CAREERS_EMAIL', 'TURNSTILE_SECRET_KEY', 'DB_HOST', 'DB_NAME', 'DB_USER', 'DB_PASSWORD'] as $k) {
             if (!empty($cfg[$k]) && empty($_ENV[$k] ?? '')) {
                 $_ENV[$k] = $cfg[$k];
                 putenv("$k=" . $cfg[$k]);
