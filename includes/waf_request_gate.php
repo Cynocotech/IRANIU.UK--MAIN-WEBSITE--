@@ -109,6 +109,52 @@ function waf_detect_malicious(string $blob, string $uriBlob): array
     return [false, ''];
 }
 
+/**
+ * Browsers often send Accept: * / * (not only application/json) for fetch().
+ * SCRIPT_NAME may be wrong under rewrites — use REQUEST_URI and SCRIPT_FILENAME too.
+ * So search/API endpoints return 403 JSON when blocked, not a 302 to the notice page.
+ */
+function waf_should_return_json_block(): bool
+{
+    $accept = $_SERVER['HTTP_ACCEPT'] ?? '';
+    if (stripos($accept, 'application/json') !== false) {
+        return true;
+    }
+
+    $apiScripts = ['ajax_search.php', 'contact.php', 'report.php', 'careers-apply.php'];
+    $hay = [
+        $_SERVER['SCRIPT_NAME'] ?? '',
+        $_SERVER['SCRIPT_FILENAME'] ?? '',
+        $_SERVER['PHP_SELF'] ?? '',
+        $_SERVER['REQUEST_URI'] ?? '',
+    ];
+    foreach ($hay as $h) {
+        if ($h === '') {
+            continue;
+        }
+        $path = $h;
+        if (strncasecmp($h, 'http', 4) === 0) {
+            $p = parse_url($h, PHP_URL_PATH);
+            $path = is_string($p) && $p !== '' ? $p : $h;
+        } elseif (strpos($h, '?') !== false) {
+            $p = parse_url($h, PHP_URL_PATH);
+            $path = is_string($p) && $p !== '' ? $p : $h;
+        }
+        $base = basename(str_replace('\\', '/', $path));
+        if (in_array($base, $apiScripts, true)) {
+            return true;
+        }
+    }
+    $uri = $_SERVER['REQUEST_URI'] ?? '';
+    foreach ($apiScripts as $name) {
+        if ($uri !== '' && stripos($uri, '/' . $name) !== false) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 function waf_request_gate_run(): void
 {
     static $ran = false;
@@ -160,11 +206,7 @@ function waf_request_gate_run(): void
     $method = $_SERVER['REQUEST_METHOD'] ?? '';
     error_log('WAF_BLOCK ip=' . $ip . ' method=' . $method . ' rule=' . $label . ' uri=' . substr($uri, 0, 500));
 
-    $accept = $_SERVER['HTTP_ACCEPT'] ?? '';
-    $isJsonClient = stripos($accept, 'application/json') !== false;
-    $script = basename($_SERVER['SCRIPT_NAME'] ?? '');
-
-    if ($isJsonClient || in_array($script, ['ajax_search.php', 'contact.php', 'report.php', 'careers-apply.php'], true)) {
+    if (waf_should_return_json_block()) {
         http_response_code(403);
         header('Content-Type: application/json; charset=utf-8');
         header('X-Content-Type-Options: nosniff');
