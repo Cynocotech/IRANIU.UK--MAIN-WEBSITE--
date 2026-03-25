@@ -248,6 +248,36 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
         .filter-bar .btn-apply { background: var(--brand-purple); color: #fff !important; border: none; padding: 10px 20px; border-radius: 12px; font-weight: 800; cursor: pointer; font-family: inherit; font-size: 0.9rem; }
         .filter-bar .btn-apply:hover { filter: brightness(1.08); color: #fff !important; }
         .filter-bar .btn-clear { color: #666 !important; font-size: 0.88rem; font-weight: 700; }
+        .blog-search-wrap { margin-bottom: 18px; position: relative; z-index: 50; }
+        .blog-search-label { display: block; font-weight: 800; color: var(--dark-purple); font-size: 0.9rem; margin-bottom: 8px; }
+        .blog-search-ctrl { position: relative; max-width: 420px; }
+        .blog-search-icon { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: rgba(116,32,139,0.45); font-size: 0.95rem; pointer-events: none; z-index: 1; }
+        .blog-search-input {
+            width: 100%; padding: 12px 42px 12px 14px; border-radius: 14px;
+            border: 1px solid rgba(116,32,139,0.22); font-family: inherit; font-size: 0.95rem;
+            background: #faf8fb; color: #1a1a1a; transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .blog-search-input:focus { outline: none; border-color: var(--brand-purple); box-shadow: 0 0 0 3px rgba(116,32,139,0.12); background: #fff; }
+        .blog-search-panel {
+            position: absolute; top: calc(100% + 8px); left: 0; right: 0;
+            max-height: min(62vh, 380px); overflow-y: auto;
+            background: #fff; border: 1px solid rgba(116,32,139,0.14); border-radius: 16px;
+            box-shadow: 0 16px 48px rgba(58,11,71,0.12); padding: 8px; text-align: right;
+        }
+        .blog-search-status { font-size: 0.82rem; color: #666; padding: 8px 10px; margin: 0; }
+        .blog-search-status--err { color: #b71c1c; }
+        .blog-search-list { display: flex; flex-direction: column; gap: 4px; }
+        .blog-search-empty { font-size: 0.88rem; color: #777; padding: 14px 12px; margin: 0; text-align: center; }
+        .blog-search-item {
+            display: block; padding: 12px 14px; border-radius: 12px; color: inherit !important; text-decoration: none !important;
+            border: 1px solid transparent; transition: background 0.15s, border-color 0.15s;
+        }
+        .blog-search-item:hover { background: #f7f1fa; border-color: rgba(116,32,139,0.12); }
+        .blog-search-item-title { display: block; font-weight: 800; color: var(--dark-purple); font-size: 0.9rem; line-height: 1.4; margin-bottom: 4px; }
+        .blog-search-item-meta { display: flex; flex-wrap: wrap; gap: 6px 10px; font-size: 0.72rem; color: #888; margin-bottom: 4px; }
+        .blog-search-item-cat { background: #ede7f6; color: var(--dark-purple); padding: 2px 8px; border-radius: 999px; font-weight: 700; }
+        .blog-search-item-date { font-weight: 600; }
+        .blog-search-item-ex { display: block; font-size: 0.8rem; color: #555; line-height: 1.45; font-weight: 500; }
         .meta-bar { font-size: 0.82rem; color: #666; margin-bottom: 18px; padding: 12px 16px; background: #fff; border-radius: 14px; border: 1px solid #eee; }
         .pager { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px; margin-top: 8px; margin-bottom: 28px; padding: 20px; background: #fff; border-radius: 16px; border: 1px solid #eee; }
         .pager a, .pager span { display: inline-flex; align-items: center; justify-content: center; min-width: 42px; height: 42px; padding: 0 12px; border-radius: 10px; font-size: 0.88rem; font-weight: 700; }
@@ -276,7 +306,7 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
         .footer-logo img { height: 56px; margin-bottom: 16px; }
         .social-links { display: flex; justify-content: center; gap: 12px; margin-top: 16px; }
         .social-links a { color: #fff; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: rgba(255,255,255,0.12); }
-        @media (max-width: 992px) { .desktop-nav { display: none; } .hamburger { display: block; } }
+        @media (max-width: 992px) { .desktop-nav { display: none; } .hamburger { display: block; } .blog-search-ctrl { max-width: none; } }
     </style>
 </head>
 <body>
@@ -323,6 +353,17 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
     <?php if ($err !== null): ?>
         <div class="alert" role="alert"><?= news_h($err) ?></div>
     <?php else: ?>
+        <div class="blog-search-wrap" data-blog-search>
+            <label class="blog-search-label" for="blog-search-q">جستجو در مطالب</label>
+            <div class="blog-search-ctrl">
+                <i class="fas fa-magnifying-glass blog-search-icon" aria-hidden="true"></i>
+                <input type="search" id="blog-search-q" class="blog-search-input" name="blog_q" autocomplete="off" placeholder="عنوان یا متن…" aria-label="جستجو در مطالب" aria-autocomplete="list" aria-controls="blog-search-results" aria-expanded="false">
+                <div id="blog-search-results" class="blog-search-panel" role="region" aria-label="نتایج جستجو" hidden aria-hidden="true">
+                    <p class="blog-search-status" role="status" aria-live="polite" hidden></p>
+                    <div class="blog-search-list"></div>
+                </div>
+            </div>
+        </div>
         <?php if ($catCol !== null): ?>
             <form class="filter-bar" method="get" action="<?= news_h($blogIndexPath) ?>">
                 <label for="cat">دسته‌بندی</label>
@@ -457,5 +498,6 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
     </div>
     <p style="margin-top:20px;opacity:0.75;font-size:0.85rem;">© IraniU — پلتفرم دیجیتال ایرانیان بریتانیا</p>
 </footer>
+<script src="/blog/blog-search.js" defer></script>
 </body>
 </html>

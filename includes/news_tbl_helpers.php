@@ -440,6 +440,125 @@ function news_id_column(array $cols): ?string
     return null;
 }
 
+/** Escape `%`, `_`, `\` for SQL LIKE patterns. */
+function news_escape_like(string $s): string
+{
+    return str_replace(['\\', '%', '_'], ['\\\\', '\\%', '\\_'], $s);
+}
+
+/**
+ * ستون‌های متنی tbl_news که برای جستجوی LIKE مناسب‌اند (عنوان، متن، برچسب، …).
+ *
+ * @param string[] $fieldNames
+ * @return string[]
+ */
+function news_search_text_columns(array $fieldNames): array
+{
+    $want = [
+        'title', 'subject', 'news_title', 'newstitle', 'headline', 'onvan', 'name', 'topic', 'key_title',
+        'summary', 'short_text', 'shorttext', 'lead', 'intro', 'description', 'excerpt', 'kholase', 'subtitle',
+        'body', 'content', 'text', 'matn', 'news_text', 'full_text', 'detail', 'html', 'article',
+        'tags', 'tag', 'tag_list', 'taglist', 'post_tags', 'posttags', 'labels', 'hashtags', 'topics', 'news_tags',
+        'meta_keywords', 'seo_keywords', 'keywords', 'focus_keyword', 'focus_keywords', 'keyword',
+        'meta_description', 'seo_description', 'og_description', 'description_short', 'short_description',
+    ];
+    $wantLower = array_map('strtolower', $want);
+    $out = [];
+    foreach ($fieldNames as $c) {
+        if (in_array(strtolower($c), $wantLower, true)) {
+            $out[] = $c;
+        }
+    }
+    return array_values(array_unique($out));
+}
+
+/**
+ * @return array<int, array<string, mixed>>
+ */
+function news_search_matching_rows(PDO $pdo, string $newsTable, array $cols, string $q, int $limit): array
+{
+    $needle = trim($q);
+    if ($needle === '') {
+        return [];
+    }
+    $len = function_exists('mb_strlen') ? mb_strlen($needle, 'UTF-8') : strlen($needle);
+    if ($len < 2) {
+        return [];
+    }
+
+    $searchCols = news_search_text_columns($cols);
+    if ($searchCols === []) {
+        return [];
+    }
+
+    $t = str_replace('`', '``', $newsTable);
+    $extraWhere = news_deleted_clause($cols);
+    $orderCol = news_order_field($cols);
+    $orderQuoted = '`' . str_replace('`', '``', $orderCol) . '`';
+    $likeVal = '%' . news_escape_like($needle) . '%';
+
+    $holders = [];
+    $params = [];
+    foreach ($searchCols as $col) {
+        $holders[] = '`' . str_replace('`', '``', $col) . '` LIKE ?';
+        $params[] = $likeVal;
+    }
+
+    $lim = max(1, min(30, $limit));
+    $sql = 'SELECT * FROM `' . $t . '` WHERE 1=1' . $extraWhere
+        . ' AND (' . implode(' OR ', $holders) . ')'
+        . ' ORDER BY ' . $orderQuoted . ' DESC LIMIT ' . $lim;
+
+    $stmt = $pdo->prepare($sql);
+    foreach ($params as $i => $v) {
+        $stmt->bindValue($i + 1, $v, PDO::PARAM_STR);
+    }
+    $stmt->execute();
+    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    return $rows === false ? [] : $rows;
+}
+
+/**
+ * نقشهٔ برچسب نمایشی دسته برای ردیف‌های خبر (مثل فهرست مقالات).
+ *
+ * @return array{catCol: ?string, labelByValue: array<string, string>}
+ */
+function news_category_labels_for_rows(PDO $pdo, string $newsTable, array $newsCols, string $extraWhere): array
+{
+    $labelByValue = [];
+    $catCol = null;
+    $categoryOptions = [];
+    $fkCol = news_category_fk_column($newsCols);
+    $catTable = trim((string)($_ENV['NEWS_CATEGORY_TABLE'] ?? getenv('NEWS_CATEGORY_TABLE') ?: 'tbl_category'));
+
+    if ($fkCol !== null) {
+        $categoryOptions = news_fetch_categories_from_tbl_category($pdo, $catTable);
+        if ($categoryOptions !== []) {
+            $catCol = $fkCol;
+        } else {
+            $categoryOptions = news_distinct_categories($pdo, $newsTable, $fkCol, $extraWhere);
+            if ($categoryOptions !== []) {
+                $catCol = $fkCol;
+            }
+        }
+    }
+
+    if ($catCol === null) {
+        $legacyCol = news_category_column($newsCols);
+        if ($legacyCol !== null) {
+            $catCol = $legacyCol;
+            $categoryOptions = news_distinct_categories($pdo, $newsTable, $legacyCol, $extraWhere);
+        }
+    }
+
+    foreach ($categoryOptions as $opt) {
+        $labelByValue[(string) $opt['value']] = (string) $opt['label'];
+    }
+
+    return ['catCol' => $catCol, 'labelByValue' => $labelByValue];
+}
+
 /**
  * ستون کلید خارجی دسته در tbl_news (اشاره به tbl_category)
  */
