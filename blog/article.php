@@ -51,6 +51,51 @@ try {
 $appIos = trim((string)($_ENV['APP_STORE_URL'] ?? getenv('APP_STORE_URL') ?: '#'));
 $appAndroid = trim((string)($_ENV['GOOGLE_PLAY_URL'] ?? getenv('GOOGLE_PLAY_URL') ?: '#'));
 
+$siteUrl = 'https://iraniu.uk';
+$ogImageDefault = 'https://panel.cybercina.co.uk/storage/logos/N0yQlVchcj4ucrQfVJwbXXB13FhWTMFccUBmWLpI.png';
+$articleCanonical = $siteUrl . '/blog/article?id=' . max(1, $id);
+$seoPageTitle = ($row !== null) ? ($title . ' | IraniU') : 'خبر | IraniU';
+$seoDescription = ($row !== null) ? news_row_excerpt($row, 158) : 'IraniU — Persian-language news and guides for Iranians in the UK.';
+if ($row !== null && $seoDescription === '') {
+    $seoDescription = 'خبر و راهنما برای جامعه ایرانیان بریتانیا — IraniU.';
+}
+$dateIso = ($row !== null) ? news_row_date_iso8601($row) : null;
+$robotsArticle = ($row === null) ? 'noindex, follow' : 'index, follow, max-image-preview:large';
+
+$jsonLdArticle = null;
+$jsonLdBreadcrumb = null;
+if ($row !== null) {
+    $jsonLdArticle = [
+        '@context' => 'https://schema.org',
+        '@type' => 'NewsArticle',
+        'headline' => $title,
+        'description' => $seoDescription,
+        'inLanguage' => 'fa-IR',
+        'author' => ['@type' => 'Organization', 'name' => 'IraniU'],
+        'publisher' => [
+            '@type' => 'Organization',
+            'name' => 'IraniU',
+            'logo' => ['@type' => 'ImageObject', 'url' => $ogImageDefault],
+        ],
+        'image' => [$ogImageDefault],
+        'mainEntityOfPage' => ['@type' => 'WebPage', '@id' => $articleCanonical],
+    ];
+    if ($dateIso !== null) {
+        $jsonLdArticle['datePublished'] = $dateIso;
+        $jsonLdArticle['dateModified'] = $dateIso;
+    }
+    $jsonLdBreadcrumb = [
+        '@context' => 'https://schema.org',
+        '@type' => 'BreadcrumbList',
+        'itemListElement' => [
+            ['@type' => 'ListItem', 'position' => 1, 'name' => 'صفحه اصلی', 'item' => $siteUrl . '/'],
+            ['@type' => 'ListItem', 'position' => 2, 'name' => 'مقالات', 'item' => $siteUrl . '/blog/'],
+            ['@type' => 'ListItem', 'position' => 3, 'name' => 'اخبار', 'item' => $siteUrl . '/blog/news'],
+            ['@type' => 'ListItem', 'position' => 4, 'name' => $title, 'item' => $articleCanonical],
+        ],
+    ];
+}
+
 header('Content-Type: text/html; charset=utf-8');
 header('X-Content-Type-Options: nosniff');
 header('Referrer-Policy: strict-origin-when-cross-origin');
@@ -61,10 +106,34 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#3a0b47">
-    <title><?= $row ? news_h($title) . ' | IraniU' : 'خبر | IraniU' ?></title>
-    <meta name="description" content="<?= news_h($row !== null ? news_row_excerpt($row, 160) : 'جزئیات خبر ایرانیو') ?>">
-    <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://iraniu.uk/blog/article?id=<?= (int) $id ?>">
+    <title><?= news_h($seoPageTitle) ?></title>
+    <meta name="description" content="<?= news_h($seoDescription) ?>">
+    <meta name="keywords" content="<?= news_h($row !== null ? 'IraniU, Iranian UK, Persian news UK, Iranians in Britain, اخبار فارسی, ایرانیان بریتانیا, iraniu.uk' : 'IraniU, Persian UK, iraniu.uk') ?>">
+    <meta name="author" content="IraniU">
+    <meta name="robots" content="<?= news_h($robotsArticle) ?>">
+    <link rel="canonical" href="<?= news_h($articleCanonical) ?>">
+    <meta property="og:site_name" content="IraniU">
+    <meta property="og:locale" content="fa_IR">
+    <meta property="og:type" content="<?= $row !== null ? 'article' : 'website' ?>">
+    <meta property="og:url" content="<?= news_h($articleCanonical) ?>">
+    <meta property="og:title" content="<?= news_h($seoPageTitle) ?>">
+    <meta property="og:description" content="<?= news_h($seoDescription) ?>">
+    <meta property="og:image" content="<?= news_h($ogImageDefault) ?>">
+    <meta property="og:image:alt" content="IraniU">
+    <?php if ($dateIso !== null): ?>
+    <meta property="article:published_time" content="<?= news_h($dateIso) ?>">
+    <meta property="article:modified_time" content="<?= news_h($dateIso) ?>">
+    <?php endif; ?>
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="<?= news_h($seoPageTitle) ?>">
+    <meta name="twitter:description" content="<?= news_h($seoDescription) ?>">
+    <meta name="twitter:image" content="<?= news_h($ogImageDefault) ?>">
+    <?php if ($jsonLdArticle !== null): ?>
+    <script type="application/ld+json"><?= news_json_encode_ld($jsonLdArticle) ?></script>
+    <?php endif; ?>
+    <?php if ($jsonLdBreadcrumb !== null): ?>
+    <script type="application/ld+json"><?= news_json_encode_ld($jsonLdBreadcrumb) ?></script>
+    <?php endif; ?>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-4R1H98RJ7J"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -105,7 +174,7 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
         .article-card h1 { font-size: 1.55rem; color: var(--dark-purple); line-height: 1.4; margin-bottom: 20px; font-weight: 900; }
         .body-visible { font-size: 1.02rem; color: #222; text-align: justify; white-space: pre-wrap; word-break: break-word; }
         .blur-stack { position: relative; margin-top: 22px; min-height: 140px; border-radius: 14px; overflow: hidden; }
-        .body-blur { font-size: 1.02rem; color: #333; text-align: justify; filter: blur(8px); user-select: none; pointer-events: none; white-space: pre-wrap; word-break: break-word; padding: 8px 0 48px; opacity: 0.88; }
+        .body-blur { font-size: 1.02rem; color: #333; text-align: justify; filter: blur(12px); user-select: none; pointer-events: none; white-space: pre-wrap; word-break: break-word; padding: 8px 0 48px; opacity: 0.82; }
         .cta-overlay {
             position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
             text-align: center; padding: 28px 20px;

@@ -1,6 +1,9 @@
 RewriteEngine On
 Options -MultiViews
 
+# /blog/ → index.php (آخرین مطالب از دیتابیس)؛ در نبود PHP، index.html
+DirectoryIndex index.php index.html
+
 # اخبار از پایگاه داده (PHP)
 RewriteRule ^news/?$ news.php [L,QSA]
 RewriteRule ^article/?$ article.php [L,QSA]

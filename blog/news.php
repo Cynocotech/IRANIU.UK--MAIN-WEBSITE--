@@ -108,6 +108,100 @@ $buildUrl = static function (int $p) use ($basePath, $catFilter): string {
     return $basePath . '?' . http_build_query($q);
 };
 
+$siteUrl = 'https://iraniu.uk';
+$ogImageDefault = 'https://panel.cybercina.co.uk/storage/logos/N0yQlVchcj4ucrQfVJwbXXB13FhWTMFccUBmWLpI.png';
+
+$canonicalQuery = [];
+if ($page > 1) {
+    $canonicalQuery['page'] = $page;
+}
+if ($catFilter !== '') {
+    $canonicalQuery['cat'] = $catFilter;
+}
+$listCanonical = $siteUrl . $basePath . ($canonicalQuery !== [] ? ('?' . http_build_query($canonicalQuery)) : '');
+
+$filterLabelSeo = '';
+if ($catFilter !== '' && isset($categoryLabelByValue[$catFilter])) {
+    $filterLabelSeo = (string) $categoryLabelByValue[$catFilter];
+}
+
+$seoPageTitle = 'اخبار | مقالات IraniU';
+if ($filterLabelSeo !== '') {
+    $seoPageTitle = 'اخبار ' . $filterLabelSeo . ' | IraniU';
+}
+if ($page > 1) {
+    $seoPageTitle .= ' — صفحه ' . $page;
+}
+
+$seoDescription = 'آخرین اخبار و راهنماها برای جامعه ایرانیان بریتانیا — IraniU.';
+if ($err === null) {
+    if ($totalPages > 1) {
+        $seoDescription .= ' صفحه ' . $page . ' از ' . $totalPages . '.';
+    }
+    if ($filterLabelSeo !== '') {
+        $seoDescription .= ' دسته: ' . $filterLabelSeo . '.';
+    }
+    $seoDescription = function_exists('mb_substr')
+        ? mb_substr($seoDescription, 0, 158, 'UTF-8')
+        : substr($seoDescription, 0, 158);
+}
+if ($err !== null) {
+    $seoDescription = 'فهرست اخبار فارسی IraniU؛ در صورت خطا، تنظیمات پایگاه داده را بررسی کنید.';
+}
+
+$robotsNews = ($err !== null) ? 'noindex, follow' : 'index, follow, max-image-preview:large';
+
+$jsonLdCollection = null;
+if ($err === null && $idCol !== null && $rows !== []) {
+    $listItems = [];
+    $globalPos = $offset;
+    foreach ($rows as $r) {
+        $globalPos++;
+        $nid = isset($r[$idCol]) ? (int) $r[$idCol] : 0;
+        if ($nid < 1) {
+            continue;
+        }
+        $listItems[] = [
+            '@type' => 'ListItem',
+            'position' => $globalPos,
+            'url' => $siteUrl . '/blog/article?id=' . $nid,
+            'name' => news_row_title($r),
+        ];
+    }
+    if ($listItems !== []) {
+        $jsonLdCollection = [
+            '@context' => 'https://schema.org',
+            '@type' => 'CollectionPage',
+            'name' => 'اخبار IraniU',
+            'url' => $listCanonical,
+            'description' => function_exists('mb_substr')
+                ? mb_substr($seoDescription, 0, 300, 'UTF-8')
+                : substr($seoDescription, 0, 300),
+            'inLanguage' => 'fa-IR',
+            'isPartOf' => [
+                '@type' => 'WebSite',
+                'name' => 'IraniU',
+                'url' => $siteUrl,
+            ],
+            'mainEntity' => [
+                '@type' => 'ItemList',
+                'numberOfItems' => count($listItems),
+                'itemListElement' => $listItems,
+            ],
+        ];
+    }
+}
+
+$jsonLdBreadcrumbNews = [
+    '@context' => 'https://schema.org',
+    '@type' => 'BreadcrumbList',
+    'itemListElement' => [
+        ['@type' => 'ListItem', 'position' => 1, 'name' => 'صفحه اصلی', 'item' => $siteUrl . '/'],
+        ['@type' => 'ListItem', 'position' => 2, 'name' => 'مقالات', 'item' => $siteUrl . '/blog/'],
+        ['@type' => 'ListItem', 'position' => 3, 'name' => 'اخبار', 'item' => $listCanonical],
+    ],
+];
+
 header('Content-Type: text/html; charset=utf-8');
 header('X-Content-Type-Options: nosniff');
 header('Referrer-Policy: strict-origin-when-cross-origin');
@@ -118,14 +212,28 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#3a0b47">
-    <title>اخبار | مقالات IraniU</title>
-    <meta name="description" content="آخرین اخبار برای جامعه ایرانیان بریتانیا.">
-    <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://iraniu.uk/blog/news">
+    <title><?= news_h($seoPageTitle) ?></title>
+    <meta name="description" content="<?= news_h($seoDescription) ?>">
+    <meta name="keywords" content="<?= news_h('IraniU, Persian news UK, Iranian community Britain, اخبار فارسی, ایرانیان بریتانیا, iraniu.uk') ?>">
+    <meta name="author" content="IraniU">
+    <meta name="robots" content="<?= news_h($robotsNews) ?>">
+    <link rel="canonical" href="<?= news_h($listCanonical) ?>">
+    <meta property="og:site_name" content="IraniU">
     <meta property="og:locale" content="fa_IR">
-    <meta property="og:url" content="https://iraniu.uk/blog/news">
-    <meta property="og:title" content="اخبار | IraniU">
     <meta property="og:type" content="website">
+    <meta property="og:url" content="<?= news_h($listCanonical) ?>">
+    <meta property="og:title" content="<?= news_h($seoPageTitle) ?>">
+    <meta property="og:description" content="<?= news_h($seoDescription) ?>">
+    <meta property="og:image" content="<?= news_h($ogImageDefault) ?>">
+    <meta property="og:image:alt" content="IraniU">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="<?= news_h($seoPageTitle) ?>">
+    <meta name="twitter:description" content="<?= news_h($seoDescription) ?>">
+    <meta name="twitter:image" content="<?= news_h($ogImageDefault) ?>">
+    <?php if ($jsonLdCollection !== null): ?>
+    <script type="application/ld+json"><?= news_json_encode_ld($jsonLdCollection) ?></script>
+    <?php endif; ?>
+    <script type="application/ld+json"><?= news_json_encode_ld($jsonLdBreadcrumbNews) ?></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-4R1H98RJ7J"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
