@@ -244,8 +244,10 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
     <link rel="icon" type="image/gif" href="https://panel.cybercina.co.uk//storage/logos/1JAs6UIE0Qiq5OwDODGsueoPVVNh7S1VtHriltIa.gif">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
     <style>
-        @font-face { font-family: 'Yekan Bakh'; src: url('../fonts/YekanBakh-Regular.woff') format('woff'); font-weight: normal; }
-        @font-face { font-family: 'Yekan Bakh'; src: url('../fonts/YekanBakh-Bold.woff') format('woff'); font-weight: bold; }
+        @font-face { font-family: 'Yekan Bakh'; src: url('/fonts/YekanBakh-Regular.woff') format('woff'); font-weight: normal; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Yekan Bakh'; src: url('/fonts/YekanBakh-Bold.woff') format('woff'); font-weight: bold; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Yekan Bakh'; src: url('/fonts/YekanBakh-ExtraBlack.woff') format('woff'); font-weight: 800; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Yekan Bakh'; src: url('/fonts/YekanBakh-ExtraBlack.woff') format('woff'); font-weight: 900; font-style: normal; font-display: swap; }
         :root { --brand-purple: #74208b; --dark-purple: #3a0b47; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Yekan Bakh', Tahoma, sans-serif; }
         a { text-decoration: none; color: var(--brand-purple); font-weight: 700; }

@@ -78,7 +78,7 @@ if ($row !== null && $seoDescription === '') {
     $seoDescription = 'خبر و راهنما برای جامعه ایرانیان بریتانیا — IraniU.';
 }
 $seoKeywords = ($row !== null) ? news_row_meta_keywords_combined($row) : 'IraniU, Persian UK, iraniu.uk';
-$articleTags = ($row !== null) ? news_row_tags_list($row) : [];
+$articleTags = ($row !== null) ? news_row_seo_tags($row) : [];
 $dateIso = ($row !== null) ? news_row_date_iso8601($row) : null;
 $robotsArticle = ($row === null) ? 'noindex, follow' : 'index, follow, max-image-preview:large';
 
@@ -106,6 +106,9 @@ if ($row !== null) {
     }
     if ($articleTags !== []) {
         $jsonLdArticle['keywords'] = implode(', ', $articleTags);
+        $jsonLdArticle['about'] = array_map(static function (string $name): array {
+            return ['@type' => 'Thing', 'name' => $name];
+        }, array_slice($articleTags, 0, 16));
     }
     $jsonLdBreadcrumb = [
         '@context' => 'https://schema.org',
@@ -171,8 +174,10 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
     <link rel="icon" type="image/gif" href="https://panel.cybercina.co.uk//storage/logos/1JAs6UIE0Qiq5OwDODGsueoPVVNh7S1VtHriltIa.gif">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
     <style>
-        @font-face { font-family: 'Yekan Bakh'; src: url('../fonts/YekanBakh-Regular.woff') format('woff'); font-weight: normal; }
-        @font-face { font-family: 'Yekan Bakh'; src: url('../fonts/YekanBakh-Bold.woff') format('woff'); font-weight: bold; }
+        @font-face { font-family: 'Yekan Bakh'; src: url('/fonts/YekanBakh-Regular.woff') format('woff'); font-weight: normal; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Yekan Bakh'; src: url('/fonts/YekanBakh-Bold.woff') format('woff'); font-weight: bold; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Yekan Bakh'; src: url('/fonts/YekanBakh-ExtraBlack.woff') format('woff'); font-weight: 800; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Yekan Bakh'; src: url('/fonts/YekanBakh-ExtraBlack.woff') format('woff'); font-weight: 900; font-style: normal; font-display: swap; }
         :root { --brand-purple: #74208b; --dark-purple: #3a0b47; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Yekan Bakh', Tahoma, sans-serif; }
         a { text-decoration: none; color: var(--brand-purple); font-weight: 700; }
@@ -199,18 +204,30 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
         .article-card { background: #fff; border-radius: 22px; padding: 32px 28px; border: 1px solid #eee; box-shadow: 0 14px 40px rgba(0,0,0,0.07); }
         .article-card .date { font-size: 0.85rem; color: #888; margin-bottom: 12px; }
         .article-card h1 { font-size: 1.55rem; color: var(--dark-purple); line-height: 1.4; margin-bottom: 14px; font-weight: 900; }
-        .article-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+        .article-tags-wrap { margin-bottom: 20px; }
+        .article-tags-title { font-size: 0.82rem; font-weight: 800; color: var(--dark-purple); margin-bottom: 10px; letter-spacing: 0.02em; }
+        .article-tags { display: flex; flex-wrap: wrap; gap: 8px; }
         .article-tags .tag-chip { display: inline-block; font-size: 0.78rem; background: #ede7f6; color: var(--dark-purple); padding: 5px 12px; border-radius: 999px; font-weight: 800; }
         .body-visible { font-size: 1.02rem; color: #222; text-align: justify; white-space: pre-wrap; word-break: break-word; }
-        .blur-stack { position: relative; margin-top: 22px; min-height: 140px; border-radius: 14px; overflow: hidden; }
-        .body-blur { font-size: 1.02rem; color: #333; text-align: justify; filter: blur(12px); user-select: none; pointer-events: none; white-space: pre-wrap; word-break: break-word; padding: 8px 0 48px; opacity: 0.82; }
-        .cta-overlay {
-            position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            text-align: center; padding: 28px 20px;
-            background: linear-gradient(180deg, rgba(253,253,253,0.05) 0%, rgba(253,253,253,0.75) 28%, rgba(253,253,253,0.96) 55%, #fdfdfd 100%);
+        .blur-stack { margin-top: 22px; border-radius: 14px; overflow: hidden; border: 1px solid rgba(116, 32, 139, 0.12); background: #fff; }
+        .cta-head {
+            padding: 22px 20px 20px; text-align: center;
+            background: linear-gradient(180deg, #f5f0fa 0%, #fdfdfd 100%);
+            border-bottom: 1px solid rgba(116, 32, 139, 0.14);
         }
-        .cta-overlay p { color: var(--dark-purple); font-weight: 800; font-size: 1.1rem; margin-bottom: 18px; line-height: 1.6; max-width: 340px; }
-        .cta-overlay .sub { font-weight: 600; font-size: 0.92rem; color: #555; margin-bottom: 22px; }
+        .cta-head p { color: var(--dark-purple); font-weight: 800; font-size: 1.08rem; margin: 0 0 12px; line-height: 1.55; max-width: 420px; margin-left: auto; margin-right: auto; }
+        .cta-head .sub { font-weight: 600; font-size: 0.92rem; color: #555; margin-bottom: 18px; }
+        .body-blur-wrap { position: relative; }
+        .body-blur {
+            font-size: 1.02rem; color: #333; text-align: justify; filter: blur(12px); user-select: none; pointer-events: none;
+            white-space: pre-wrap; word-break: break-word; padding: 16px 14px 48px; opacity: 0.82;
+            min-height: 120px;
+        }
+        .blur-bottom-fade {
+            position: absolute; left: 0; right: 0; bottom: 0; height: 72px;
+            background: linear-gradient(180deg, transparent, rgba(253,253,253, 0.96));
+            pointer-events: none;
+        }
         .store-btns { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
         .store-btns a {
             display: inline-flex; align-items: center; gap: 10px; background: #111; color: #fff !important;
@@ -279,23 +296,29 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
             <?php endif; ?>
             <h1 itemprop="headline"><?= news_h($title) ?></h1>
             <?php if ($articleTags !== []): ?>
-            <div class="article-tags" aria-label="برچسب‌ها">
-                <?php foreach ($articleTags as $tg): ?>
-                    <span class="tag-chip"><?= news_h($tg) ?></span>
-                <?php endforeach; ?>
+            <div class="article-tags-wrap">
+                <p class="article-tags-title">برچسب‌ها</p>
+                <div class="article-tags" aria-label="برچسب‌های مطلب">
+                    <?php foreach ($articleTags as $tg): ?>
+                        <span class="tag-chip"><?= news_h($tg) ?></span>
+                    <?php endforeach; ?>
+                </div>
             </div>
             <?php endif; ?>
             <div class="body-visible" itemprop="articleBody"><?= nl2br(news_h($split['visible'])) ?></div>
             <?php if ($split['show_gate']): ?>
                 <div class="blur-stack" aria-hidden="false">
-                    <div class="body-blur"><?= nl2br(news_h($split['rest'])) ?></div>
-                    <div class="cta-overlay">
+                    <div class="cta-head">
                         <p>برای خواندن ادامهٔ این مطلب، اپلیکیشن ایرانیو را دانلود کنید</p>
                         <p class="sub">متن کامل خبر فقط در اپلیکیشن در دسترس است.</p>
                         <div class="store-btns">
                             <a href="<?= news_h($appIos) ?>" rel="noopener noreferrer"><i class="fab fa-apple fa-lg"></i> App Store</a>
                             <a href="<?= news_h($appAndroid) ?>" rel="noopener noreferrer"><i class="fab fa-google-play fa-lg"></i> Google Play</a>
                         </div>
+                    </div>
+                    <div class="body-blur-wrap">
+                        <div class="body-blur"><?= nl2br(news_h($split['rest'])) ?></div>
+                        <div class="blur-bottom-fade" aria-hidden="true"></div>
                     </div>
                 </div>
             <?php endif; ?>

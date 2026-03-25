@@ -223,6 +223,48 @@ function news_row_tags_list(array $row): array
 }
 
 /**
+ * Tags for جزئیات مقاله: ستون‌های tag + کلمات کلیدی (meta_keywords / keywords و غیره) برای نمایش و article:tag.
+ *
+ * @return string[]
+ */
+function news_row_seo_tags(array $row): array
+{
+    $merged = news_row_tags_list($row);
+    $rawKw = news_pick_first($row, [
+        'meta_keywords', 'Meta_keywords', 'seo_keywords', 'Seo_keywords', 'keywords', 'Keywords',
+        'focus_keyword', 'focus_keywords', 'keyword', 'Keyword',
+    ]);
+    if ($rawKw !== null && trim((string) $rawKw) !== '') {
+        $kw = trim(preg_replace('/\s+/u', ' ', strip_tags((string) $rawKw)) ?? '');
+        if ($kw !== '') {
+            $merged = array_merge($merged, news_parse_tags_from_string($kw));
+        }
+    }
+    $seen = [];
+    $out = [];
+    foreach ($merged as $t) {
+        $t = trim($t);
+        if ($t === '') {
+            continue;
+        }
+        $len = function_exists('mb_strlen') ? mb_strlen($t, 'UTF-8') : strlen($t);
+        if ($len < 2 || $len > 96) {
+            continue;
+        }
+        $lk = function_exists('mb_strtolower') ? mb_strtolower($t, 'UTF-8') : strtolower($t);
+        if (isset($seen[$lk])) {
+            continue;
+        }
+        $seen[$lk] = true;
+        $out[] = $t;
+        if (count($out) >= 28) {
+            break;
+        }
+    }
+    return $out;
+}
+
+/**
  * Meta / OG description: prefers dedicated SEO columns, then short fields, then excerpt.
  */
 function news_row_seo_description(array $row, int $maxLen = 158): string
