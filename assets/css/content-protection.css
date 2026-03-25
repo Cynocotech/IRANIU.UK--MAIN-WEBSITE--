@@ -23,3 +23,39 @@ select,
   user-select: text;
   -webkit-touch-callout: default;
 }
+
+/* Full-screen primary gradient when JavaScript is off (content inside <noscript>) */
+.iraniu-noscript-wall {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483647;
+  background: linear-gradient(160deg, #3a0b47 0%, #52186a 42%, #74208b 100%);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: max(24px, 4vw);
+  direction: rtl;
+  font-family: Tahoma, Arial, sans-serif;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  box-sizing: border-box;
+}
+.iraniu-noscript-inner {
+  max-width: 26rem;
+}
+.iraniu-noscript-title {
+  font-size: clamp(1.1rem, 4vw, 1.35rem);
+  font-weight: 800;
+  margin: 0 0 14px;
+  line-height: 1.55;
+}
+.iraniu-noscript-sub {
+  direction: ltr;
+  font-size: 0.92rem;
+  opacity: 0.92;
+  margin: 0;
+}
