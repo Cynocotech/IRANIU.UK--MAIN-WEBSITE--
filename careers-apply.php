@@ -15,6 +15,7 @@ function jsonFail($err) {
 try {
     require __DIR__ . '/load_env.php';
     require __DIR__ . '/vendor/autoload.php';
+    require __DIR__ . '/includes/security_util.php';
 } catch (Throwable $e) {
     jsonFail('setup');
 }
@@ -139,9 +140,10 @@ if (!is_dir($uploadDir) || !is_writable($uploadDir)) {
     jsonFail('config');
 }
 
-$safeName = preg_replace('/[^a-zA-Z0-9_\-\.]/', '_', basename($_FILES['cv']['name']));
-$saveName = date('Ymd_His') . '_' . $safeName;
+// Store with random name + forced .pdf so the on-disk extension never comes from user input.
+$saveName = date('Ymd_His') . '_' . bin2hex(random_bytes(16)) . '.pdf';
 $savePath = $uploadDir . '/' . $saveName;
+$attachmentDisplayName = security_safe_attachment_display_name($_FILES['cv']['name'] ?? 'cv.pdf');
 
 if (!move_uploaded_file($_FILES['cv']['tmp_name'], $savePath)) {
     jsonFail('send');
@@ -287,9 +289,10 @@ foreach ([
         $mail->setFrom($zohoEmail, 'IraniU Careers');
         $mail->addAddress($careersEmail);
         $mail->isHTML(true);
-        $mail->Subject = 'رزومه: ' . mb_substr(str_replace(["\r", "\n"], '', $jobTitle), 0, 80) . ' - ' . $name;
+        $mail->Subject = 'رزومه: ' . mb_substr(security_strip_mailer_header_value($jobTitle), 0, 80)
+            . ' - ' . mb_substr(security_strip_mailer_header_value($name), 0, 80);
         $mail->Body = $adminBody;
-        $mail->addAttachment($savePath, $saveName);
+        $mail->addAttachment($savePath, $attachmentDisplayName);
         $mail->send();
         $sent = true;
         $mail->clearAttachments();

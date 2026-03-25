@@ -17,11 +17,22 @@
     };
   }
 
-  function esc(s) {
-    if (!s) return '';
-    var d = document.createElement('div');
-    d.textContent = s;
-    return d.innerHTML;
+  /** Only allow same-origin article paths (mitigates poisoned JSON href). */
+  function safeArticleHref(u) {
+    if (typeof u !== 'string' || !u) return '#';
+    u = u.trim();
+    if (u[0] !== '/' || u[1] === '/') return '#';
+    if (/[\s\0]/.test(u)) return '#';
+    if (u.toLowerCase().indexOf('javascript:') !== -1) return '#';
+    if (u.toLowerCase().indexOf('data:') === 0) return '#';
+    if (u.indexOf('/blog/article/') !== 0) return '#';
+    return u;
+  }
+
+  function clearList(list) {
+    while (list.firstChild) {
+      list.removeChild(list.firstChild);
+    }
   }
 
   function initWrap(wrap) {
@@ -49,7 +60,7 @@
     }
 
     function renderItems(items) {
-      list.innerHTML = '';
+      clearList(list);
       if (!items || !items.length) {
         var empty = document.createElement('p');
         empty.className = 'blog-search-empty';
@@ -60,15 +71,42 @@
       items.forEach(function (it) {
         var a = document.createElement('a');
         a.className = 'blog-search-item';
-        a.href = it.url || '#';
-        if (it.url === '#') a.setAttribute('aria-disabled', 'true');
-        var cat = it.category ? '<span class="blog-search-item-cat">' + esc(it.category) + '</span>' : '';
-        var dt = it.date ? '<span class="blog-search-item-date">' + esc(it.date) + '</span>' : '';
-        var ex = it.excerpt ? '<span class="blog-search-item-ex">' + esc(it.excerpt) + '</span>' : '';
-        a.innerHTML =
-          '<span class="blog-search-item-title">' + esc(it.title || '') + '</span>' +
-          (cat || dt ? '<span class="blog-search-item-meta">' + cat + dt + '</span>' : '') +
-          (ex ? ex : '');
+        var href = safeArticleHref(it.url || '');
+        a.setAttribute('href', href);
+        if (href === '#') a.setAttribute('aria-disabled', 'true');
+
+        var title = document.createElement('span');
+        title.className = 'blog-search-item-title';
+        title.textContent = it.title || '';
+
+        if (it.category || it.date) {
+          var meta = document.createElement('span');
+          meta.className = 'blog-search-item-meta';
+          if (it.category) {
+            var cat = document.createElement('span');
+            cat.className = 'blog-search-item-cat';
+            cat.textContent = it.category;
+            meta.appendChild(cat);
+          }
+          if (it.date) {
+            var dt = document.createElement('span');
+            dt.className = 'blog-search-item-date';
+            dt.textContent = it.date;
+            meta.appendChild(dt);
+          }
+          a.appendChild(title);
+          a.appendChild(meta);
+        } else {
+          a.appendChild(title);
+        }
+
+        if (it.excerpt) {
+          var ex = document.createElement('span');
+          ex.className = 'blog-search-item-ex';
+          ex.textContent = it.excerpt;
+          a.appendChild(ex);
+        }
+
         list.appendChild(a);
       });
     }
@@ -78,7 +116,7 @@
       if (q.length < MIN_LEN) {
         if (abortCtrl) abortCtrl.abort();
         showStatus('');
-        list.innerHTML = '';
+        clearList(list);
         setOpen(false);
         return;
       }
@@ -99,7 +137,7 @@
           showStatus('');
           if (!data || !data.ok) {
             showStatus('جستجو انجام نشد. بعداً دوباره امتحان کنید.', true);
-            list.innerHTML = '';
+            clearList(list);
             return;
           }
           renderItems(data.items || []);
@@ -107,7 +145,7 @@
         .catch(function (err) {
           if (err && err.name === 'AbortError') return;
           showStatus('خطا در اتصال.', true);
-          list.innerHTML = '';
+          clearList(list);
         });
     }
 

@@ -650,6 +650,9 @@ function news_category_table_where_sql(array $catCols): string
  */
 function news_fetch_categories_from_tbl_category(PDO $pdo, string $categoryTable): array
 {
+    if (preg_match('/^[A-Za-z0-9_]{1,64}$/', trim($categoryTable)) !== 1) {
+        return [];
+    }
     $safe = str_replace('`', '``', $categoryTable);
     try {
         $catCols = news_table_columns($pdo, $categoryTable);

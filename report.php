@@ -16,6 +16,7 @@ function jsonFail($err) {
 try {
     require __DIR__ . '/load_env.php';
     require __DIR__ . '/vendor/autoload.php';
+    require __DIR__ . '/includes/security_util.php';
 } catch (Throwable $e) {
     jsonFail('setup');
 }
@@ -51,7 +52,7 @@ $REASON_LABELS = [
     'Other' => 'سایر موارد',
 ];
 
-function getReportEmailHtml($reason, $reasonLabel, $link, $email, $message, $ip) {
+function getReportEmailHtml($reasonLabel, $link, $email, $message, $ip) {
     $reasonLabel = escapeHtml($reasonLabel);
     $email = escapeHtml($email);
     $msg = nl2br(escapeHtml($message));
@@ -131,7 +132,11 @@ $link = mb_substr(trim($_POST['link'] ?? ''), 0, $MAX_LEN['link']);
 $email = mb_substr(trim($_POST['email'] ?? ''), 0, $MAX_LEN['email']);
 $message = mb_substr(trim($_POST['message'] ?? ''), 0, $MAX_LEN['message']);
 
-if (empty($reason) || empty($email) || empty($message)) {
+if ($reason === '' || !array_key_exists($reason, $REASON_LABELS)) {
+    $reason = 'Other';
+}
+
+if (empty($email) || empty($message)) {
     if ($wantsJson) {
         header('Content-Type: application/json');
         echo json_encode(['success' => false, 'error' => 'missing']);
@@ -151,7 +156,7 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     exit;
 }
 
-$reasonLabel = $REASON_LABELS[$reason] ?? $reason;
+$reasonLabel = $REASON_LABELS[$reason];
 
 $turnstileToken = trim($_POST['cf-turnstile-response'] ?? '');
 $turnstileSecret = getenv('TURNSTILE_SECRET_KEY') ?: $_ENV['TURNSTILE_SECRET_KEY'] ?? '';
@@ -230,9 +235,9 @@ foreach ($hosts as $host) {
             $mail->setFrom($zohoEmail, 'IraniU Report');
             $mail->addAddress($adminEmail);
             $mail->isHTML(true);
-            $safeSubject = str_replace(["\r", "\n"], '', $reasonLabel);
+            $safeSubject = security_strip_mailer_header_value($reasonLabel);
             $mail->Subject = 'گزارش تخلف ایرانیو: ' . mb_substr($safeSubject, 0, 80);
-            $mail->Body = getReportEmailHtml($reason, $reasonLabel, $link, $email, $message, getClientIp());
+            $mail->Body = getReportEmailHtml($reasonLabel, $link, $email, $message, getClientIp());
             $mail->send();
             $sent = true;
             break 2;

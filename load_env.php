@@ -34,3 +34,8 @@ if (file_exists($configFile)) {
         }
     }
 }
+
+if (PHP_SAPI !== 'cli') {
+    require_once __DIR__ . '/includes/waf_request_gate.php';
+    waf_request_gate_run();
+}

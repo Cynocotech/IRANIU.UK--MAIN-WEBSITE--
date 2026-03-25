@@ -16,6 +16,7 @@ function jsonFail($err) {
 try {
     require __DIR__ . '/load_env.php';
     require __DIR__ . '/vendor/autoload.php';
+    require __DIR__ . '/includes/security_util.php';
 } catch (Throwable $e) {
     jsonFail('setup');
 }
@@ -225,7 +226,7 @@ foreach ($hosts as $host) {
         $mail->setFrom($zohoEmail, 'IraniU Contact');
         $mail->addAddress($adminEmail);
         $mail->isHTML(true);
-        $safeSubject = str_replace(["\r", "\n"], '', $name);
+        $safeSubject = security_strip_mailer_header_value($name);
         $mail->Subject = 'پیام تماس ایرانیو از ' . mb_substr($safeSubject, 0, 100);
         $mail->Body = getEmailHtml($name, $email, $phone, $message, getClientIp());
 

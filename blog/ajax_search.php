@@ -16,16 +16,16 @@ header('X-Content-Type-Options: nosniff');
 header('X-Robots-Tag: noindex, nofollow');
 header('Referrer-Policy: strict-origin-when-cross-origin');
 
+$flags = JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS;
+
 if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'GET') {
     http_response_code(405);
-    echo json_encode(['ok' => false, 'error' => 'method_not_allowed'], JSON_UNESCAPED_UNICODE);
+    echo json_encode(['ok' => false, 'error' => 'method_not_allowed'], $flags);
     exit;
 }
 
 $q = isset($_GET['q']) ? trim((string) $_GET['q']) : '';
 $limit = isset($_GET['limit']) ? (int) $_GET['limit'] : SEARCH_LIMIT_DEFAULT;
-
-$flags = JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES;
 
 if ($q === '') {
     echo json_encode(['ok' => true, 'query' => '', 'items' => []], $flags);
