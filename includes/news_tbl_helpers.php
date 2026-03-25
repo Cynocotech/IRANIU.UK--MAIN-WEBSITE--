@@ -1,0 +1,372 @@
+<?php
+declare(strict_types=1);
+
+/**
+ * کمک‌توابع مشترک برای tbl_news (فهرست + جزئیات)
+ */
+
+function news_h(?string $s): string
+{
+    return htmlspecialchars((string) $s, ENT_QUOTES, 'UTF-8');
+}
+
+function news_fa_digits(string $s): string
+{
+    return str_replace(
+        ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
+        ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'],
+        $s
+    );
+}
+
+/** @return string[] */
+function news_table_columns(PDO $pdo, string $table): array
+{
+    $stmt = $pdo->query('SHOW COLUMNS FROM `' . str_replace('`', '``', $table) . '`');
+    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $out = [];
+    foreach ($rows as $row) {
+        if (!empty($row['Field'])) {
+            $out[] = $row['Field'];
+        }
+    }
+    return $out;
+}
+
+function news_order_field(array $fieldNames): string
+{
+    if ($fieldNames === []) {
+        throw new RuntimeException('جدول بدون ستون است.');
+    }
+    $lower = [];
+    foreach ($fieldNames as $f) {
+        $lower[strtolower($f)] = $f;
+    }
+    $candidates = [
+        'publish_date', 'published_at', 'news_date', 'tarikh', 'date_news',
+        'created_at', 'updated_at', 'insert_time', 'id', 'news_id',
+    ];
+    foreach ($candidates as $c) {
+        if (isset($lower[$c])) {
+            return $lower[$c];
+        }
+    }
+    return $fieldNames[0];
+}
+
+function news_deleted_clause(array $cols): string
+{
+    foreach ($cols as $c) {
+        if (strcasecmp($c, 'deleted_at') === 0) {
+            return ' AND `' . str_replace('`', '``', $c) . '` IS NULL';
+        }
+    }
+    return '';
+}
+
+function news_pick_first(array $row, array $keys): ?string
+{
+    foreach ($keys as $k) {
+        if (!array_key_exists($k, $row)) {
+            continue;
+        }
+        $v = $row[$k];
+        if ($v === null) {
+            continue;
+        }
+        $s = is_string($v) ? trim($v) : (string) $v;
+        if ($s !== '') {
+            return $s;
+        }
+    }
+    return null;
+}
+
+function news_row_title(array $row): string
+{
+    $t = news_pick_first($row, [
+        'title', 'Title', 'subject', 'Subject', 'news_title', 'newsTitle',
+        'onvan', 'name', 'Name', 'headline', 'Headline', 'key_title', 'topic',
+    ]);
+    return $t ?? 'بدون عنوان';
+}
+
+function news_row_excerpt(array $row, int $maxLen = 280): string
+{
+    $raw = news_pick_first($row, [
+        'summary', 'Summary', 'short_text', 'shortText', 'lead', 'intro',
+        'description', 'Description', 'excerpt', 'Excerpt', 'kholase', 'subtitle',
+        'body', 'Body', 'content', 'Content', 'text', 'Text', 'matn', 'news_text',
+        'full_text', 'detail', 'html', 'Html',
+    ]);
+    if ($raw === null) {
+        return '';
+    }
+    $plain = preg_replace('/\s+/u', ' ', strip_tags($raw)) ?? '';
+    $plain = trim($plain);
+    if (function_exists('mb_strlen') && function_exists('mb_substr')) {
+        if (mb_strlen($plain, 'UTF-8') > $maxLen) {
+            return rtrim(mb_substr($plain, 0, $maxLen - 1, 'UTF-8')) . '…';
+        }
+    } elseif (strlen($plain) > $maxLen) {
+        return substr($plain, 0, $maxLen - 1) . '…';
+    }
+    return $plain;
+}
+
+/** متن کامل برای صفحه جزئیات */
+function news_row_body_raw(array $row): ?string
+{
+    return news_pick_first($row, [
+        'body', 'Body', 'content', 'Content', 'text', 'Text', 'matn', 'news_text',
+        'full_text', 'detail', 'html', 'Html', 'description', 'article',
+    ]);
+}
+
+function news_format_date(array $row): ?string
+{
+    $raw = news_pick_first($row, [
+        'publish_date', 'published_at', 'news_date', 'tarikh', 'date_news',
+        'created_at', 'updated_at', 'insert_time', 'date', 'Date',
+    ]);
+    if ($raw === null) {
+        return null;
+    }
+    $ts = strtotime($raw);
+    if ($ts === false) {
+        return null;
+    }
+    return news_fa_digits(date('Y/n/j', $ts));
+}
+
+function news_row_image_url(array $row): ?string
+{
+    $u = news_pick_first($row, [
+        'image', 'Image', 'pic', 'picture', 'thumb', 'thumbnail', 'news_image',
+        'photo', 'banner', 'img', 'aks', 'image_url', 'ImageUrl', 'cover', 'Cover',
+    ]);
+    if ($u === null) {
+        return null;
+    }
+    $u = trim($u);
+    if ($u === '') {
+        return null;
+    }
+    if (preg_match('#^https?://#i', $u)) {
+        return $u;
+    }
+    if (strpos($u, '//') === 0) {
+        return 'https:' . $u;
+    }
+    $base = rtrim((string)($_ENV['NEWS_IMAGE_BASE_URL'] ?? getenv('NEWS_IMAGE_BASE_URL') ?: ''), '/');
+    if ($base === '') {
+        $base = 'https://panel.cybercina.co.uk';
+    }
+    if ($u[0] === '/') {
+        return $base . $u;
+    }
+    return $base . '/' . $u;
+}
+
+function news_id_column(array $cols): ?string
+{
+    foreach (['id', 'news_id', 'ID', 'newsId', 'pk'] as $want) {
+        foreach ($cols as $c) {
+            if (strcasecmp($c, $want) === 0) {
+                return $c;
+            }
+        }
+    }
+    return null;
+}
+
+/**
+ * ستون کلید خارجی دسته در tbl_news (اشاره به tbl_category)
+ */
+function news_category_fk_column(array $newsCols): ?string
+{
+    $prefer = ['category_id', 'cat_id', 'categoryId', 'fk_category_id', 'tbl_category_id'];
+    foreach ($prefer as $p) {
+        foreach ($newsCols as $c) {
+            if (strcasecmp($c, $p) === 0) {
+                return $c;
+            }
+        }
+    }
+    foreach ($newsCols as $c) {
+        if (preg_match('/category.*_id$/i', $c) === 1) {
+            return $c;
+        }
+    }
+    return null;
+}
+
+/**
+ * ستون دستهٔ متنی قدیمی در tbl_news (بدون جدول دسته جدا)
+ */
+function news_category_column(array $cols): ?string
+{
+    $prefer = [
+        'category_name', 'category_slug', 'category', 'Category', 'cat_name',
+        'cat_slug', 'news_category', 'type', 'news_type', 'topic', 'section',
+    ];
+    foreach ($prefer as $p) {
+        foreach ($cols as $c) {
+            if (strcasecmp($c, $p) === 0) {
+                return $c;
+            }
+        }
+    }
+    foreach ($cols as $c) {
+        if (stripos($c, 'category') !== false && stripos($c, '_id') === false) {
+            return $c;
+        }
+    }
+    return null;
+}
+
+function news_category_table_id_column(array $catCols): ?string
+{
+    foreach (['id', 'category_id', 'cat_id', 'ID'] as $w) {
+        foreach ($catCols as $c) {
+            if (strcasecmp($c, $w) === 0) {
+                return $c;
+            }
+        }
+    }
+    return null;
+}
+
+function news_category_table_name_column(array $catCols): ?string
+{
+    foreach (['name', 'title', 'title_fa', 'category_name', 'label', 'fa_name', 'onvan', 'Name', 'Title'] as $w) {
+        foreach ($catCols as $c) {
+            if (strcasecmp($c, $w) === 0) {
+                return $c;
+            }
+        }
+    }
+    foreach ($catCols as $c) {
+        if (stripos($c, 'name') !== false || stripos($c, 'title') !== false) {
+            return $c;
+        }
+    }
+    return null;
+}
+
+function news_category_table_where_sql(array $catCols): string
+{
+    foreach ($catCols as $c) {
+        if (strcasecmp($c, 'deleted_at') === 0) {
+            return ' WHERE `' . str_replace('`', '``', $c) . '` IS NULL ';
+        }
+    }
+    return '';
+}
+
+/**
+ * خواندن دسته‌ها از tbl_category (یا نام جدول از NEWS_CATEGORY_TABLE)
+ *
+ * @return array<int, array{value:string,label:string}>
+ */
+function news_fetch_categories_from_tbl_category(PDO $pdo, string $categoryTable): array
+{
+    $safe = str_replace('`', '``', $categoryTable);
+    try {
+        $catCols = news_table_columns($pdo, $categoryTable);
+    } catch (Throwable $e) {
+        return [];
+    }
+    if ($catCols === []) {
+        return [];
+    }
+    $idCol = news_category_table_id_column($catCols);
+    $nameCol = news_category_table_name_column($catCols);
+    if ($idCol === null || $nameCol === null) {
+        return [];
+    }
+    $idQ = '`' . str_replace('`', '``', $idCol) . '`';
+    $nameQ = '`' . str_replace('`', '``', $nameCol) . '`';
+    $where = news_category_table_where_sql($catCols);
+    $sql = "SELECT $idQ AS cid, $nameQ AS cname FROM `$safe` $where ORDER BY $nameQ ASC";
+    $stmt = $pdo->query($sql);
+    $out = [];
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $id = isset($row['cid']) ? trim((string) $row['cid']) : '';
+        $name = isset($row['cname']) ? trim((string) $row['cname']) : '';
+        if ($id === '') {
+            continue;
+        }
+        if ($name === '') {
+            $name = $id;
+        }
+        $out[] = ['value' => $id, 'label' => $name];
+    }
+    return $out;
+}
+
+/**
+ * @return array<int, array{value:string,label:string}>
+ */
+function news_distinct_categories(PDO $pdo, string $table, string $catCol, string $extraWhere): array
+{
+    $t = str_replace('`', '``', $table);
+    $c = str_replace('`', '``', $catCol);
+    $sql = "SELECT DISTINCT `$c` AS v FROM `$t` WHERE 1=1 $extraWhere AND `$c` IS NOT NULL AND TRIM(CAST(`$c` AS CHAR)) <> '' ORDER BY v ASC";
+    $stmt = $pdo->query($sql);
+    $out = [];
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $v = isset($row['v']) ? trim((string) $row['v']) : '';
+        if ($v === '') {
+            continue;
+        }
+        $out[] = ['value' => $v, 'label' => $v];
+    }
+    return $out;
+}
+
+/**
+ * نیمهٔ اول / دوم متن ساده (۵۰٪ پیش‌فرض) برای تیزر وب
+ * @return array{visible:string,rest:string,show_gate:bool}
+ */
+function news_split_teaser_plain(?string $htmlOrText, float $visibleRatio = 0.5): array
+{
+    if ($htmlOrText === null || trim($htmlOrText) === '') {
+        return ['visible' => '', 'rest' => '', 'show_gate' => false];
+    }
+    $plain = preg_replace('/\s+/u', ' ', strip_tags($htmlOrText)) ?? '';
+    $plain = trim($plain);
+    if ($plain === '') {
+        return ['visible' => '', 'rest' => '', 'show_gate' => false];
+    }
+
+    $len = function_exists('mb_strlen') ? mb_strlen($plain, 'UTF-8') : strlen($plain);
+    if ($len < 120) {
+        return ['visible' => $plain, 'rest' => '', 'show_gate' => false];
+    }
+
+    $cut = (int) max(1, floor($len * $visibleRatio));
+
+    if (function_exists('mb_substr') && function_exists('mb_strrpos')) {
+        $visible = mb_substr($plain, 0, $cut, 'UTF-8');
+        $rest = mb_substr($plain, $cut, null, 'UTF-8');
+        if ($rest !== '' && $visible !== '') {
+            $lastSpace = mb_strrpos($visible, ' ', 0, 'UTF-8');
+            if ($lastSpace !== false && $lastSpace > (int) ($cut * 0.45)) {
+                $rest = mb_substr($visible, $lastSpace + 1, null, 'UTF-8') . $rest;
+                $visible = mb_substr($visible, 0, $lastSpace, 'UTF-8');
+            }
+        }
+    } else {
+        $visible = substr($plain, 0, $cut);
+        $rest = substr($plain, $cut);
+    }
+
+    $visible = trim($visible);
+    $rest = trim($rest);
+    if ($rest === '') {
+        return ['visible' => $visible, 'rest' => '', 'show_gate' => false];
+    }
+
+    return ['visible' => $visible, 'rest' => $rest, 'show_gate' => true];
+}

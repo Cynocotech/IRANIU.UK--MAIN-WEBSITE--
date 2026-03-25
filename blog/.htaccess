@@ -3,6 +3,7 @@ Options -MultiViews
 
 # اخبار از پایگاه داده (PHP)
 RewriteRule ^news/?$ news.php [L,QSA]
+RewriteRule ^article/?$ article.php [L,QSA]
 
 # /blog/index.html → /blog/
 RewriteCond %{THE_REQUEST} \s+/blog/index\.html[\s?]

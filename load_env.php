@@ -24,7 +24,8 @@ if (file_exists($configFile)) {
             'ZOHO_EMAIL', 'ZOHO_PASSWORD', 'ADMIN_EMAIL', 'CAREERS_EMAIL', 'TURNSTILE_SECRET_KEY',
             'DB_CONNECTION', 'DB_HOST', 'DB_PORT', 'DB_DATABASE', 'DB_USERNAME', 'DB_PASSWORD',
             'DB_NAME', 'DB_USER',
-            'NEWS_IMAGE_BASE_URL',
+            'NEWS_IMAGE_BASE_URL', 'NEWS_CATEGORY_TABLE',
+            'APP_STORE_URL', 'GOOGLE_PLAY_URL',
         ] as $k) {
             if (!empty($cfg[$k]) && empty($_ENV[$k] ?? '')) {
                 $_ENV[$k] = $cfg[$k];
