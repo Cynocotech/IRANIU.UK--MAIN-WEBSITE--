@@ -8,9 +8,11 @@ return [
     'ZOHO_PASSWORD' => 'your-app-password',
     'ADMIN_EMAIL' => 'admin@example.com',
     'TURNSTILE_SECRET_KEY' => 'your-turnstile-secret-key',
-    // MySQL — tbl_news در /blog/news (یا از .env)
-    'DB_HOST' => 'your.mysql.host',
-    'DB_NAME' => 'cybercinaco_app',
-    'DB_USER' => 'cybercinaco_app',
+    // MySQL — tbl_news در /blog/news (یا از .env) — معادل لاراول
+    'DB_CONNECTION' => 'mysql',
+    'DB_HOST' => 'localhost',
+    'DB_PORT' => '3306',
+    'DB_DATABASE' => 'cybercinaco_app',
+    'DB_USERNAME' => 'cybercinaco_app',
     'DB_PASSWORD' => 'your-db-password',
 ];
