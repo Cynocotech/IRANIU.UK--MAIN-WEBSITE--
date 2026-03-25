@@ -244,7 +244,7 @@ if ($sent) {
 <style>
 body{font-family:Tahoma,Arial,sans-serif;background:#fdfdfd;margin:0;padding:20px;direction:rtl;text-align:right;}
 .wrap{max-width:600px;margin:0 auto;direction:rtl;text-align:right;}
-.header{background:linear-gradient(135deg,#3a0b47,#74208b);color:white;padding:30px;text-align:center;border-radius:12px 12px 0 0;}
+.header{background:#3a0b47;color:#fff;padding:30px;text-align:center;border-radius:12px 12px 0 0;}
 .header img{height:50px;margin:0 auto 15px;display:block;}
 .header h1{margin:0;font-size:1.4rem;}
 .content{background:white;padding:30px;border:1px solid #eee;border-top:none;border-radius:0 0 12px 12px;line-height:1.9;direction:rtl;text-align:right;}

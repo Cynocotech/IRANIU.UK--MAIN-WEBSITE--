@@ -205,7 +205,7 @@ body{font-family:'Yekan','Yekan Bakh',Tahoma,Arial,sans-serif;background:#f5f5f5
 .wrap{max-width:560px;margin:0 auto;background:#fff;border:1px solid #e5e5e5;border-radius:16px;overflow:hidden;line-height:1.8;box-shadow:0 4px 20px rgba(0,0,0,0.06);}
 @keyframes gradientFlow{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 @keyframes waveMove{0%{transform:translate3d(-90px,0,0)}100%{transform:translate3d(85px,0,0)}}
-.header{position:relative;background:linear-gradient(135deg,#3a0b47,#74208b);color:white;text-align:center;padding:24px;overflow:hidden;}
+.header{position:relative;background:#3a0b47;color:#fff;text-align:center;padding:24px;overflow:hidden;}
 .header-waves{position:absolute;bottom:0;left:0;width:100%;height:50px;pointer-events:none;z-index:1;}
 .header-waves .wave-svg{width:100%;height:100%;}
 .header-waves .wave-use{animation:waveMove 8s cubic-bezier(0.55,0.5,0.45,0.5) infinite;}
