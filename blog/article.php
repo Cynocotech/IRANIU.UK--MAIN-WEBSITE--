@@ -116,7 +116,7 @@ if ($row !== null) {
         'itemListElement' => [
             ['@type' => 'ListItem', 'position' => 1, 'name' => 'صفحه اصلی', 'item' => $siteUrl . '/'],
             ['@type' => 'ListItem', 'position' => 2, 'name' => 'مقالات', 'item' => $siteUrl . '/blog/'],
-            ['@type' => 'ListItem', 'position' => 3, 'name' => 'اخبار', 'item' => $siteUrl . '/blog/news'],
+            ['@type' => 'ListItem', 'position' => 3, 'name' => 'فهرست مطالب', 'item' => $siteUrl . '/blog/news'],
             ['@type' => 'ListItem', 'position' => 4, 'name' => $title, 'item' => $articleCanonical],
         ],
     ];
@@ -192,14 +192,37 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
         .mobile-nav { display: none; position: fixed; top: 70px; right: 0; left: 0; background: var(--dark-purple); flex-direction: column; align-items: center; padding: 24px 0; z-index: 999; }
         .mobile-nav.open { display: flex; }
         .mobile-nav a { color: #fff; font-weight: bold; margin: 10px 0; padding-bottom: 10px; width: 85%; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .breadcrumb-wrap { max-width: 900px; margin: 0 auto; padding: 14px 20px 2px; }
-        .breadcrumb-nav { display: inline-flex; max-width: 100%; }
-        .breadcrumb-nav ol { display: flex; flex-wrap: wrap; align-items: center; gap: 0; list-style: none; margin: 0; padding: 9px 20px 9px 16px; background: linear-gradient(145deg, #faf6fc 0%, #fff 55%, #fdf8ff 100%); border: 1px solid rgba(116, 32, 139, 0.14); border-radius: 999px; box-shadow: 0 2px 14px rgba(58, 11, 71, 0.07), inset 0 1px 0 rgba(255, 255, 255, 0.9); }
-        .breadcrumb-nav li { display: flex; align-items: center; font-size: 0.8125rem; color: #5a5a5a; }
-        .breadcrumb-nav li + li::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: linear-gradient(135deg, var(--brand-purple), rgba(116, 32, 139, 0.5)); margin: 0 12px; flex-shrink: 0; opacity: 0.9; }
-        .breadcrumb-nav a { color: var(--brand-purple); font-weight: 700; display: inline-flex; align-items: center; }
-        .breadcrumb-nav .bc-home { font-size: 0.95rem; line-height: 1; }
-        .breadcrumb-nav li.breadcrumb-current { color: var(--dark-purple); font-weight: 700; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .breadcrumb-strip {
+            background: linear-gradient(180deg, #faf7fc 0%, #f3eef8 100%);
+            border-bottom: 1px solid rgba(116, 32, 139, 0.12);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85);
+        }
+        .breadcrumb-inner { max-width: 900px; margin: 0 auto; padding: 14px 20px 16px; }
+        .breadcrumb-nav ol.bc-list {
+            display: flex; flex-wrap: wrap; align-items: baseline; gap: 0; list-style: none; margin: 0; padding: 0;
+        }
+        .breadcrumb-nav ol.bc-list > li {
+            display: inline-flex; align-items: center; font-size: 0.8125rem; color: #5c5c5c; line-height: 1.5;
+        }
+        .breadcrumb-nav ol.bc-list > li.bc-sep {
+            color: rgba(116, 32, 139, 0.35); font-weight: 300; user-select: none; padding: 0 10px; font-size: 0.75rem;
+        }
+        .breadcrumb-nav ol.bc-list a {
+            color: var(--brand-purple); font-weight: 700; display: inline-flex; align-items: center; gap: 6px;
+            padding: 4px 2px; border-radius: 8px; transition: color 0.2s, background 0.2s;
+        }
+        .breadcrumb-nav ol.bc-list a:hover { color: var(--dark-purple); background: rgba(116, 32, 139, 0.08); }
+        .breadcrumb-nav ol.bc-list a .bc-home-icon { font-size: 0.9rem; opacity: 0.9; }
+        .breadcrumb-nav li.breadcrumb-current {
+            color: var(--dark-purple); font-weight: 800; max-width: 100%; flex: 1 1 200px; min-width: 0;
+            padding: 4px 2px; line-height: 1.45;
+        }
+        .breadcrumb-nav li.breadcrumb-current span {
+            display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; line-clamp: 3; overflow: hidden;
+        }
+        @media (min-width: 640px) {
+            .breadcrumb-nav li.breadcrumb-current { max-width: 460px; }
+        }
         .wrap { max-width: 800px; margin: 0 auto 64px; padding: 28px 20px 0; }
         .article-card { background: #fff; border-radius: 22px; padding: 32px 28px; border: 1px solid #eee; box-shadow: 0 14px 40px rgba(0,0,0,0.07); }
         .article-card .date { font-size: 0.85rem; color: #888; margin-bottom: 12px; }
@@ -236,9 +259,29 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
         .store-btns a:hover { filter: brightness(1.12); color: #fff !important; }
         .back-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 28px; font-size: 0.95rem; }
         .alert { background: #ffebee; color: #b71c1c; padding: 20px; border-radius: 14px; border: 1px solid #ffcdd2; }
-        footer { background: var(--dark-purple); color: #fff; padding: 44px 20px; text-align: center; margin-top: 48px; }
-        .footer-links a { color: #fff; margin: 0 10px; font-size: 0.82rem; opacity: 0.75; }
-        .footer-logo img { height: 52px; margin-bottom: 14px; }
+        footer {
+            background: var(--dark-purple); color: #fff; padding: 48px 20px 56px; text-align: center;
+            margin-top: 56px; border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .footer-inner { max-width: 900px; margin: 0 auto; }
+        .footer-logo img { height: 56px; margin-bottom: 20px; display: inline-block; }
+        .footer-links {
+            display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
+            gap: 10px 18px; margin-bottom: 22px;
+        }
+        .footer-links a {
+            color: #fff; font-size: 0.84rem; font-weight: 600; opacity: 0.82;
+            padding: 4px 0; border-bottom: 1px solid transparent;
+        }
+        .footer-links a:hover { opacity: 1; border-bottom-color: rgba(255, 255, 255, 0.35); }
+        .social-links { display: flex; justify-content: center; gap: 14px; margin-top: 8px; }
+        .social-links a {
+            color: #fff; width: 42px; height: 42px; display: inline-flex; align-items: center; justify-content: center;
+            border-radius: 50%; background: rgba(255, 255, 255, 0.12); font-size: 1.05rem;
+            transition: background 0.2s, transform 0.2s;
+        }
+        .social-links a:hover { background: rgba(255, 255, 255, 0.22); transform: translateY(-2px); }
+        .footer-copy { margin-top: 22px; opacity: 0.78; font-size: 0.84rem; line-height: 1.6; }
         @media (max-width: 992px) { .desktop-nav { display: none; } .hamburger { display: block; } }
     </style>
 </head>
@@ -262,23 +305,34 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
     </nav>
 </header>
 
-<div class="breadcrumb-wrap">
-    <nav class="breadcrumb-nav" aria-label="مسیر صفحه">
-        <ol>
-            <li><a href="/" aria-label="صفحه اصلی"><i class="fas fa-house bc-home" aria-hidden="true"></i></a></li>
-            <li><a href="/blog/">مقالات</a></li>
-            <li><a href="/blog/news">اخبار</a></li>
-            <li class="breadcrumb-current" aria-current="page"><?php
-                if (!$row) {
-                    echo 'جزئیات';
-                } elseif (function_exists('mb_strlen') && function_exists('mb_substr') && mb_strlen($title, 'UTF-8') > 40) {
-                    echo news_h(mb_substr($title, 0, 37, 'UTF-8') . '…');
-                } else {
-                    echo news_h(strlen($title) > 40 ? substr($title, 0, 37) . '…' : $title);
-                }
-            ?></li>
-        </ol>
-    </nav>
+<div class="breadcrumb-strip">
+    <div class="breadcrumb-inner">
+        <nav class="breadcrumb-nav" aria-label="مسیر صفحه">
+            <ol class="bc-list">
+                <li>
+                    <a href="/"><i class="fas fa-house bc-home-icon" aria-hidden="true"></i><span>خانه</span></a>
+                </li>
+                <li class="bc-sep" aria-hidden="true">/</li>
+                <li>
+                    <a href="/blog/">مقالات</a>
+                </li>
+                <li class="bc-sep" aria-hidden="true">/</li>
+                <li>
+                    <a href="/blog/news">فهرست مطالب</a>
+                </li>
+                <li class="bc-sep" aria-hidden="true">/</li>
+                <li class="breadcrumb-current" aria-current="page">
+                    <span><?php
+                        if (!$row) {
+                            echo news_h('جزئیات');
+                        } else {
+                            echo news_h($title);
+                        }
+                    ?></span>
+                </li>
+            </ol>
+        </nav>
+    </div>
 </div>
 
 <div class="wrap">
@@ -328,11 +382,24 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
 </div>
 
 <footer>
-    <div class="footer-logo"><img src="https://panel.cybercina.co.uk//storage/logos/N0yQlVchcj4ucrQfVJwbXXB13FhWTMFccUBmWLpI.png" alt=""></div>
-    <div class="footer-links">
-        <a href="/">صفحه اصلی</a>
-        <a href="/blog/news">اخبار</a>
-        <a href="/privacy">حریم خصوصی</a>
+    <div class="footer-inner">
+        <div class="footer-logo"><img src="https://panel.cybercina.co.uk//storage/logos/N0yQlVchcj4ucrQfVJwbXXB13FhWTMFccUBmWLpI.png" alt="IraniU"></div>
+        <div class="footer-links">
+            <a href="/">صفحه اصلی</a>
+            <a href="/blog/">مقالات</a>
+            <a href="/blog/news">فهرست مطالب</a>
+            <a href="/careers">فرصت‌های شغلی</a>
+            <a href="/report">گزارش تخلف</a>
+            <a href="/contact">تماس با ما</a>
+            <a href="/terms">شرایط و ضوابط</a>
+            <a href="/privacy">حریم خصوصی</a>
+        </div>
+        <div class="social-links">
+            <a href="https://instagram.com/iraniu.uk" target="_blank" rel="noopener" aria-label="اینستاگرام"><i class="fab fa-instagram"></i></a>
+            <a href="https://t.me/iraniu_uk" target="_blank" rel="noopener" aria-label="تلگرام"><i class="fab fa-telegram-plane"></i></a>
+            <a href="mailto:hello@iraniu.uk" aria-label="ایمیل"><i class="fas fa-envelope"></i></a>
+        </div>
+        <p class="footer-copy">© IraniU — پلتفرم دیجیتال ایرانیان بریتانیا</p>
     </div>
 </footer>
 </body>
