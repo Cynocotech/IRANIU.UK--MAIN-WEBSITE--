@@ -182,7 +182,13 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Yekan Bakh', Tahoma, sans-serif; }
         a { text-decoration: none; color: var(--brand-purple); font-weight: 700; }
         a:hover { color: var(--dark-purple); }
-        body { background: #fdfdfd; color: #1a1a1a; line-height: 1.85; }
+        body {
+            background: #fdfdfd; color: #1a1a1a; line-height: 1.85;
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+        }
         header { background: var(--dark-purple); padding: 12px 0; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.1); }
         .nav-container { max-width: 900px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
         .logo img { height: 48px; display: block; }
@@ -223,7 +229,10 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
         @media (min-width: 640px) {
             .breadcrumb-nav li.breadcrumb-current { max-width: 460px; }
         }
-        .wrap { max-width: 800px; margin: 0 auto 64px; padding: 28px 20px 0; }
+        .wrap {
+            max-width: 800px; width: 100%; margin: 0 auto; padding: 28px 20px 48px;
+            flex: 1 0 auto;
+        }
         .article-card { background: #fff; border-radius: 22px; padding: 32px 28px; border: 1px solid #eee; box-shadow: 0 14px 40px rgba(0,0,0,0.07); }
         .article-card .date { font-size: 0.85rem; color: #888; margin-bottom: 12px; }
         .article-card h1 { font-size: 1.55rem; color: var(--dark-purple); line-height: 1.4; margin-bottom: 14px; font-weight: 900; }
@@ -260,8 +269,9 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
         .back-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 28px; font-size: 0.95rem; }
         .alert { background: #ffebee; color: #b71c1c; padding: 20px; border-radius: 14px; border: 1px solid #ffcdd2; }
         footer {
-            background: var(--dark-purple); color: #fff; padding: 48px 20px 56px; text-align: center;
-            margin-top: 56px; border-top: 1px solid rgba(255, 255, 255, 0.08);
+            background: var(--dark-purple); color: #fff; padding: 40px 20px 48px; text-align: center;
+            margin-top: auto; flex-shrink: 0; width: 100%;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
         }
         .footer-inner { max-width: 900px; margin: 0 auto; }
         .footer-logo img { height: 56px; margin-bottom: 20px; display: inline-block; }
