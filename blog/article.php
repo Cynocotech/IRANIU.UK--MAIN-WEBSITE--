@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 /**
  * جزئیات خبر — حدود ۳۰٪ متن واضح، ۷۰٪ تار + دعوت به دانلود اپ
- * /blog/article?id=123
+ * /blog/article/{signed-token} — ?id= قدیمی با ۳۰۱ به همین شکل منتقل می‌شود
  */
 require __DIR__ . '/../load_env.php';
 require __DIR__ . '/../includes/app_db.php';
@@ -11,7 +11,24 @@ require __DIR__ . '/../includes/news_tbl_helpers.php';
 
 const NEWS_TABLE = 'tbl_news';
 
-$id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+$siteUrl = rtrim(trim((string)($_ENV['SITE_URL'] ?? getenv('SITE_URL') ?: 'https://iraniu.uk')), '/');
+if ($siteUrl === '') {
+    $siteUrl = 'https://iraniu.uk';
+}
+
+$tParam = isset($_GET['t']) ? trim((string) $_GET['t']) : '';
+$idFromGet = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+
+$id = 0;
+if ($tParam !== '') {
+    $id = article_ref_decode($tParam) ?? 0;
+} elseif ($idFromGet !== false && $idFromGet !== null && $idFromGet >= 1) {
+    $tok = article_ref_encode((int) $idFromGet);
+    if ($tok !== '') {
+        header('Location: ' . $siteUrl . news_article_public_path((int) $idFromGet), true, 301);
+        exit;
+    }
+}
 
 $err = null;
 $row = null;
@@ -51,14 +68,17 @@ try {
 $appIos = trim((string)($_ENV['APP_STORE_URL'] ?? getenv('APP_STORE_URL') ?: '#'));
 $appAndroid = trim((string)($_ENV['GOOGLE_PLAY_URL'] ?? getenv('GOOGLE_PLAY_URL') ?: '#'));
 
-$siteUrl = 'https://iraniu.uk';
 $ogImageDefault = 'https://panel.cybercina.co.uk/storage/logos/N0yQlVchcj4ucrQfVJwbXXB13FhWTMFccUBmWLpI.png';
-$articleCanonical = $siteUrl . '/blog/article?id=' . max(1, $id);
+$articleCanonical = ($row !== null && $id >= 1)
+    ? ($siteUrl . news_article_public_path($id))
+    : ($siteUrl . '/blog/news');
 $seoPageTitle = ($row !== null) ? ($title . ' | IraniU') : 'خبر | IraniU';
-$seoDescription = ($row !== null) ? news_row_excerpt($row, 158) : 'IraniU — Persian-language news and guides for Iranians in the UK.';
+$seoDescription = ($row !== null) ? news_row_seo_description($row, 158) : 'IraniU — Persian-language news and guides for Iranians in the UK.';
 if ($row !== null && $seoDescription === '') {
     $seoDescription = 'خبر و راهنما برای جامعه ایرانیان بریتانیا — IraniU.';
 }
+$seoKeywords = ($row !== null) ? news_row_meta_keywords_combined($row) : 'IraniU, Persian UK, iraniu.uk';
+$articleTags = ($row !== null) ? news_row_tags_list($row) : [];
 $dateIso = ($row !== null) ? news_row_date_iso8601($row) : null;
 $robotsArticle = ($row === null) ? 'noindex, follow' : 'index, follow, max-image-preview:large';
 
@@ -84,6 +104,9 @@ if ($row !== null) {
         $jsonLdArticle['datePublished'] = $dateIso;
         $jsonLdArticle['dateModified'] = $dateIso;
     }
+    if ($articleTags !== []) {
+        $jsonLdArticle['keywords'] = implode(', ', $articleTags);
+    }
     $jsonLdBreadcrumb = [
         '@context' => 'https://schema.org',
         '@type' => 'BreadcrumbList',
@@ -98,6 +121,7 @@ if ($row !== null) {
 
 header('Content-Type: text/html; charset=utf-8');
 header('X-Content-Type-Options: nosniff');
+header('X-Frame-Options: SAMEORIGIN');
 header('Referrer-Policy: strict-origin-when-cross-origin');
 ?>
 <!DOCTYPE html>
@@ -108,7 +132,7 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
     <meta name="theme-color" content="#3a0b47">
     <title><?= news_h($seoPageTitle) ?></title>
     <meta name="description" content="<?= news_h($seoDescription) ?>">
-    <meta name="keywords" content="<?= news_h($row !== null ? 'IraniU, Iranian UK, Persian news UK, Iranians in Britain, اخبار فارسی, ایرانیان بریتانیا, iraniu.uk' : 'IraniU, Persian UK, iraniu.uk') ?>">
+    <meta name="keywords" content="<?= news_h($seoKeywords) ?>">
     <meta name="author" content="IraniU">
     <meta name="robots" content="<?= news_h($robotsArticle) ?>">
     <link rel="canonical" href="<?= news_h($articleCanonical) ?>">
@@ -124,6 +148,9 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
     <meta property="article:published_time" content="<?= news_h($dateIso) ?>">
     <meta property="article:modified_time" content="<?= news_h($dateIso) ?>">
     <?php endif; ?>
+    <?php foreach ($articleTags as $tg): ?>
+    <meta property="article:tag" content="<?= news_h($tg) ?>">
+    <?php endforeach; ?>
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="<?= news_h($seoPageTitle) ?>">
     <meta name="twitter:description" content="<?= news_h($seoDescription) ?>">
@@ -171,7 +198,9 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
         .wrap { max-width: 800px; margin: 0 auto 64px; padding: 28px 20px 0; }
         .article-card { background: #fff; border-radius: 22px; padding: 32px 28px; border: 1px solid #eee; box-shadow: 0 14px 40px rgba(0,0,0,0.07); }
         .article-card .date { font-size: 0.85rem; color: #888; margin-bottom: 12px; }
-        .article-card h1 { font-size: 1.55rem; color: var(--dark-purple); line-height: 1.4; margin-bottom: 20px; font-weight: 900; }
+        .article-card h1 { font-size: 1.55rem; color: var(--dark-purple); line-height: 1.4; margin-bottom: 14px; font-weight: 900; }
+        .article-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+        .article-tags .tag-chip { display: inline-block; font-size: 0.78rem; background: #ede7f6; color: var(--dark-purple); padding: 5px 12px; border-radius: 999px; font-weight: 800; }
         .body-visible { font-size: 1.02rem; color: #222; text-align: justify; white-space: pre-wrap; word-break: break-word; }
         .blur-stack { position: relative; margin-top: 22px; min-height: 140px; border-radius: 14px; overflow: hidden; }
         .body-blur { font-size: 1.02rem; color: #333; text-align: justify; filter: blur(12px); user-select: none; pointer-events: none; white-space: pre-wrap; word-break: break-word; padding: 8px 0 48px; opacity: 0.82; }
@@ -241,9 +270,22 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
         <a class="back-link" href="/blog/news"><i class="fas fa-arrow-right"></i> بازگشت به فهرست اخبار</a>
     <?php else: ?>
         <article class="article-card" itemscope itemtype="https://schema.org/NewsArticle">
-            <?php if ($d !== null): ?><div class="date"><i class="far fa-calendar-alt" style="margin-left:8px"></i><?= news_h($d) ?></div><?php endif; ?>
+            <meta itemprop="description" content="<?= news_h($seoDescription) ?>">
+            <?php if ($articleTags !== []): ?>
+            <meta itemprop="keywords" content="<?= news_h(implode(', ', $articleTags)) ?>">
+            <?php endif; ?>
+            <?php if ($d !== null): ?>
+            <div class="date"><i class="far fa-calendar-alt" style="margin-left:8px"></i><?php if ($dateIso !== null): ?><time itemprop="datePublished" datetime="<?= news_h($dateIso) ?>"><?= news_h($d) ?></time><?php else: ?><?= news_h($d) ?><?php endif; ?></div>
+            <?php endif; ?>
             <h1 itemprop="headline"><?= news_h($title) ?></h1>
-            <div class="body-visible"><?= nl2br(news_h($split['visible'])) ?></div>
+            <?php if ($articleTags !== []): ?>
+            <div class="article-tags" aria-label="برچسب‌ها">
+                <?php foreach ($articleTags as $tg): ?>
+                    <span class="tag-chip"><?= news_h($tg) ?></span>
+                <?php endforeach; ?>
+            </div>
+            <?php endif; ?>
+            <div class="body-visible" itemprop="articleBody"><?= nl2br(news_h($split['visible'])) ?></div>
             <?php if ($split['show_gate']): ?>
                 <div class="blur-stack" aria-hidden="false">
                     <div class="body-blur"><?= nl2br(news_h($split['rest'])) ?></div>

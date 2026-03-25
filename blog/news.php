@@ -164,7 +164,7 @@ if ($err === null && $idCol !== null && $rows !== []) {
         $listItems[] = [
             '@type' => 'ListItem',
             'position' => $globalPos,
-            'url' => $siteUrl . '/blog/article?id=' . $nid,
+            'url' => $siteUrl . news_article_public_path($nid),
             'name' => news_row_title($r),
         ];
     }
@@ -287,6 +287,8 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
         .card-body { padding: 22px; flex: 1; display: flex; flex-direction: column; }
         .card .date { font-size: 0.78rem; color: #888; margin-bottom: 8px; }
         .card .cat-tag { display: inline-block; font-size: 0.72rem; background: #ede7f6; color: var(--dark-purple); padding: 3px 10px; border-radius: 999px; margin-bottom: 8px; font-weight: 800; }
+        .card .post-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 10px; }
+        .card .post-tags span { font-size: 0.68rem; background: #f5f0fa; color: var(--brand-purple); padding: 2px 8px; border-radius: 999px; font-weight: 700; }
         .card h2 { font-size: 1.12rem; color: var(--dark-purple); margin-bottom: 10px; line-height: 1.45; }
         .card p.ex { color: #555; font-size: 0.92rem; text-align: justify; flex: 1; margin-bottom: 14px; }
         .card .read-more { margin-top: auto; display: inline-flex; align-items: center; gap: 8px; font-size: 0.95rem; }
@@ -397,14 +399,15 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
                 <?php foreach ($rows as $r): ?>
                     <?php
                     $title = news_row_title($r);
-                    $ex = news_row_excerpt($r);
+                    $ex = news_row_card_blurb($r, 220);
+                    $rowTags = array_slice(news_row_tags_list($r), 0, 5);
                     $d = news_format_date($r);
                     $rowCatRaw = ($catCol !== null && isset($r[$catCol])) ? trim((string) $r[$catCol]) : '';
                     $rowCatDisplay = $rowCatRaw !== '' && isset($categoryLabelByValue[$rowCatRaw])
                         ? $categoryLabelByValue[$rowCatRaw]
                         : $rowCatRaw;
                     $nid = ($idCol !== null && isset($r[$idCol])) ? (int) $r[$idCol] : 0;
-                    $articleHref = $nid > 0 ? ('/blog/article?id=' . $nid) : '#';
+                    $articleHref = $nid > 0 ? news_article_public_path($nid) : '#';
                     ?>
                     <article class="card">
                         <div class="card-body">
@@ -413,6 +416,9 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
                             <?php endif; ?>
                             <?php if ($d !== null): ?><div class="date"><i class="far fa-calendar-alt" style="margin-left:6px;opacity:.8"></i><?= news_h($d) ?></div><?php endif; ?>
                             <h2><a href="<?= news_h($articleHref) ?>" style="color:inherit;font-weight:900"><?= news_h($title) ?></a></h2>
+                            <?php if ($rowTags !== []): ?>
+                            <div class="post-tags" aria-label="برچسب‌ها"><?php foreach ($rowTags as $tg): ?><span><?= news_h($tg) ?></span><?php endforeach; ?></div>
+                            <?php endif; ?>
                             <?php if ($ex !== ''): ?><p class="ex"><?= news_h($ex) ?></p><?php endif; ?>
                             <?php if ($nid > 0): ?>
                                 <a class="read-more" href="<?= news_h($articleHref) ?>"><i class="fas fa-arrow-left"></i> مشاهده جزئیات</a>

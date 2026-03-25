@@ -2,8 +2,8 @@
 declare(strict_types=1);
 
 /**
- * صفحه مقالات — مطالب از tbl_news (۶ تا در هر صفحه) + راهنماهای ثابت در صفحهٔ اول
- * /blog/?page=2
+ * صفحه مقالات — tbl_news، ۶ مطلب در هر صفحه، فیلتر دسته
+ * /blog/?page=2&cat=...
  */
 require __DIR__ . '/../load_env.php';
 require __DIR__ . '/../includes/app_db.php';
@@ -16,6 +16,7 @@ $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
 if ($page < 1) {
     $page = 1;
 }
+$catFilter = isset($_GET['cat']) ? trim((string) $_GET['cat']) : '';
 
 $err = null;
 $latestRows = [];
@@ -64,18 +65,31 @@ try {
         $categoryLabelByValue[(string) $opt['value']] = $opt['label'];
     }
 
+    $catSql = '';
+    if ($catCol !== null && $catFilter !== '') {
+        $catSql = ' AND `' . str_replace('`', '``', $catCol) . '` = :newscat ';
+    }
+
     $t = str_replace('`', '``', NEWS_TABLE);
-    $countSql = 'SELECT COUNT(*) FROM `' . $t . '` WHERE 1=1' . $extraWhere;
-    $total = (int) $pdo->query($countSql)->fetchColumn();
+    $countSql = 'SELECT COUNT(*) FROM `' . $t . '` WHERE 1=1' . $extraWhere . $catSql;
+    $stmt = $pdo->prepare($countSql);
+    if ($catSql !== '') {
+        $stmt->bindValue(':newscat', $catFilter);
+    }
+    $stmt->execute();
+    $total = (int) $stmt->fetchColumn();
     $totalPages = $total > 0 ? (int) ceil($total / PER_PAGE) : 0;
     if ($totalPages > 0 && $page > $totalPages) {
         $page = $totalPages;
     }
     $offset = ($page - 1) * PER_PAGE;
 
-    $sql = 'SELECT * FROM `' . $t . '` WHERE 1=1' . $extraWhere
+    $sql = 'SELECT * FROM `' . $t . '` WHERE 1=1' . $extraWhere . $catSql
         . ' ORDER BY ' . $orderQuoted . ' DESC LIMIT :lim OFFSET :off';
     $stmt = $pdo->prepare($sql);
+    if ($catSql !== '') {
+        $stmt->bindValue(':newscat', $catFilter);
+    }
     $stmt->bindValue(':lim', PER_PAGE, PDO::PARAM_INT);
     $stmt->bindValue(':off', $offset, PDO::PARAM_INT);
     $stmt->execute();
@@ -85,26 +99,55 @@ try {
 }
 
 $blogIndexPath = '/blog/';
-$buildPageUrl = static function (int $p) use ($blogIndexPath): string {
-    if ($p <= 1) {
+$buildPageUrl = static function (int $p) use ($blogIndexPath, $catFilter): string {
+    $q = [];
+    if ($p > 1) {
+        $q['page'] = $p;
+    }
+    if ($catFilter !== '') {
+        $q['cat'] = $catFilter;
+    }
+    if ($q === []) {
         return $blogIndexPath;
     }
-    return $blogIndexPath . '?page=' . $p;
+    return $blogIndexPath . '?' . http_build_query($q);
 };
 
 $siteUrl = 'https://iraniu.uk';
 $ogImageDefault = 'https://panel.cybercina.co.uk/storage/logos/N0yQlVchcj4ucrQfVJwbXXB13FhWTMFccUBmWLpI.png';
-$canonical = $siteUrl . $blogIndexPath . ($page > 1 ? ('?page=' . $page) : '');
 
-$seoPageTitle = 'مقالات و راهنما | ایرانیان بریتانیا | IraniU';
-if ($err === null && $page > 1 && $totalPages > 0) {
-    $seoPageTitle = 'مقالات — صفحه ' . news_fa_digits((string) $page) . ' از ' . news_fa_digits((string) $totalPages) . ' | IraniU';
+$canonicalQuery = [];
+if ($page > 1) {
+    $canonicalQuery['page'] = $page;
+}
+if ($catFilter !== '') {
+    $canonicalQuery['cat'] = $catFilter;
+}
+$canonical = $siteUrl . $blogIndexPath . ($canonicalQuery !== [] ? ('?' . http_build_query($canonicalQuery)) : '');
+
+$filterLabelSeo = '';
+if ($catFilter !== '' && isset($categoryLabelByValue[$catFilter])) {
+    $filterLabelSeo = (string) $categoryLabelByValue[$catFilter];
 }
 
-$seoDescription = 'مقالات فارسی درباره زندگی، کار، مسکن، درمان و بانک در بریتانیا؛ در هر صفحه ' . (string) PER_PAGE . ' مطلب از پایگاه داده IraniU.';
+if ($err === null && $page > 1 && $totalPages > 0) {
+    $seoPageTitle = 'مقالات' . ($filterLabelSeo !== '' ? (' ' . $filterLabelSeo) : '') . ' — صفحه ' . news_fa_digits((string) $page) . ' از ' . news_fa_digits((string) $totalPages) . ' | IraniU';
+} elseif ($err === null && $filterLabelSeo !== '') {
+    $seoPageTitle = 'مقالات ' . $filterLabelSeo . ' | IraniU';
+} else {
+    $seoPageTitle = 'مقالات | ایرانیان بریتانیا | IraniU';
+}
+
+$seoDescription = 'مقالات فارسی برای جامعه ایرانیان بریتانیا — IraniU.';
 if ($err === null) {
-    if ($totalPages > 0) {
-        $seoDescription .= ' صفحه ' . $page . ' از ' . $totalPages . ' — مجموع ' . $total . ' مطلب.';
+    if ($totalPages > 1) {
+        $seoDescription .= ' صفحه ' . $page . ' از ' . $totalPages . '.';
+    }
+    if ($filterLabelSeo !== '') {
+        $seoDescription .= ' دسته: ' . $filterLabelSeo . '.';
+    }
+    if ($total > 0) {
+        $seoDescription .= ' مجموع ' . $total . ' مطلب.';
     }
 }
 $seoDescription = function_exists('mb_substr')
@@ -123,7 +166,7 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
     <meta name="theme-color" content="#3a0b47">
     <title><?= news_h($seoPageTitle) ?></title>
     <meta name="description" content="<?= news_h($seoDescription) ?>">
-    <meta name="keywords" content="راهنمای ایرانیان UK, زندگی در بریتانیا, کار فارسی زبانان, NHS, اجاره لندن, IraniU blog, اخبار فارسی">
+    <meta name="keywords" content="راهنمای ایرانیان UK, زندگی در بریتانیا, مقالات فارسی, IraniU blog, iraniu.uk">
     <meta name="author" content="IraniU">
     <meta name="robots" content="index, follow, max-image-preview:large">
     <link rel="canonical" href="<?= news_h($canonical) ?>">
@@ -182,13 +225,14 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
         .hero { background: linear-gradient(135deg, var(--dark-purple), var(--brand-purple)); color: #fff; padding: 56px 20px; text-align: center; }
         .hero h1 { font-size: 2rem; margin-bottom: 12px; font-weight: 900; }
         .hero p { max-width: 640px; margin: 0 auto; opacity: 0.95; font-size: 1.05rem; }
-        .section-block { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
-        .section-heading { font-size: 1.35rem; color: var(--dark-purple); font-weight: 900; margin: 28px 0 16px; padding-bottom: 8px; border-bottom: 2px solid rgba(116, 32, 139, 0.2); }
-        .section-lead { color: #555; font-size: 0.95rem; margin: -8px 0 18px; }
+        .section-block { max-width: 1100px; margin: 0 auto; padding: 0 20px 64px; }
         .alert { background: #ffebee; color: #b71c1c; padding: 16px 18px; border-radius: 14px; margin-bottom: 18px; border: 1px solid #ffcdd2; text-align: right; }
-        .all-news-link { text-align: center; margin: 8px 0 36px; }
-        .all-news-link a { color: var(--brand-purple); font-weight: 800; font-size: 0.98rem; }
-        .all-news-link a:hover { color: var(--dark-purple); }
+        .filter-bar { background: #fff; border: 1px solid #eee; border-radius: 16px; padding: 16px 18px; margin-bottom: 18px; display: flex; flex-wrap: wrap; align-items: center; gap: 14px; box-shadow: 0 8px 28px rgba(0,0,0,0.04); }
+        .filter-bar label { font-weight: 800; color: var(--dark-purple); font-size: 0.9rem; }
+        .filter-bar select { min-width: 200px; max-width: 100%; padding: 10px 14px; border-radius: 12px; border: 1px solid rgba(116,32,139,0.25); font-family: inherit; font-size: 0.92rem; background: #faf8fb; color: #1a1a1a; }
+        .filter-bar .btn-apply { background: var(--brand-purple); color: #fff !important; border: none; padding: 10px 20px; border-radius: 12px; font-weight: 800; cursor: pointer; font-family: inherit; font-size: 0.9rem; }
+        .filter-bar .btn-apply:hover { filter: brightness(1.08); color: #fff !important; }
+        .filter-bar .btn-clear { color: #666 !important; font-size: 0.88rem; font-weight: 700; }
         .meta-bar { font-size: 0.82rem; color: #666; margin-bottom: 18px; padding: 12px 16px; background: #fff; border-radius: 14px; border: 1px solid #eee; }
         .pager { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px; margin-top: 8px; margin-bottom: 28px; padding: 20px; background: #fff; border-radius: 16px; border: 1px solid #eee; }
         .pager a, .pager span { display: inline-flex; align-items: center; justify-content: center; min-width: 42px; height: 42px; padding: 0 12px; border-radius: 10px; font-size: 0.88rem; font-weight: 700; }
@@ -199,11 +243,12 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
         .pager .disabled { opacity: 0.45; pointer-events: none; }
         .grid { max-width: 1100px; margin: -32px auto 0; padding: 0 20px; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 22px; }
         .grid + .section-block { margin-top: 8px; }
-        .section-block .grid { margin: 0 auto 72px; padding: 0; }
+        .section-block .grid { margin: 0 auto; padding: 0; }
         .card { background: #fff; border-radius: 20px; padding: 26px; border: 1px solid #eee; box-shadow: 0 12px 36px rgba(0,0,0,0.06); transition: 0.25s; }
         .card:hover { border-color: var(--brand-purple); transform: translateY(-4px); }
         .card .tag { display: inline-block; background: #f3e8f5; color: var(--dark-purple); font-size: 0.78rem; padding: 4px 12px; border-radius: 20px; margin-bottom: 12px; font-weight: bold; }
-        .card .tag.db { background: linear-gradient(135deg, #ede7f6, #f3e8f5); }
+        .card .post-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 10px; }
+        .card .post-tags span { font-size: 0.68rem; background: #f5f0fa; color: var(--brand-purple); padding: 2px 8px; border-radius: 999px; font-weight: 700; }
         .card .date { font-size: 0.78rem; color: #888; margin-bottom: 8px; }
         .card h2 { font-size: 1.2rem; color: var(--dark-purple); margin-bottom: 10px; line-height: 1.45; }
         .card h2 a { color: inherit; font-weight: 900; }
@@ -226,7 +271,6 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
         <nav class="desktop-nav">
             <a href="/">صفحه اصلی</a>
             <a href="/blog/">مقالات</a>
-            <a href="/blog/news">اخبار</a>
             <a href="/careers">فرصت‌های شغلی</a>
             <a href="/report">گزارش تخلف</a>
             <a href="/contact">تماس با ما</a>
@@ -236,7 +280,6 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
     <nav class="mobile-nav" id="mnav">
         <a href="/" onclick="document.getElementById('mnav').classList.remove('open')">صفحه اصلی</a>
         <a href="/blog/" onclick="document.getElementById('mnav').classList.remove('open')">مقالات</a>
-        <a href="/blog/news" onclick="document.getElementById('mnav').classList.remove('open')">اخبار</a>
         <a href="/careers" onclick="document.getElementById('mnav').classList.remove('open')">فرصت‌های شغلی</a>
         <a href="/report" onclick="document.getElementById('mnav').classList.remove('open')">گزارش تخلف</a>
         <a href="/contact" onclick="document.getElementById('mnav').classList.remove('open')">تماس با ما</a>
@@ -253,23 +296,56 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
 </div>
 
 <section class="hero">
-    <h1>راهنما برای جامعه ایرانی بریتانیا</h1>
-    <p>در این بخش دربارهٔ چالش‌های رایج زندگی، کار، مسکن، درمان و امور مالی در UK می‌خوانید؛ مطالب پایگاه داده در هر صفحه <?= news_h(news_fa_digits((string) PER_PAGE)) ?> مورد نمایش داده می‌شود. برای <strong>فیلتر دسته‌بندی</strong> به بخش اخبار بروید.</p>
+    <h1>مقالات برای جامعه ایرانی بریتانیا</h1>
+    <p>در هر صفحه <?= news_h(news_fa_digits((string) PER_PAGE)) ?> مطلب.</p>
 </section>
 
 <div class="section-block">
-    <h2 class="section-heading">مطالب پایگاه داده</h2>
-    <p class="section-lead">در هر صفحه <?= news_h(news_fa_digits((string) PER_PAGE)) ?> مطلب؛ صفحه‌بندی زیر برای بقیه مطالب است. فیلتر بر اساس دسته فقط در بخش اخبار.</p>
     <?php if ($err !== null): ?>
         <div class="alert" role="alert"><?= news_h($err) ?></div>
-    <?php elseif ($latestRows === [] && $total === 0): ?>
-        <p class="section-lead" style="margin-bottom:24px">هنوز مطلبی در پایگاه داده ثبت نشده است.</p>
-    <?php endif; ?>
-    <?php if ($err === null): ?>
+    <?php else: ?>
+        <?php if ($catCol !== null): ?>
+            <form class="filter-bar" method="get" action="<?= news_h($blogIndexPath) ?>">
+                <label for="cat">دسته‌بندی</label>
+                <select name="cat" id="cat" aria-label="انتخاب دسته">
+                    <option value="">همه دسته‌ها</option>
+                    <?php foreach ($categoryOptions as $opt): ?>
+                        <?php
+                        $val = $opt['value'];
+                        $lab = $opt['label'];
+                        if (is_numeric($lab)) {
+                            $lab = news_fa_digits((string) $lab);
+                        }
+                        ?>
+                        <option value="<?= news_h((string) $val) ?>"<?= (string) $catFilter === (string) $val ? ' selected' : '' ?>><?= news_h((string) $lab) ?></option>
+                    <?php endforeach; ?>
+                </select>
+                <input type="hidden" name="page" value="1">
+                <button type="submit" class="btn-apply">اعمال فیلتر</button>
+                <?php if ($catFilter !== ''): ?>
+                    <a class="btn-clear" href="<?= news_h($blogIndexPath) ?>">حذف فیلتر</a>
+                <?php endif; ?>
+            </form>
+        <?php else: ?>
+            <div class="meta-bar" style="margin-bottom:18px">ستون دسته یا جدول دسته شناسایی نشد؛ فیلتر غیرفعال است.</div>
+        <?php endif; ?>
+
+        <?php if ($idCol === null): ?>
+            <div class="meta-bar" style="border-color:#ffe082;background:#fffde7;margin-bottom:18px">ستون شناسه پیدا نشد؛ لینک جزئیات غیرفعال است.</div>
+        <?php endif; ?>
+
+        <?php if ($latestRows === [] && $total === 0): ?>
+            <p class="meta-bar" style="margin-bottom:24px">هنوز مطلبی ثبت نشده یا با این فیلتر مطابقی نیست.</p>
+        <?php endif; ?>
+
         <div class="meta-bar">
-            مجموع مطالب: <?= news_fa_digits((string) (int) $total) ?>
+            مجموع: <?= news_fa_digits((string) (int) $total) ?>
             <?php if ($totalPages > 0): ?>
                 — صفحه <?= news_fa_digits((string) (int) $page) ?> از <?= news_fa_digits((string) (int) $totalPages) ?>
+            <?php endif; ?>
+            <?php if ($catFilter !== '' && $catCol !== null): ?>
+                <?php $filterLabel = $categoryLabelByValue[$catFilter] ?? $catFilter; ?>
+                — فیلتر: <?= news_h((string) $filterLabel) ?>
             <?php endif; ?>
         </div>
     <?php endif; ?>
@@ -278,7 +354,8 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
             <?php foreach ($latestRows as $r): ?>
                 <?php
                 $title = news_row_title($r);
-                $ex = news_row_excerpt($r);
+                $ex = news_row_card_blurb($r, 220);
+                $rowTags = array_slice(news_row_tags_list($r), 0, 5);
                 $d = news_format_date($r);
                 $rowCatRaw = ($catCol !== null && isset($r[$catCol])) ? trim((string) $r[$catCol]) : '';
                 $rowCatDisplay = $rowCatRaw !== '' && isset($categoryLabelByValue[$rowCatRaw])
@@ -288,10 +365,10 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
                     $rowCatDisplay = news_fa_digits((string) $rowCatDisplay);
                 }
                 $nid = ($idCol !== null && isset($r[$idCol])) ? (int) $r[$idCol] : 0;
-                $articleHref = $nid > 0 ? ('/blog/article?id=' . $nid) : '#';
+                $articleHref = $nid > 0 ? news_article_public_path($nid) : '#';
                 ?>
                 <article class="card">
-                    <span class="tag db"><?= news_h($rowCatRaw !== '' ? $rowCatDisplay : 'مطلب') ?></span>
+                    <span class="tag"><?= news_h($rowCatRaw !== '' ? $rowCatDisplay : 'مطلب') ?></span>
                     <?php if ($d !== null): ?>
                         <div class="date"><i class="far fa-calendar-alt" style="margin-left:6px;opacity:.8"></i><?= news_h($d) ?></div>
                     <?php endif; ?>
@@ -302,6 +379,9 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
                             <?= news_h($title) ?>
                         <?php endif; ?>
                     </h2>
+                    <?php if ($rowTags !== []): ?>
+                    <div class="post-tags" aria-label="برچسب‌ها"><?php foreach ($rowTags as $tg): ?><span><?= news_h($tg) ?></span><?php endforeach; ?></div>
+                    <?php endif; ?>
                     <?php if ($ex !== ''): ?><p><?= news_h($ex) ?></p><?php endif; ?>
                     <?php if ($nid > 0): ?>
                         <a class="more" href="<?= news_h($articleHref) ?>"><i class="fas fa-arrow-left"></i> مشاهده جزئیات</a>
@@ -338,57 +418,13 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
             </nav>
         <?php endif; ?>
     <?php endif; ?>
-    <div class="all-news-link">
-        <a href="/blog/news"><i class="fas fa-filter" style="margin-left:8px"></i> اخبار با فیلتر دسته‌بندی</a>
-    </div>
 </div>
-
-<?php if ($page === 1): ?>
-<div class="section-block">
-    <h2 class="section-heading">راهنماهای موضوعی</h2>
-    <p class="section-lead">مقالات ثابت (HTML) درباره کار، مسکن، NHS و مالیات.</p>
-</div>
-
-<div class="grid" style="margin-top:0;margin-bottom:72px">
-    <article class="card">
-        <span class="tag">کار و حقوق</span>
-        <h2>کار، قرارداد و حقوق پایه در بریتانیا</h2>
-        <p>از قرارداد کاری و حداقل حقوق تا مرخصی استعلاجی و اهمیت ثبت ساعات کاری — نکاتی که بسیاری از تازه‌مهاجران با آن مواجه می‌شوند.</p>
-        <a class="more" href="/blog/mohajerat-kar-uk"><i class="fas fa-arrow-left"></i> ادامه مطلب</a>
-    </article>
-    <article class="card">
-        <span class="tag">مسکن</span>
-        <h2>مسکن و اجاره: چالش‌های رایج برای خانواده‌های فارسی‌زبان</h2>
-        <p>Right to Rent، ودیعه، قرارداد اجاره و کلاهبرداری‌های رایج — بدون جایگزین مشاوره تخصصی، اما با چک‌لیستی عملی.</p>
-        <a class="more" href="/blog/masaken-ajare-uk"><i class="fas fa-arrow-left"></i> ادامه مطلب</a>
-    </article>
-    <article class="card">
-        <span class="tag">سلامت</span>
-        <h2>NHS و دسترسی به درمان: نکات اولیه</h2>
-        <p>ثبت‌نام پزشک عمومی، A&amp;E، نسخه و بیمه تکمیلی — مسیری که برای ناآشنایان با سیستم می‌تواند گیج‌کننده باشد.</p>
-        <a class="more" href="/blog/nhs-darman-uk"><i class="fas fa-arrow-left"></i> ادامه مطلب</a>
-    </article>
-    <article class="card">
-        <span class="tag">مالی</span>
-        <h2>بانک، کد ملیتی و مالیات: شروعی ساده</h2>
-        <p>افتتاح حساب، National Insurance، کد مالیاتی و اهمیت نگه‌داری مدارک برای اظهارنامه — خطاهایی که بهتر است از ابتدا از آن‌ها دوری کنید.</p>
-        <a class="more" href="/blog/bank-maliyat-uk"><i class="fas fa-arrow-left"></i> ادامه مطلب</a>
-    </article>
-    <article class="card">
-        <span class="tag">ایرانیو</span>
-        <h2>اپلیکیشن ایرانیو چه کمکی به شما می‌کند؟</h2>
-        <p>تجمیع نیازمندی‌ها، رادیو فارسی، پیوندهای مهم و ارتباط با جامعه — در یک اپ برای ایرانیان بریتانیا.</p>
-        <a class="more" href="/blog/iraniu-app-rahnamay"><i class="fas fa-arrow-left"></i> ادامه مطلب</a>
-    </article>
-</div>
-<?php endif; ?>
 
 <footer>
     <div class="footer-logo"><img src="https://panel.cybercina.co.uk//storage/logos/N0yQlVchcj4ucrQfVJwbXXB13FhWTMFccUBmWLpI.png" alt="IraniU"></div>
     <div class="footer-links">
         <a href="/">صفحه اصلی</a>
         <a href="/blog/">مقالات</a>
-        <a href="/blog/news">اخبار</a>
         <a href="/careers">فرصت‌های شغلی</a>
         <a href="/report">گزارش تخلف</a>
         <a href="/contact">تماس با ما</a>

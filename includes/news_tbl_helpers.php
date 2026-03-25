@@ -133,6 +133,181 @@ function news_row_excerpt(array $row, int $maxLen = 280): string
     return $plain;
 }
 
+/**
+ * Parse tags / keywords from DB: comma, Persian comma, JSON array, or single value.
+ *
+ * @return string[]
+ */
+function news_parse_tags_from_string(?string $s): array
+{
+    if ($s === null) {
+        return [];
+    }
+    $s = trim($s);
+    if ($s === '') {
+        return [];
+    }
+    if ($s[0] === '[' || $s[0] === '{') {
+        $decoded = json_decode($s, true);
+        if (is_array($decoded)) {
+            $out = [];
+            foreach ($decoded as $item) {
+                if (is_string($item)) {
+                    $t = trim($item);
+                    if ($t !== '') {
+                        $out[] = $t;
+                    }
+                } elseif (is_array($item)) {
+                    foreach (['name', 'label', 'title', 'tag'] as $nk) {
+                        if (!empty($item[$nk]) && is_string($item[$nk])) {
+                            $t = trim($item[$nk]);
+                            if ($t !== '') {
+                                $out[] = $t;
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+            return array_values(array_unique($out));
+        }
+    }
+    $parts = preg_split('/\s*[,،;|]+\s*/u', $s) ?: [];
+    $out = [];
+    foreach ($parts as $p) {
+        $p = trim($p);
+        if ($p !== '') {
+            $out[] = $p;
+        }
+    }
+    return array_values(array_unique($out));
+}
+
+/**
+ * Tags for UI and article:tag — from typical column names (not full meta_keywords blob).
+ *
+ * @return string[]
+ */
+function news_row_tags_list(array $row): array
+{
+    $keys = [
+        'tags', 'Tags', 'tag', 'Tag', 'tag_list', 'tagList', 'post_tags', 'postTags',
+        'labels', 'Labels', 'hashtags', 'Hashtags', 'topics', 'Topics', 'news_tags',
+    ];
+    $merged = [];
+    foreach ($keys as $k) {
+        if (!array_key_exists($k, $row) || $row[$k] === null) {
+            continue;
+        }
+        $v = is_scalar($row[$k]) ? trim((string) $row[$k]) : '';
+        if ($v === '') {
+            continue;
+        }
+        $merged = array_merge($merged, news_parse_tags_from_string($v));
+    }
+    $seen = [];
+    $uniq = [];
+    foreach ($merged as $t) {
+        $t = trim($t);
+        if ($t === '') {
+            continue;
+        }
+        $lk = function_exists('mb_strtolower') ? mb_strtolower($t, 'UTF-8') : strtolower($t);
+        if (isset($seen[$lk])) {
+            continue;
+        }
+        $seen[$lk] = true;
+        $uniq[] = $t;
+    }
+    return array_slice($uniq, 0, 32);
+}
+
+/**
+ * Meta / OG description: prefers dedicated SEO columns, then short fields, then excerpt.
+ */
+function news_row_seo_description(array $row, int $maxLen = 158): string
+{
+    $raw = news_pick_first($row, [
+        'meta_description', 'Meta_description', 'seo_description', 'seoDescription',
+        'og_description', 'ogDescription', 'description_short', 'short_description',
+        'summary', 'Summary', 'short_text', 'shortText', 'lead', 'intro',
+        'excerpt', 'Excerpt', 'kholase', 'subtitle',
+        'description', 'Description',
+    ]);
+    if ($raw === null) {
+        return news_row_excerpt($row, $maxLen);
+    }
+    $plain = preg_replace('/\s+/u', ' ', strip_tags($raw)) ?? '';
+    $plain = news_strip_markdown_heading_marks(trim($plain));
+    if ($plain === '') {
+        return news_row_excerpt($row, $maxLen);
+    }
+    if (function_exists('mb_strlen') && function_exists('mb_substr')) {
+        if (mb_strlen($plain, 'UTF-8') > $maxLen) {
+            return rtrim(mb_substr($plain, 0, $maxLen - 1, 'UTF-8')) . '…';
+        }
+    } elseif (strlen($plain) > $maxLen) {
+        return substr($plain, 0, $maxLen - 1) . '…';
+    }
+    return $plain;
+}
+
+/**
+ * meta name="keywords" — DB fields + tag list + site defaults, deduped.
+ */
+function news_row_meta_keywords_combined(array $row): string
+{
+    $chunks = [];
+    $rawKw = news_pick_first($row, [
+        'meta_keywords', 'Meta_keywords', 'seo_keywords', 'Seo_keywords', 'keywords', 'Keywords',
+        'focus_keyword', 'focus_keywords', 'keyword', 'Keyword',
+    ]);
+    if ($rawKw !== null && trim((string) $rawKw) !== '') {
+        $chunks[] = trim(preg_replace('/\s+/u', ' ', strip_tags((string) $rawKw)) ?? '');
+    }
+    foreach (news_row_tags_list($row) as $t) {
+        $chunks[] = $t;
+    }
+    $chunks[] = 'IraniU, iraniu.uk, Persian UK, اخبار فارسی';
+    $seen = [];
+    $out = [];
+    foreach ($chunks as $c) {
+        if ($c === '') {
+            continue;
+        }
+        foreach (preg_split('/\s*[,،;]+\s*/u', $c) ?: [] as $p) {
+            $p = trim($p);
+            if ($p === '') {
+                continue;
+            }
+            $lk = function_exists('mb_strtolower') ? mb_strtolower($p, 'UTF-8') : strtolower($p);
+            if (isset($seen[$lk])) {
+                continue;
+            }
+            $seen[$lk] = true;
+            $out[] = $p;
+        }
+    }
+    $s = implode(', ', $out);
+    if (function_exists('mb_strlen') && function_exists('mb_substr') && mb_strlen($s, 'UTF-8') > 400) {
+        return rtrim(mb_substr($s, 0, 397, 'UTF-8')) . '…';
+    }
+    if (strlen($s) > 400) {
+        return substr($s, 0, 397) . '…';
+    }
+    return $s;
+}
+
+/** برای کارت لیست: توضیح کوتاه اختصاصی یا خلاصه */
+function news_row_card_blurb(array $row, int $maxLen = 200): string
+{
+    $seo = news_row_seo_description($row, $maxLen);
+    if ($seo !== '') {
+        return $seo;
+    }
+    return news_row_excerpt($row, $maxLen);
+}
+
 /** متن کامل برای صفحه جزئیات */
 function news_row_body_raw(array $row): ?string
 {
@@ -414,3 +589,5 @@ function news_split_teaser_plain(?string $htmlOrText, float $visibleRatio = 0.5)
 
     return ['visible' => $visible, 'rest' => $rest, 'show_gate' => true];
 }
+
+require_once __DIR__ . '/article_url_ref.php';

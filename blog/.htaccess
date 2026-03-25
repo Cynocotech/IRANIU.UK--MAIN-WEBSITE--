@@ -6,6 +6,8 @@ DirectoryIndex index.php index.html
 
 # اخبار از پایگاه داده (PHP)
 RewriteRule ^news/?$ news.php [L,QSA]
+# جزئیات با توکن امضاشده (بدون id عددی در نوار آدرس)
+RewriteRule ^article/([A-Za-z0-9_-]+)/?$ article.php?t=$1 [L,QSA]
 RewriteRule ^article/?$ article.php [L,QSA]
 
 # /blog/index.html → /blog/
