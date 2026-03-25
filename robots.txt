@@ -1,0 +1,11 @@
+# https://iraniu.uk/
+User-agent: *
+Allow: /
+
+# Dev / tooling (not for search)
+Disallow: /dev/
+
+# Uploaded CVs and similar (not public pages)
+Disallow: /uploads/
+
+Sitemap: https://iraniu.uk/sitemap.xml
