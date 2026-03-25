@@ -1,0 +1,17 @@
+RewriteEngine On
+Options -MultiViews
+
+# /blog/index.html → /blog/
+RewriteCond %{THE_REQUEST} \s+/blog/index\.html[\s?]
+RewriteRule ^index\.html$ /blog/ [R=301,L]
+
+# /blog/post.html → /blog/post (not index)
+RewriteCond %{REQUEST_URI} !/blog/index\.html$ [NC]
+RewriteCond %{REQUEST_URI} \.html$ [NC]
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^([A-Za-z0-9_-]+)\.html$ /blog/$1 [R=301,L,QSA]
+
+# /blog/post → post.html
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([A-Za-z0-9_-]+)$ $1.html [L]
