@@ -12,11 +12,11 @@
     <meta name="keywords" content="استخدام ایرانیو, careers IraniU, شغل برای فارسی زبانان UK, فرصت شغلی لندن, کار remote فارسی, رزومه IraniU, careers@iraniu.uk, همکاری با استارتاپ ایرانی, موقعیت شغلی بریتانیا">
     <meta name="author" content="IraniU">
     <meta name="robots" content="index, follow, max-image-preview:large">
-    <link rel="canonical" href="https://iraniu.uk/careers.html">
+    <link rel="canonical" href="https://iraniu.uk/careers">
     <meta property="og:site_name" content="IraniU">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="fa_IR">
-    <meta property="og:url" content="https://iraniu.uk/careers.html">
+    <meta property="og:url" content="https://iraniu.uk/careers">
     <meta property="og:title" content="فرصت‌های شغلی | IraniU">
     <meta property="og:description" content="همکاری با ایرانیو — مشاهده موقعیت‌ها و ارسال رزومه.">
     <meta property="og:image" content="https://panel.cybercina.co.uk/storage/logos/N0yQlVchcj4ucrQfVJwbXXB13FhWTMFccUBmWLpI.png">
@@ -177,24 +177,24 @@
 
 <header>
     <div class="nav-container">
-        <a href="index.html" class="logo">
+        <a href="/" class="logo">
             <img src="https://panel.cybercina.co.uk//storage/logos/N0yQlVchcj4ucrQfVJwbXXB13FhWTMFccUBmWLpI.png" alt="IraniU White Logo">
         </a>
         <nav class="desktop-nav">
-            <a href="index.html">صفحه اصلی</a>
-            <a href="careers.html">فرصت‌های شغلی</a>
-            <a href="report.html">گزارش تخلف</a>
-            <a href="contact.html">تماس با ما</a>
+            <a href="/">صفحه اصلی</a>
+            <a href="/careers">فرصت‌های شغلی</a>
+            <a href="/report">گزارش تخلف</a>
+            <a href="/contact">تماس با ما</a>
         </nav>
         <div class="hamburger" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
     </div>
 </header>
 
 <nav class="mobile-nav" id="mobileNav">
-    <a href="index.html" onclick="toggleMenu()">صفحه اصلی</a>
-    <a href="careers.html" onclick="toggleMenu()">فرصت‌های شغلی</a>
-    <a href="report.html" onclick="toggleMenu()">گزارش تخلف</a>
-    <a href="contact.html" onclick="toggleMenu()">تماس با ما</a>
+    <a href="/" onclick="toggleMenu()">صفحه اصلی</a>
+    <a href="/careers" onclick="toggleMenu()">فرصت‌های شغلی</a>
+    <a href="/report" onclick="toggleMenu()">گزارش تخلف</a>
+    <a href="/contact" onclick="toggleMenu()">تماس با ما</a>
 </nav>
 
 <section class="page-hero">
@@ -284,12 +284,12 @@
 
 <footer>
     <div class="footer-links">
-        <a href="index.html">صفحه اصلی</a>
-        <a href="careers.html">فرصت‌های شغلی</a>
-        <a href="report.html">گزارش تخلف</a>
-        <a href="contact.html">تماس با ما</a>
-        <a href="terms.html">شرایط و ضوابط</a>
-        <a href="privacy.html">حریم خصوصی</a>
+        <a href="/">صفحه اصلی</a>
+        <a href="/careers">فرصت‌های شغلی</a>
+        <a href="/report">گزارش تخلف</a>
+        <a href="/contact">تماس با ما</a>
+        <a href="/terms">شرایط و ضوابط</a>
+        <a href="/privacy">حریم خصوصی</a>
     </div>
     <div class="footer-logo">
         <img src="https://panel.cybercina.co.uk//storage/logos/N0yQlVchcj4ucrQfVJwbXXB13FhWTMFccUBmWLpI.png" alt="IraniU White Footer Logo">
@@ -391,7 +391,7 @@
             .then(json => {
                 if (json.success) {
                     closeApplyModal();
-                    window.location.href = "careers-thank-you.html";
+                    window.location.href = "/careers-thank-you";
                 } else {
                     const errMap = { missing: "لطفاً تمام فیلدهای ضروری را پر کنید.", captcha: "تیک امنیتی نامعتبر است.", file_type: "فقط فایل PDF معتبر مجاز است. (حداکثر ۵ مگابایت)", file_too_large: "حجم فایل بیش از حد مجاز است.", cv_required: "لطفاً رزومه را انتخاب کنید.", config: "خطای پیکربندی.", send: "خطا در ارسال. لطفاً دوباره تلاش کنید." };
                     status.textContent = errMap[json.error] || "خطایی رخ داد.";

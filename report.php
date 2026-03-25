@@ -120,7 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         header('Content-Type: application/json');
         echo json_encode(['success' => false, 'error' => 'method']);
     } else {
-        header('Location: report.html');
+        header('Location: /report');
     }
     exit;
 }
@@ -136,7 +136,7 @@ if (empty($reason) || empty($email) || empty($message)) {
         header('Content-Type: application/json');
         echo json_encode(['success' => false, 'error' => 'missing']);
     } else {
-        header('Location: report.html?error=missing');
+        header('Location: /report?error=missing');
     }
     exit;
 }
@@ -146,7 +146,7 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         header('Content-Type: application/json');
         echo json_encode(['success' => false, 'error' => 'missing']);
     } else {
-        header('Location: report.html?error=missing');
+        header('Location: /report?error=missing');
     }
     exit;
 }
@@ -161,7 +161,7 @@ if (!empty($turnstileSecret)) {
             header('Content-Type: application/json');
             echo json_encode(['success' => false, 'error' => 'captcha']);
         } else {
-            header('Location: report.html?error=captcha');
+            header('Location: /report?error=captcha');
         }
         exit;
     }
@@ -188,7 +188,7 @@ if (!empty($turnstileSecret)) {
             header('Content-Type: application/json');
             echo json_encode(['success' => false, 'error' => 'captcha']);
         } else {
-            header('Location: report.html?error=captcha');
+            header('Location: /report?error=captcha');
         }
         exit;
     }
@@ -203,7 +203,7 @@ if (empty($zohoEmail) || empty($zohoPass)) {
         header('Content-Type: application/json');
         echo json_encode(['success' => false, 'error' => 'config']);
     } else {
-        header('Location: report.html?error=config');
+        header('Location: /report?error=config');
     }
     exit;
 }
@@ -248,13 +248,13 @@ if ($sent) {
         header('Content-Type: application/json');
         echo json_encode(['success' => true]);
     } else {
-        header('Location: thank-you.html');
+        header('Location: /thank-you');
     }
 } else {
     if ($wantsJson) {
         header('Content-Type: application/json');
         echo json_encode(['success' => false, 'error' => 'send']);
     } else {
-        header('Location: report.html?error=send');
+        header('Location: /report?error=send');
     }
 }

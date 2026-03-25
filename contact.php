@@ -107,13 +107,17 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         header('Content-Type: application/json');
         echo json_encode(['success' => false, 'error' => 'method']);
     } else {
-        header('Location: contact.html');
+        header('Location: /contact');
     }
     exit;
 }
 
-$returnTo = trim($_POST['return_to'] ?? 'contact.html');
-if (!in_array($returnTo, ['contact.html', 'contactus.html'], true)) $returnTo = 'contact.html';
+$returnSlug = trim($_POST['return_to'] ?? 'contact');
+$returnSlug = preg_replace('/\.html$/', '', $returnSlug);
+if (!in_array($returnSlug, ['contact', 'contactus'], true)) {
+    $returnSlug = 'contact';
+}
+$returnPath = '/' . $returnSlug;
 
 $MAX_LEN = ['name' => 200, 'email' => 254, 'phone_prefix' => 10, 'phone' => 30, 'message' => 10000];
 $name = mb_substr(trim($_POST['name'] ?? ''), 0, $MAX_LEN['name']);
@@ -128,7 +132,7 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         header('Content-Type: application/json');
         echo json_encode(['success' => false, 'error' => 'missing']);
     } else {
-        header('Location: ' . $returnTo . '?error=missing');
+        header('Location: ' . $returnPath . '?error=missing');
     }
     exit;
 }
@@ -138,7 +142,7 @@ if (empty($name) || empty($email) || empty($message)) {
         header('Content-Type: application/json');
         echo json_encode(['success' => false, 'error' => 'missing']);
     } else {
-        header('Location: ' . $returnTo . '?error=missing');
+        header('Location: ' . $returnPath . '?error=missing');
     }
     exit;
 }
@@ -151,7 +155,7 @@ if (!empty($turnstileSecret)) {
             header('Content-Type: application/json');
             echo json_encode(['success' => false, 'error' => 'captcha']);
         } else {
-            header('Location: ' . $returnTo . '?error=captcha');
+            header('Location: ' . $returnPath . '?error=captcha');
         }
         exit;
     }
@@ -178,7 +182,7 @@ if (!empty($turnstileSecret)) {
             header('Content-Type: application/json');
             echo json_encode(['success' => false, 'error' => 'captcha']);
         } else {
-            header('Location: ' . $returnTo . '?error=captcha');
+            header('Location: ' . $returnPath . '?error=captcha');
         }
         exit;
     }
@@ -193,7 +197,7 @@ if (empty($zohoEmail) || empty($zohoPass)) {
         header('Content-Type: application/json');
         echo json_encode(['success' => false, 'error' => 'config']);
     } else {
-        header('Location: ' . $returnTo . '?error=config');
+        header('Location: ' . $returnPath . '?error=config');
     }
     exit;
 }
@@ -281,13 +285,13 @@ HTML;
         header('Content-Type: application/json');
         echo json_encode(['success' => true]);
     } else {
-        header('Location: thank-you.html');
+        header('Location: /thank-you');
     }
 } else {
     if ($wantsJson) {
         header('Content-Type: application/json');
         echo json_encode(['success' => false, 'error' => 'send']);
     } else {
-        header('Location: ' . $returnTo . '?error=send');
+        header('Location: ' . $returnPath . '?error=send');
     }
 }

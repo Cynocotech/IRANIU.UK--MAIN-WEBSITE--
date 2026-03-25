@@ -1,14 +1,28 @@
 RewriteEngine On
 
+# Avoid MultiViews mapping /contact to unrelated files
+Options -MultiViews
+
 # Legacy URL (e.g. shared links) → organised asset
 RewriteRule ^phone\.png$ assets/images/phone.png [L]
 
 # HTML/CSS use fonts/*.woff — files live in yekanfont/
 RewriteRule ^fonts/(.*)$ yekanfont/$1 [L]
 
-# Redirect /index.html to /
-RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /index\.html\ HTTP/
+# Visible URL: /index.html → /
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /index\.html[\s?]
 RewriteRule ^index\.html$ / [R=301,L]
 
-# Internally map / to index.html
+# Visible URL: /page.html → /page (301, keep query string)
+RewriteCond %{REQUEST_URI} !^/index\.html$
+RewriteCond %{REQUEST_URI} \.html$ [NC]
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^(.+)\.html$ /$1 [R=301,L,QSA]
+
+# Internal: / → index.html
 RewriteRule ^$ index.html [L]
+
+# Internal: /page → page.html (single path segment, no dot)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([A-Za-z0-9_-]+)$ $1.html [L]
