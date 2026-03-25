@@ -294,6 +294,7 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
         .footer-copy { margin-top: 22px; opacity: 0.78; font-size: 0.84rem; line-height: 1.6; }
         @media (max-width: 992px) { .desktop-nav { display: none; } .hamburger { display: block; } }
     </style>
+    <link rel="stylesheet" href="/assets/css/content-protection.css">
 </head>
 <body>
 <header>
@@ -412,5 +413,6 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
         <p class="footer-copy">© IraniU — پلتفرم دیجیتال ایرانیان بریتانیا</p>
     </div>
 </footer>
+<script src="/assets/js/copy-guard.js" defer></script>
 </body>
 </html>
