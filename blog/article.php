@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 /**
- * جزئیات خبر — نیمی از متن واضح، نیمی تار + دعوت به دانلود اپ
+ * جزئیات خبر — حدود ۳۰٪ متن واضح، ۷۰٪ تار + دعوت به دانلود اپ
  * /blog/article?id=123
  */
 require __DIR__ . '/../load_env.php';
@@ -43,7 +43,7 @@ try {
     $title = news_row_title($row);
     $d = news_format_date($row);
     $body = news_row_body_raw($row);
-    $split = news_split_teaser_plain($body, 0.5);
+    $split = news_split_teaser_plain($body, 0.3);
 } catch (Throwable $e) {
     $err = $e->getMessage();
 }

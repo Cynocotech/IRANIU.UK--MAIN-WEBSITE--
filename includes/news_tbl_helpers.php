@@ -19,6 +19,22 @@ function news_fa_digits(string $s): string
     );
 }
 
+/**
+ * Remove Markdown-style heading hashes (###, ##, #) from blog/news text.
+ */
+function news_strip_markdown_heading_marks(string $text): string
+{
+    if ($text === '') {
+        return $text;
+    }
+    $text = preg_replace('/^\s{0,3}#{1,6}\s+/m', '', $text) ?? $text;
+    $text = preg_replace('/^\s{0,3}#{3,}\s*$/m', '', $text) ?? $text;
+    $text = preg_replace('/\s+#{3,}\s+/u', ' ', $text) ?? $text;
+    $text = preg_replace('/\s+#{3,}$/u', '', $text) ?? $text;
+    $text = preg_replace('/^#{3,}\s+/u', '', $text) ?? $text;
+    return trim(preg_replace('/\s{2,}/u', ' ', $text) ?? $text);
+}
+
 /** @return string[] */
 function news_table_columns(PDO $pdo, string $table): array
 {
@@ -88,7 +104,10 @@ function news_row_title(array $row): string
         'title', 'Title', 'subject', 'Subject', 'news_title', 'newsTitle',
         'onvan', 'name', 'Name', 'headline', 'Headline', 'key_title', 'topic',
     ]);
-    return $t ?? 'بدون عنوان';
+    if ($t === null) {
+        return 'بدون عنوان';
+    }
+    return news_strip_markdown_heading_marks($t);
 }
 
 function news_row_excerpt(array $row, int $maxLen = 280): string
@@ -103,7 +122,7 @@ function news_row_excerpt(array $row, int $maxLen = 280): string
         return '';
     }
     $plain = preg_replace('/\s+/u', ' ', strip_tags($raw)) ?? '';
-    $plain = trim($plain);
+    $plain = news_strip_markdown_heading_marks(trim($plain));
     if (function_exists('mb_strlen') && function_exists('mb_substr')) {
         if (mb_strlen($plain, 'UTF-8') > $maxLen) {
             return rtrim(mb_substr($plain, 0, $maxLen - 1, 'UTF-8')) . '…';
@@ -137,6 +156,30 @@ function news_format_date(array $row): ?string
         return null;
     }
     return news_fa_digits(date('Y/n/j', $ts));
+}
+
+/** ISO 8601 for JSON-LD / Open Graph */
+function news_row_date_iso8601(array $row): ?string
+{
+    $raw = news_pick_first($row, [
+        'publish_date', 'published_at', 'news_date', 'tarikh', 'date_news',
+        'created_at', 'updated_at', 'insert_time', 'date', 'Date',
+    ]);
+    if ($raw === null) {
+        return null;
+    }
+    $ts = strtotime($raw);
+    if ($ts === false) {
+        return null;
+    }
+    return date('c', $ts);
+}
+
+/** Safe JSON for <script type="application/ld+json"> */
+function news_json_encode_ld(array $data): string
+{
+    $flags = JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_APOS;
+    return json_encode($data, $flags) ?: '{}';
 }
 
 function news_row_image_url(array $row): ?string
@@ -334,8 +377,9 @@ function news_split_teaser_plain(?string $htmlOrText, float $visibleRatio = 0.5)
     if ($htmlOrText === null || trim($htmlOrText) === '') {
         return ['visible' => '', 'rest' => '', 'show_gate' => false];
     }
+    $htmlOrText = trim((string) $htmlOrText);
     $plain = preg_replace('/\s+/u', ' ', strip_tags($htmlOrText)) ?? '';
-    $plain = trim($plain);
+    $plain = news_strip_markdown_heading_marks(trim($plain));
     if ($plain === '') {
         return ['visible' => '', 'rest' => '', 'show_gate' => false];
     }

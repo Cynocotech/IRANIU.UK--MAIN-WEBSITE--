@@ -119,7 +119,7 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#3a0b47">
     <title>اخبار | مقالات IraniU</title>
-    <meta name="description" content="آخرین اخبار و مطالب فارسی از پایگاه داده — برای جامعه ایرانیان بریتانیا.">
+    <meta name="description" content="آخرین اخبار برای جامعه ایرانیان بریتانیا.">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://iraniu.uk/blog/news">
     <meta property="og:locale" content="fa_IR">
@@ -234,7 +234,7 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
 
 <section class="hero">
     <h1>اخبار</h1>
-    <p>مطالب فارسی از پایگاه داده — <?= (int) PER_PAGE ?> خبر در هر صفحه. برای متن کامل هر خبر، وارد جزئیات شوید؛ ادامه مطلب در اپلیکیشن.</p>
+    <p><?= (int) PER_PAGE ?> خبر در هر صفحه. برای متن کامل هر خبر، وارد جزئیات شوید؛ ادامه مطلب در اپلیکیشن.</p>
 </section>
 
 <div class="wrap">
