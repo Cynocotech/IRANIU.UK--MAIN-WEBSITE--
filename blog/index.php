@@ -250,7 +250,7 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
         .filter-bar .btn-clear { color: #666 !important; font-size: 0.88rem; font-weight: 700; }
         .blog-search-wrap { margin-bottom: 18px; position: relative; z-index: 50; }
         .blog-search-label { display: block; font-weight: 800; color: var(--dark-purple); font-size: 0.9rem; margin-bottom: 8px; }
-        .blog-search-ctrl { position: relative; max-width: 420px; }
+        .blog-search-ctrl { position: relative; width: 100%; max-width: 100%; }
         .blog-search-icon { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: rgba(116,32,139,0.45); font-size: 0.95rem; pointer-events: none; z-index: 1; }
         .blog-search-input {
             width: 100%; padding: 12px 42px 12px 14px; border-radius: 14px;
@@ -306,7 +306,7 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
         .footer-logo img { height: 56px; margin-bottom: 16px; }
         .social-links { display: flex; justify-content: center; gap: 12px; margin-top: 16px; }
         .social-links a { color: #fff; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: rgba(255,255,255,0.12); }
-        @media (max-width: 992px) { .desktop-nav { display: none; } .hamburger { display: block; } .blog-search-ctrl { max-width: none; } }
+        @media (max-width: 992px) { .desktop-nav { display: none; } .hamburger { display: block; } }
     </style>
 </head>
 <body>
