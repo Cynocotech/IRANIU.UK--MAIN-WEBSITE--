@@ -2,9 +2,10 @@
 declare(strict_types=1);
 
 /**
- * PDO connection for iraniu_memory (credentials from .env / config.php via load_env.php).
+ * PDO برای اپلیکیشن (مثلاً cybercinaco_app) — مقادیر از .env / config.php
+ * DB_HOST، DB_NAME، DB_USER، DB_PASSWORD
  */
-function memory_pdo(): PDO
+function app_pdo(): PDO
 {
     $host = trim((string)($_ENV['DB_HOST'] ?? getenv('DB_HOST') ?: 'localhost'));
     $name = trim((string)($_ENV['DB_NAME'] ?? getenv('DB_NAME') ?: ''));
@@ -12,7 +13,7 @@ function memory_pdo(): PDO
     $pass = (string)($_ENV['DB_PASSWORD'] ?? getenv('DB_PASSWORD') ?: '');
 
     if ($name === '' || $user === '') {
-        throw new RuntimeException('Database not configured (set DB_NAME and DB_USER in .env or config.php).');
+        throw new RuntimeException('پایگاه داده پیکربندی نشده (DB_NAME و DB_USER را در .env بگذارید).');
     }
 
     $dsn = 'mysql:host=' . $host . ';dbname=' . $name . ';charset=utf8mb4';

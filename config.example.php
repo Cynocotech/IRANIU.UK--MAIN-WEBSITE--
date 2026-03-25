@@ -8,9 +8,9 @@ return [
     'ZOHO_PASSWORD' => 'your-app-password',
     'ADMIN_EMAIL' => 'admin@example.com',
     'TURNSTILE_SECRET_KEY' => 'your-turnstile-secret-key',
-    // MySQL (optional — or use .env) for GovUK_Content listing
-    'DB_HOST' => 'localhost',
-    'DB_NAME' => 'iraniu_memory',
-    'DB_USER' => 'iraniu_memory',
+    // MySQL — tbl_news در /blog/news (یا از .env)
+    'DB_HOST' => 'your.mysql.host',
+    'DB_NAME' => 'cybercinaco_app',
+    'DB_USER' => 'cybercinaco_app',
     'DB_PASSWORD' => 'your-db-password',
 ];

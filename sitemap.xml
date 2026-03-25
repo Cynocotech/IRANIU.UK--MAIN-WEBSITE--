@@ -61,6 +61,12 @@
     <priority>0.85</priority>
   </url>
   <url>
+    <loc>https://iraniu.uk/blog/news</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.82</priority>
+  </url>
+  <url>
     <loc>https://iraniu.uk/blog/mohajerat-kar-uk</loc>
     <lastmod>2026-03-25</lastmod>
     <changefreq>monthly</changefreq>

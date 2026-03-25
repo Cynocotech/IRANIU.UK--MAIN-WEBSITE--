@@ -9,8 +9,8 @@ RewriteRule ^phone\.png$ assets/images/phone.png [L]
 # HTML/CSS use fonts/*.woff — files live in yekanfont/
 RewriteRule ^fonts/(.*)$ yekanfont/$1 [L]
 
-# SQL-backed GovUK_Content listing (paginated)
-RewriteRule ^govuk-content/?$ govuk-content.php [L,QSA]
+# قدیمی: GovUK → اخبار فارسی در بلاگ
+RewriteRule ^govuk-content/?$ /blog/news [R=301,L]
 
 # Visible URL: /index.html → /
 RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /index\.html[\s?]

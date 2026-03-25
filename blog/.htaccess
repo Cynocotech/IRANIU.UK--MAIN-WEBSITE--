@@ -1,6 +1,9 @@
 RewriteEngine On
 Options -MultiViews
 
+# اخبار از پایگاه داده (PHP)
+RewriteRule ^news/?$ news.php [L,QSA]
+
 # /blog/index.html → /blog/
 RewriteCond %{THE_REQUEST} \s+/blog/index\.html[\s?]
 RewriteRule ^index\.html$ /blog/ [R=301,L]
