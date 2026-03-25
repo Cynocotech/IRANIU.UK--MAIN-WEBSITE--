@@ -45,15 +45,28 @@
         .mobile-nav { display: none; position: fixed; top: 70px; right: 0; left: 0; background: var(--dark-purple); flex-direction: column; align-items: center; padding: 28px 0; z-index: 999; border-top: 1px solid rgba(255,255,255,0.08); }
         .mobile-nav.open { display: flex; }
         .mobile-nav a { color: #fff; font-weight: bold; margin: 10px 0; padding-bottom: 10px; width: 85%; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .breadcrumb-wrap { max-width: 1100px; margin: 0 auto; padding: 14px 20px 2px; }
-        .breadcrumb-nav { display: inline-flex; max-width: 100%; }
-        .breadcrumb-nav ol { display: flex; flex-wrap: wrap; align-items: center; gap: 0; list-style: none; margin: 0; padding: 9px 20px 9px 16px; background: linear-gradient(145deg, #faf6fc 0%, #fff 55%, #fdf8ff 100%); border: 1px solid rgba(116, 32, 139, 0.14); border-radius: 999px; box-shadow: 0 2px 14px rgba(58, 11, 71, 0.07), inset 0 1px 0 rgba(255, 255, 255, 0.9); }
-        .breadcrumb-nav li { display: flex; align-items: center; font-size: 0.8125rem; color: #5a5a5a; }
-        .breadcrumb-nav li + li::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: linear-gradient(135deg, var(--brand-purple), rgba(116, 32, 139, 0.5)); margin: 0 12px; flex-shrink: 0; opacity: 0.9; }
-        .breadcrumb-nav a { color: var(--brand-purple); font-weight: 700; transition: color 0.2s; display: inline-flex; align-items: center; }
-        .breadcrumb-nav a:hover { color: var(--dark-purple); }
-        .breadcrumb-nav .bc-home { font-size: 0.95rem; line-height: 1; }
-        .breadcrumb-nav li.breadcrumb-current { color: var(--dark-purple); font-weight: 700; }
+        .breadcrumb-strip {
+            background: linear-gradient(180deg, #faf7fc 0%, #f3eef8 100%);
+            border-bottom: 1px solid rgba(116, 32, 139, 0.12);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85);
+        }
+        .breadcrumb-inner { max-width: 1100px; margin: 0 auto; padding: 14px 20px 16px; }
+        .breadcrumb-nav ol.bc-list {
+            display: flex; flex-wrap: wrap; align-items: baseline; gap: 0; list-style: none; margin: 0; padding: 0;
+        }
+        .breadcrumb-nav ol.bc-list > li {
+            display: inline-flex; align-items: center; font-size: 0.8125rem; color: #5c5c5c; line-height: 1.5;
+        }
+        .breadcrumb-nav ol.bc-list > li.bc-sep {
+            color: rgba(116, 32, 139, 0.35); font-weight: 300; user-select: none; padding: 0 10px; font-size: 0.75rem;
+        }
+        .breadcrumb-nav ol.bc-list a {
+            color: var(--brand-purple); font-weight: 700; display: inline-flex; align-items: center; gap: 6px;
+            padding: 4px 2px; border-radius: 8px; transition: color 0.2s, background 0.2s;
+        }
+        .breadcrumb-nav ol.bc-list a:hover { color: var(--dark-purple); background: rgba(116, 32, 139, 0.08); }
+        .breadcrumb-nav ol.bc-list a .bc-home-icon { font-size: 0.9rem; opacity: 0.9; }
+        .breadcrumb-nav li.breadcrumb-current { color: var(--dark-purple); font-weight: 800; padding: 4px 2px; line-height: 1.45; }
         .hero { background: linear-gradient(135deg, var(--dark-purple), var(--brand-purple)); color: #fff; padding: 56px 20px; text-align: center; }
         .hero h1 { font-size: 2rem; margin-bottom: 12px; font-weight: 900; }
         .hero p { max-width: 640px; margin: 0 auto; opacity: 0.95; font-size: 1.05rem; }
@@ -98,13 +111,18 @@
     </nav>
 </header>
 
-<div class="breadcrumb-wrap">
-    <nav class="breadcrumb-nav" aria-label="مسیر صفحه">
-        <ol>
-            <li><a href="/" aria-label="صفحه اصلی"><i class="fas fa-house bc-home" aria-hidden="true"></i></a></li>
-            <li class="breadcrumb-current" aria-current="page">مقالات</li>
-        </ol>
-    </nav>
+<div class="breadcrumb-strip">
+    <div class="breadcrumb-inner">
+        <nav class="breadcrumb-nav" aria-label="مسیر صفحه">
+            <ol class="bc-list">
+                <li>
+                    <a href="/"><i class="fas fa-house bc-home-icon" aria-hidden="true"></i><span>خانه</span></a>
+                </li>
+                <li class="bc-sep" aria-hidden="true">/</li>
+                <li class="breadcrumb-current" aria-current="page"><span>مقالات</span></li>
+            </ol>
+        </nav>
+    </div>
 </div>
 
 <section class="hero">
