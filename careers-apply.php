@@ -269,7 +269,12 @@ $thankYouBody = str_replace('MESSAGE_PLACEHOLDER', $msgHtml, $thankYouBody);
 
 $mail = new PHPMailer(true);
 $sent = false;
-foreach ([['host' => 'smtp.zoho.eu', 'port' => 465, 'secure' => PHPMailer::ENCRYPTION_SMTPS], ['host' => 'smtp.zoho.eu', 'port' => 587, 'secure' => PHPMailer::ENCRYPTION_STARTTLS]] as $c) {
+foreach ([
+    ['host' => 'smtp.zoho.eu', 'port' => 465, 'secure' => PHPMailer::ENCRYPTION_SMTPS],
+    ['host' => 'smtp.zoho.eu', 'port' => 587, 'secure' => PHPMailer::ENCRYPTION_STARTTLS],
+    ['host' => 'smtp.zoho.com', 'port' => 465, 'secure' => PHPMailer::ENCRYPTION_SMTPS],
+    ['host' => 'smtp.zoho.com', 'port' => 587, 'secure' => PHPMailer::ENCRYPTION_STARTTLS],
+] as $c) {
     try {
         $mail->isSMTP();
         $mail->Host = $c['host'];

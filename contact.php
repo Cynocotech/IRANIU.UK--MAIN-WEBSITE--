@@ -200,7 +200,7 @@ if (empty($zohoEmail) || empty($zohoPass)) {
 
 $mail = new PHPMailer(true);
 $sent = false;
-$hosts = ['smtp.zoho.eu'];
+$hosts = ['smtp.zoho.eu', 'smtp.zoho.com'];
 $ports = [
     ['port' => 465, 'secure' => PHPMailer::ENCRYPTION_SMTPS],
     ['port' => 587, 'secure' => PHPMailer::ENCRYPTION_STARTTLS],
