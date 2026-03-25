@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#3a0b47">
+    <title>سیاست حریم خصوصی | IraniU</title>
+    <link rel="icon" type="image/gif" href="https://panel.cybercina.co.uk//storage/logos/1JAs6UIE0Qiq5OwDODGsueoPVVNh7S1VtHriltIa.gif">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @font-face { font-family: 'Yekan Bakh'; src: url('fonts/YekanBakh-Regular.woff') format('woff'); }
+        :root { --brand-purple: #74208b; --dark-purple: #3a0b47; --live-red: #ff4d4d; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Yekan Bakh', Tahoma, sans-serif; text-decoration: none; }
+        body { background-color: #fdfdfd; color: #1a1a1a; overflow-x: hidden; line-height: 1.8; }
+        header { background: var(--dark-purple); padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.1); position: sticky; top: 0; z-index: 1000; }
+        .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
+        .logo img { height: 50px; display: block; }
+        .desktop-nav a { color: white; font-weight: bold; margin-right: 25px; font-size: 0.9rem; opacity: 0.9; }
+        .desktop-nav a:hover { color: var(--brand-purple); opacity: 1; }
+        .hamburger { display: none; font-size: 1.5rem; color: white; cursor: pointer; }
+        .mobile-nav { position: fixed; top: 74px; right: -100%; width: 100%; height: 100vh; background: var(--dark-purple); display: flex; flex-direction: column; align-items: center; padding-top: 50px; transition: 0.4s; z-index: 999; }
+        .mobile-nav.active { right: 0; }
+        .mobile-nav a { font-size: 1.2rem; color: white; margin-bottom: 25px; font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.1); width: 80%; text-align: center; padding-bottom: 10px; }
+        .page-hero { background: linear-gradient(135deg, var(--dark-purple), var(--brand-purple)); color: white; padding: 70px 20px; text-align: center; }
+        .page-hero h1 { font-size: 2.2rem; margin-bottom: 15px; font-weight: 800; }
+        .container { max-width: 800px; margin: -40px auto 100px; padding: 0 20px; }
+        .legal-card { background: white; padding: 45px; border-radius: 25px; box-shadow: 0 15px 40px rgba(0,0,0,0.1); border: 1px solid #eee; }
+        .legal-card h2 { color: var(--dark-purple); font-size: 1.3rem; margin: 30px 0 12px; border-right: 4px solid var(--brand-purple); padding-right: 12px; }
+        .legal-card p { margin-bottom: 15px; text-align: justify; }
+        .legal-card .meta { color: #777; font-size: 0.9rem; margin-bottom: 25px; }
+        .legal-card .neutrality-box { background: var(--dark-purple); color: white; padding: 20px; border-radius: 15px; margin: 25px 0; text-align: center; font-weight: bold; }
+        .legal-card .app-desc-box { background: #f3e8f5; border: 1px solid rgba(116, 32, 139, 0.2); border-radius: 15px; padding: 25px; margin: 25px 0; }
+        .legal-card .app-desc-box h2 { margin-top: 0; border-right: 4px solid var(--brand-purple); padding-right: 12px; }
+        .legal-card .app-desc-box ul { margin-right: 20px; margin-bottom: 12px; }
+        .legal-card .app-desc-box li { margin-bottom: 6px; }
+        .legal-card a { color: var(--brand-purple); font-weight: bold; }
+        .legal-card a:hover { text-decoration: underline; }
+        footer { background: var(--dark-purple); color: white; padding: 60px 20px 80px; text-align: center; }
+        .footer-links { margin-bottom: 25px; }
+        .footer-links a { color: white; margin: 0 12px; font-size: 0.85rem; opacity: 0.7; }
+        .footer-links a:hover { opacity: 1; }
+        .footer-logo img { height: 60px; margin-bottom: 20px; }
+        .social-links { display: flex; justify-content: center; gap: 15px; margin: 20px 0; }
+        .social-links a { color: white; font-size: 1.2rem; background: rgba(255,255,255,0.1); width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: 0.3s; }
+        @media (max-width: 992px) { .desktop-nav { display: none; } .hamburger { display: block; } .legal-card { padding: 25px; } }
+    </style>
+</head>
+<body>
+<header>
+    <div class="nav-container">
+        <a href="index.html" class="logo"><img src="https://panel.cybercina.co.uk//storage/logos/N0yQlVchcj4ucrQfVJwbXXB13FhWTMFccUBmWLpI.png" alt="IraniU"></a>
+        <nav class="desktop-nav">
+            <a href="index.html">صفحه اصلی</a>
+            <a href="careers.html">فرصت‌های شغلی</a>
+            <a href="report.html">گزارش تخلف</a>
+            <a href="contact.html">تماس با ما</a>
+        </nav>
+        <div class="hamburger" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
+    </div>
+</header>
+<nav class="mobile-nav" id="mobileNav">
+    <a href="index.html" onclick="toggleMenu()">صفحه اصلی</a>
+    <a href="careers.html" onclick="toggleMenu()">فرصت‌های شغلی</a>
+    <a href="report.html" onclick="toggleMenu()">گزارش تخلف</a>
+    <a href="contact.html" onclick="toggleMenu()">تماس با ما</a>
+</nav>
+
+<section class="page-hero">
+    <h1>سیاست حریم خصوصی</h1>
+    <p class="meta">تاریخ اجرا: ۱۵ اسفند ۱۴۰۴ | آخرین بروزرسانی: ۱۵ اسفند ۱۴۰۴</p>
+</section>
+
+<div class="container">
+    <div class="legal-card">
+        <p>به اپلیکیشن ما خوش آمدید. ما متعهد به حفاظت از حریم خصوصی شما و اطمینان از این هستیم که اطلاعات شخصی شما به شیوه‌ای امن و مسئولانه مدیریت می‌شود. این سیاست حریم خصوصی توضیح می‌دهد که ما چگونه داده‌های شما را در پلتفرم‌های موبایل و وب جمع‌آوری، استفاده و محافظت می‌کنیم.</p>
+
+        <div class="app-desc-box">
+            <h2>اپلیکیشن ایرانیو چه می‌کند؟</h2>
+            <p>اپلیکیشن ایرانیو یک پلتفرم دیجیتال جامع برای جامعه فارسی‌زبان مقیم بریتانیا است. این اپلیکیشن ارائه می‌دهد:</p>
+            <ul style="margin-right: 25px; margin-bottom: 12px;">
+                <li><strong>رادیو زنده ۲۴ ساعته</strong> — پخش موسیقی و اخبار فارسی بدون وقفه</li>
+                <li><strong>اخبار و دستورالعمل‌های رسمی</strong> — ترجمه و بازنشر راهنماهای دولتی بریتانیا (GOV.UK، NHS و غیره)</li>
+                <li><strong>دایرکتوری خدمات</strong> — صرافی، وکیل، کاریابی، مسکن، پزشکان، خودرو، رستوران و سایر نیازمندی‌ها</li>
+                <li><strong>فرصت‌های شغلی و آگهی‌ها</strong> — اتصال ایرانیان به فرصت‌ها و کسب‌وکارهای محلی</li>
+            </ul>
+            <p>هدف ما تسهیل زندگی و اتصال ایرانیان به منابع معتبر و جامعه محلی است.</p>
+        </div>
+
+        <div class="neutrality-box">
+            ما به هیچ گروه سیاسی وابسته نیستیم و از هیچ گروهی تبلیغ نمی‌کنیم.
+        </div>
+
+        <h2>۱. اطلاعاتی که ما جمع‌آوری می‌کنیم</h2>
+        <p>ما به اصل «حداقل‌سازی داده‌ها» پایبند هستیم. ما فقط اطلاعاتی را جمع‌آوری می‌کنیم که برای ارائه تجربه‌ای کاربردی و امن به شما کاملاً ضروری است:</p>
+        <ul style="margin-right: 25px; margin-bottom: 15px;">
+            <li><strong>اطلاعات شناسایی شخصی:</strong> ما هنگام ثبت‌نام در برنامه، آدرس ایمیل شما را جمع‌آوری می‌کنیم.</li>
+            <li><strong>اطلاعات داوطلبانه:</strong> هرگونه اطلاعاتی که هنگام تماس با تیم پشتیبانی یا ارائه بازخورد در اختیار ما قرار می‌دهید.</li>
+        </ul>
+        <p>ما هیچ‌گونه داده شخصی حساسی مانند آدرس پستی، شماره تلفن یا اطلاعات مالی را جمع‌آوری نمی‌کنیم.</p>
+
+        <h2>۲. نحوه استفاده از اطلاعات</h2>
+        <p>اطلاعات جمع‌آوری شده صرفاً برای اهداف زیر استفاده می‌شود:</p>
+        <ul style="margin-right: 25px; margin-bottom: 15px;">
+            <li><strong>شناسایی حساب کاربری:</strong> جهت دسترسی به داده‌ها در دستگاه‌های مختلف.</li>
+            <li><strong>شخصی‌سازی:</strong> تطبیق محتوا و داده‌ها با ترجیحات شما.</li>
+            <li><strong>بهبود خدمات:</strong> تحلیل چگونگی استفاده جهت رفع باگ‌ها و بهینه‌سازی.</li>
+            <li><strong>ارتباطات:</strong> ارسال اطلاعیه‌های ضروری مربوط به حساب کاربری.</li>
+        </ul>
+
+        <h2>۳. حفاظت از داده‌ها</h2>
+        <p>ما استانداردهای امنیتی صنعت را برای محافظت از داده‌های شما اجرا می‌کنیم:</p>
+        <ul style="margin-right: 25px; margin-bottom: 15px;">
+            <li><strong>رمزنگاری:</strong> داده‌ها در هنگام انتقال و ذخیره‌سازی رمزنگاری می‌شوند.</li>
+            <li><strong>کنترل دسترسی:</strong> محدودیت دسترسی فقط برای پرسنل مجاز.</li>
+            <li><strong>نظارت منظم:</strong> بازنگری دوره‌ای شیوه‌های امنیتی.</li>
+        </ul>
+
+        <h2>۴. خدمات شخص ثالث</h2>
+        <p>ما اطلاعات شخصی شما را به هیچ شرکت شخص ثالث، تبلیغ‌کنندگان یا بازاریابان نمی‌فروشیم، اجاره نمی‌دهیم و به اشتراک نمی‌گذاریم. نهادهای زیرساختی (مانند سرویس‌های ابری) اجازه استفاده از ایمیل شما برای اهداف تبلیغاتی خود را ندارند.</p>
+
+        <h2>۵. نگهداری داده‌ها</h2>
+        <p>ما آدرس ایمیل شما را تا زمانی که حساب کاربری شما فعال باشد، نگهداری می‌کنیم. در صورت درخواست حذف، داده‌ها فقط تا زمان رعایت تعهدات قانونی حفظ خواهند شد.</p>
+
+        <h2>۶. حقوق کاربر</h2>
+        <p>شما حقوق زیر را دارید:</p>
+        <ul style="margin-right: 25px; margin-bottom: 15px;">
+            <li><strong>دسترسی و اصلاح:</strong> درخواست کپی داده‌ها یا به‌روزرسانی ایمیل.</li>
+            <li><strong>حذف:</strong> حق درخواست حذف دائمی حساب کاربری و تمامی داده‌های مرتبط (حق فراموش شدن).</li>
+        </ul>
+
+        <h2>۷. تغییرات در این سیاست</h2>
+        <p>ما ممکن است این سیاست را بروزرسانی کنیم. هرگونه تغییر مهم با بروزرسانی «تاریخ اجرا» در بالای این صفحه اطلاع‌رسانی خواهد شد.</p>
+
+        <h2>۸. تماس با ما</h2>
+        <p>اگر سوالی در مورد این سیاست یا حقوق خود دارید، با ما در تماس باشید:</p>
+        <p>Email: <a href="mailto:hello@iraniu.uk">hello@iraniu.uk</a></p>
+        <p>Website: <a href="https://iraniu.uk" target="_blank" rel="noopener">https://iraniu.uk</a></p>
+
+        <p style="margin-top: 35px; font-size: 0.9rem; opacity: 0.85;">برند «ایرانیو» زیرمجموعه شرکت Iraniu Global Ltd است.<br>© 2026 Iraniu Global Ltd. All rights reserved.</p>
+    </div>
+</div>
+
+<footer>
+    <div class="footer-links">
+        <a href="index.html">صفحه اصلی</a>
+        <a href="careers.html">فرصت‌های شغلی</a>
+        <a href="report.html">گزارش تخلف</a>
+        <a href="contact.html">تماس با ما</a>
+        <a href="terms.html">شرایط و ضوابط</a>
+        <a href="privacy.html">حریم خصوصی</a>
+    </div>
+    <div class="footer-logo"><img src="https://panel.cybercina.co.uk//storage/logos/N0yQlVchcj4ucrQfVJwbXXB13FhWTMFccUBmWLpI.png" alt="IraniU"></div>
+    <div class="social-links">
+        <a href="https://instagram.com/iraniu.uk" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://t.me/iraniu_uk" target="_blank"><i class="fab fa-telegram-plane"></i></a>
+        <a href="mailto:hello@iraniu.uk"><i class="fas fa-envelope"></i></a>
+    </div>
+    <p style="font-size:0.8rem; opacity:0.6;">© 2026 IraniU</p>
+</footer>
+
+<script>function toggleMenu() { document.getElementById("mobileNav").classList.toggle("active"); }</script>
+</body>
+</html>

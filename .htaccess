@@ -1,0 +1,14 @@
+RewriteEngine On
+
+# Legacy URL (e.g. shared links) → organised asset
+RewriteRule ^phone\.png$ assets/images/phone.png [L]
+
+# HTML/CSS use fonts/*.woff — files live in yekanfont/
+RewriteRule ^fonts/(.*)$ yekanfont/$1 [L]
+
+# Redirect /index.html to /
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /index\.html\ HTTP/
+RewriteRule ^index\.html$ / [R=301,L]
+
+# Internally map / to index.html
+RewriteRule ^$ index.html [L]

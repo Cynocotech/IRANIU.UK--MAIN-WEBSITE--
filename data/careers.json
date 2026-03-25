@@ -1,0 +1,18 @@
+{
+  "lastUpdated": "2026-03-16",
+  "careersEmail": "careers@iraniu.uk",
+  "cvNote": "مشتاق دریافت رزومه‌های شما در تمامی زمینه‌ها هستیم",
+  "jobs": [
+    {
+      "id": "1",
+      "title": "همکاری با اینفلوئنسرهای فارسی‌زبان (UK Based)",
+      "titleEn": "Collaboration with Farsi-speaking Influencers (UK Based)",
+      "tags": [
+        { "icon": "fa-location-dot", "label": "بریتانیا" },
+        { "icon": "fa-video", "label": "تولید محتوا" }
+      ],
+      "email": "careers@iraniu.uk",
+      "shareTitle": "فرصت همکاری با اینفلوئنسرها در IraniU"
+    }
+  ]
+}

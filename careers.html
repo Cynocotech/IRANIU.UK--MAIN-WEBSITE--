@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color" content="#3a0b47">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <title>فرصت‌های شغلی | IraniU</title>
+
+    <link rel="icon" type="image/gif" href="https://panel.cybercina.co.uk//storage/logos/1JAs6UIE0Qiq5OwDODGsueoPVVNh7S1VtHriltIa.gif">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+    <style>
+        @font-face { font-family: 'Yekan Bakh'; src: url('fonts/YekanBakh-Regular.woff') format('woff'); }
+
+        :root {
+            --brand-purple: #74208b;
+            --dark-purple: #3a0b47;
+            --white: #ffffff;
+            --accent-bg: #f3e8f5;
+            --live-red: #ff4d4d;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Yekan Bakh', Tahoma, sans-serif; text-decoration: none; }
+        body { background-color: #fdfdfd; color: #1a1a1a; overflow-x: hidden; line-height: 1.6; }
+
+        /* --- Updated Header (Theme Color) --- */
+        header {
+            background: var(--dark-purple);
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
+
+        /* استفاده از لوگوی سفید فوتر در بالای صفحه */
+        .logo img { height: 50px; display: block; transition: 0.3s; }
+        .logo:hover img { transform: scale(1.05); }
+
+        .desktop-nav a {
+            color: white;
+            font-weight: bold;
+            margin-right: 25px;
+            font-size: 0.9rem;
+            transition: 0.3s;
+            opacity: 0.9;
+        }
+        .desktop-nav a:hover { color: var(--brand-purple); opacity: 1; }
+
+        .hamburger { display: none; font-size: 1.5rem; color: white; cursor: pointer; }
+
+        /* Mobile Menu */
+        .mobile-nav {
+            position: fixed; top: 74px; right: -100%; width: 100%; height: 100vh;
+            background: var(--dark-purple); display: flex; flex-direction: column; align-items: center;
+            padding-top: 50px; transition: 0.4s; z-index: 999;
+        }
+        .mobile-nav.active { right: 0; }
+        .mobile-nav a { font-size: 1.2rem; color: white; margin-bottom: 25px; font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.1); width: 80%; text-align: center; padding-bottom: 10px; }
+
+        /* --- Page Hero --- */
+        .page-hero { background: linear-gradient(135deg, var(--dark-purple), var(--brand-purple)); color: white; padding: 70px 20px; text-align: center; }
+        .page-hero h1 { font-size: 2.2rem; margin-bottom: 15px; font-weight: 800; }
+
+        /* --- Careers Container --- */
+        .container { max-width: 900px; margin: 40px auto 140px; padding: 0 20px; }
+        .job-section-title { margin-bottom: 30px; border-right: 4px solid var(--brand-purple); padding-right: 15px; color: var(--dark-purple); font-size: 1.4rem; }
+
+        .job-card {
+            background: white; border: 1px solid #eee; padding: 30px; border-radius: 20px;
+            margin-bottom: 25px; display: flex; justify-content: space-between;
+            align-items: center; transition: 0.3s;
+        }
+        .job-card:hover { border-color: var(--brand-purple); transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+
+        .job-info h3 { color: var(--dark-purple); margin-bottom: 10px; font-size: 1.2rem; }
+        .job-tags { display: flex; gap: 10px; }
+        .tag { font-size: 0.75rem; color: #777; background: #f0f0f0; padding: 4px 12px; border-radius: 50px; }
+
+        .apply-info { text-align: left; display: flex; flex-direction: column; align-items: flex-end; }
+        .email-link { color: var(--brand-purple); font-weight: bold; font-size: 1rem; display: block; margin-bottom: 8px; }
+
+        /* --- Share Button --- */
+        .share-btn {
+            background: transparent; color: var(--brand-purple); border: 1px solid var(--brand-purple);
+            padding: 6px 16px; border-radius: 50px; font-size: 0.8rem; cursor: pointer;
+            transition: 0.3s; display: inline-flex; align-items: center; gap: 6px; font-weight: bold;
+        }
+        .share-btn:hover { background: var(--brand-purple); color: white; }
+
+        .cv-note {
+            background: var(--accent-bg); padding: 25px; border-radius: 15px;
+            text-align: center; margin-top: 50px; border: 1px dashed var(--brand-purple);
+        }
+
+        /* --- Apply Modal --- */
+        .apply-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 10000; align-items: center; justify-content: center; padding: 20px; }
+        .apply-modal.active { display: flex; }
+        .apply-modal-inner { background: white; border-radius: 20px; max-width: 480px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+        .apply-modal-header { background: linear-gradient(135deg, var(--dark-purple), var(--brand-purple)); color: white; padding: 25px; border-radius: 20px 20px 0 0; display: flex; justify-content: space-between; align-items: center; }
+        .apply-modal-header h3 { margin: 0; font-size: 1.2rem; }
+        .apply-modal-close { background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; padding: 0 8px; line-height: 1; }
+        .apply-modal-body { padding: 25px; }
+        .apply-modal .form-group { margin-bottom: 18px; text-align: right; }
+        .apply-modal .form-group label { display: block; margin-bottom: 6px; font-weight: bold; color: var(--dark-purple); font-size: 0.9rem; }
+        .apply-modal input, .apply-modal textarea, .apply-modal select { width: 100%; padding: 12px; border: 1px solid #eee; border-radius: 10px; background: #fafafa; font-size: 0.95rem; }
+        .apply-modal input[type="file"] { padding: 8px; }
+        .apply-modal .submit-btn { width: 100%; background: var(--brand-purple); color: white; border: none; padding: 14px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 1rem; }
+        .apply-btn { background: var(--brand-purple); color: white; border: none; padding: 8px 20px; border-radius: 50px; font-size: 0.85rem; cursor: pointer; font-weight: bold; margin-bottom: 8px; }
+        .apply-btn:hover { background: var(--dark-purple); }
+
+        /* --- Radio Player --- */
+        #radio-player {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            background: var(--dark-purple); color: white; padding: 8px 22px;
+            border-radius: 50px; display: flex; align-items: center; gap: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4); z-index: 9000; direction: ltr;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .play-btn { width: 40px; height: 40px; background: var(--brand-purple); border: none; border-radius: 50%; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .red-dot { width: 8px; height: 8px; background-color: var(--live-red); border-radius: 50%; box-shadow: 0 0 8px var(--live-red); animation: pulse-red 1.5s infinite; }
+
+        /* --- Toast Message --- */
+        .toast-msg { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); background: #333; color: white; padding: 10px 25px; border-radius: 50px; font-size: 0.85rem; z-index: 10001; display: none; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+
+        /* --- Footer --- */
+        footer { background: var(--dark-purple); color: white; padding: 60px 20px 120px; text-align: center; }
+        .footer-links { margin-bottom: 25px; }
+        .footer-links a { color: white; margin: 0 12px; font-size: 0.85rem; opacity: 0.7; }
+        .footer-logo img { height: 60px; margin-bottom: 20px; }
+        .social-links { display: flex; justify-content: center; gap: 15px; margin: 20px 0; }
+        .social-links a { color: white; font-size: 1.2rem; background: rgba(255,255,255,0.1); width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: 0.3s; }
+
+        @media (max-width: 992px) {
+            .desktop-nav { display: none; }
+            .hamburger { display: block; }
+            .job-card { flex-direction: column; text-align: center; gap: 20px; }
+            .job-tags { justify-content: center; }
+            .apply-info { align-items: center; }
+            .logo img { height: 45px; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="nav-container">
+        <a href="index.html" class="logo">
+            <img src="https://panel.cybercina.co.uk//storage/logos/N0yQlVchcj4ucrQfVJwbXXB13FhWTMFccUBmWLpI.png" alt="IraniU White Logo">
+        </a>
+        <nav class="desktop-nav">
+            <a href="index.html">صفحه اصلی</a>
+            <a href="careers.html">فرصت‌های شغلی</a>
+            <a href="report.html">گزارش تخلف</a>
+            <a href="contact.html">تماس با ما</a>
+        </nav>
+        <div class="hamburger" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
+    </div>
+</header>
+
+<nav class="mobile-nav" id="mobileNav">
+    <a href="index.html" onclick="toggleMenu()">صفحه اصلی</a>
+    <a href="careers.html" onclick="toggleMenu()">فرصت‌های شغلی</a>
+    <a href="report.html" onclick="toggleMenu()">گزارش تخلف</a>
+    <a href="contact.html" onclick="toggleMenu()">تماس با ما</a>
+</nav>
+
+<section class="page-hero">
+    <h1>همکاری با IraniU</h1>
+    <p>به تیم ما بپیوندید و در کنار هم جامعه ایرانیان بریتانیا را تقویت کنیم.</p>
+</section>
+
+<div class="container">
+    <h2 class="job-section-title">موقعیت‌های فعلی</h2>
+
+    <div class="job-card">
+        <div class="job-info">
+            <h3>همکاری با اینفلوئنسرهای فارسی‌زبان (UK Based)</h3>
+            <div class="job-tags">
+                <span class="tag"><i class="fa-solid fa-location-dot"></i> بریتانیا</span>
+                <span class="tag"><i class="fa-solid fa-video"></i> تولید محتوا</span>
+            </div>
+        </div>
+        <div class="apply-info">
+            <button class="apply-btn" onclick="event.stopPropagation(); openApplyModal('1', 'همکاری با اینفلوئنسرهای فارسی‌زبان (UK Based)')">
+                <i class="fa-solid fa-paper-plane"></i> ارسال رزومه
+            </button>
+            <a href="mailto:careers@iraniu.uk" class="email-link">careers@iraniu.uk</a>
+            <button class="share-btn" onclick="shareJob('فرصت همکاری با اینفلوئنسرها در IraniU', window.location.href)">
+                <i class="fa-solid fa-share-nodes"></i> اشتراک‌گذاری
+            </button>
+        </div>
+    </div>
+
+    <div class="cv-note">
+        <p>مشتاق دریافت رزومه‌های شما در تمامی زمینه‌ها هستیم: <strong>careers@iraniu.uk</strong></p>
+    </div>
+</div>
+
+<div id="radio-player">
+    <button class="play-btn" onclick="toggleRadio()"><i class="fa-solid fa-play" id="play-icon"></i></button>
+    <div style="display:flex; flex-direction:column; min-width: 90px;">
+        <strong style="font-size: 0.85rem;">IraniU Radio</strong>
+        <div style="display: flex; align-items: center; gap: 5px;">
+            <div class="red-dot"></div><span style="font-size:0.6rem; opacity:0.8;">LIVE</span>
+        </div>
+    </div>
+    <audio id="audio-stream" style="display:none;"></audio>
+</div>
+
+<div id="toast" class="toast-msg">لینک کپی شد!</div>
+
+<div id="apply-modal" class="apply-modal">
+    <div class="apply-modal-inner">
+        <div class="apply-modal-header">
+            <h3 id="apply-modal-title">ارسال رزومه</h3>
+            <button type="button" class="apply-modal-close" onclick="closeApplyModal()">&times;</button>
+        </div>
+        <div class="apply-modal-body">
+            <p id="apply-modal-status" style="display:none; margin-bottom:15px; padding:12px; border-radius:10px; font-weight:bold;"></p>
+            <form id="apply-form" action="careers-apply.php" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="job_id" id="apply-job-id" value="">
+                <input type="hidden" name="job_title" id="apply-job-title" value="">
+                <div class="form-group">
+                    <label>نام و نام خانوادگی *</label>
+                    <input type="text" name="name" required maxlength="200" placeholder="علی رضایی">
+                </div>
+                <div class="form-group">
+                    <label>ایمیل *</label>
+                    <input type="email" name="email" required maxlength="254" placeholder="email@example.com" style="direction:ltr;">
+                </div>
+                <div class="form-group">
+                    <label>شماره تماس</label>
+                    <input type="tel" name="phone" placeholder="+44 7700 900000" maxlength="30" style="direction:ltr;">
+                </div>
+                <div class="form-group">
+                    <label>رزومه (فقط PDF، حداکثر ۵ مگابایت) *</label>
+                    <input type="file" name="cv" accept=".pdf,application/pdf" required>
+                </div>
+                <div class="form-group">
+                    <label>پیام / معرفی کوتاه</label>
+                    <textarea name="message" rows="4" maxlength="5000" placeholder="چند خط درباره خودتان..."></textarea>
+                </div>
+                <div class="form-group">
+                    <div id="turnstile-careers-container"></div>
+                </div>
+                <button type="submit" id="apply-submit-btn" class="submit-btn">ارسال درخواست</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="footer-links">
+        <a href="index.html">صفحه اصلی</a>
+        <a href="careers.html">فرصت‌های شغلی</a>
+        <a href="report.html">گزارش تخلف</a>
+        <a href="contact.html">تماس با ما</a>
+        <a href="terms.html">شرایط و ضوابط</a>
+        <a href="privacy.html">حریم خصوصی</a>
+    </div>
+    <div class="footer-logo">
+        <img src="https://panel.cybercina.co.uk//storage/logos/N0yQlVchcj4ucrQfVJwbXXB13FhWTMFccUBmWLpI.png" alt="IraniU White Footer Logo">
+    </div>
+    <div class="social-links">
+        <a href="https://instagram.com/iraniu.uk" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://t.me/iraniu_uk" target="_blank"><i class="fab fa-telegram-plane"></i></a>
+        <a href="mailto:hello@iraniu.uk"><i class="fas fa-envelope"></i></a>
+    </div>
+    <p style="font-size:0.8rem; opacity:0.6;">© 2026 IraniU</p>
+</footer>
+
+<script>
+    function toggleMenu() { document.getElementById("mobileNav").classList.toggle("active"); }
+
+    const radioUrl = 'https://panel.iraniu.uk/hls/iraniu_radio_/live.m3u8';
+    const audio = document.getElementById('audio-stream');
+    const playIcon = document.getElementById('play-icon');
+    let hls;
+
+    function toggleRadio() {
+        if (!hls && Hls.isSupported()) { hls = new Hls(); hls.loadSource(radioUrl); hls.attachMedia(audio); }
+        if (audio.paused) { audio.play(); playIcon.className = 'fa-solid fa-pause'; }
+        else { audio.pause(); playIcon.className = 'fa-solid fa-play'; }
+    }
+
+    async function shareJob(title, url) {
+        if (navigator.share) {
+            try { await navigator.share({ title: title, text: 'این فرصت شغلی را در IraniU ببینید:', url: url }); } catch (err) {}
+        } else {
+            navigator.clipboard.writeText(url);
+            const toast = document.getElementById("toast");
+            toast.style.display = "block";
+            setTimeout(() => { toast.style.display = "none"; }, 2500);
+        }
+    }
+
+    let turnstileWidgetId = null;
+    function openApplyModal(jobId, jobTitle) {
+        document.getElementById("apply-job-id").value = jobId;
+        document.getElementById("apply-job-title").value = jobTitle;
+        document.getElementById("apply-modal-title").textContent = "ارسال رزومه: " + jobTitle;
+        document.getElementById("apply-form").reset();
+        document.getElementById("apply-job-id").value = jobId;
+        document.getElementById("apply-job-title").value = jobTitle;
+        document.getElementById("apply-modal-status").style.display = "none";
+        const container = document.getElementById("turnstile-careers-container");
+        container.innerHTML = "";
+        if (typeof turnstile !== "undefined") {
+            turnstileWidgetId = turnstile.render(container, { sitekey: "0x4AAAAAACrrdSotzvEhuCwr", theme: "light", size: "normal" });
+        }
+        document.getElementById("apply-modal").classList.add("active");
+    }
+    function closeApplyModal() {
+        document.getElementById("apply-modal").classList.remove("active");
+        if (turnstileWidgetId !== null && typeof turnstile !== "undefined") {
+            try { turnstile.remove(turnstileWidgetId); } catch (e) {}
+            turnstileWidgetId = null;
+        }
+    }
+    document.getElementById("apply-modal").addEventListener("click", function(e) {
+        if (e.target === this) closeApplyModal();
+    });
+
+    document.getElementById("apply-form").addEventListener("submit", function(e) {
+        e.preventDefault();
+        const btn = document.getElementById("apply-submit-btn");
+        const status = document.getElementById("apply-modal-status");
+        const token = document.querySelector('[name="cf-turnstile-response"]')?.value?.trim();
+        if (!token) {
+            status.textContent = "لطفاً تیک امنیتی را تکمیل کنید.";
+            status.style.color = "#c62828";
+            status.style.display = "block";
+            status.style.background = "#ffebee";
+            return;
+        }
+        const fileInput = document.querySelector('input[name="cv"]');
+        if (!fileInput.files.length) {
+            status.textContent = "لطفاً رزومه (PDF) را انتخاب کنید.";
+            status.style.color = "#c62828";
+            status.style.display = "block";
+            status.style.background = "#ffebee";
+            return;
+        }
+        const ext = fileInput.files[0].name.split('.').pop().toLowerCase();
+        if (ext !== 'pdf') {
+            status.textContent = "فقط فایل PDF مجاز است.";
+            status.style.color = "#c62828";
+            status.style.display = "block";
+            status.style.background = "#ffebee";
+            return;
+        }
+        btn.disabled = true;
+        btn.textContent = "در حال ارسال...";
+        status.style.display = "none";
+        const formData = new FormData(e.target);
+        fetch(e.target.action, { method: "POST", body: formData, headers: { "Accept": "application/json" } })
+            .then(r => r.json())
+            .then(json => {
+                if (json.success) {
+                    closeApplyModal();
+                    window.location.href = "careers-thank-you.html";
+                } else {
+                    const errMap = { missing: "لطفاً تمام فیلدهای ضروری را پر کنید.", captcha: "تیک امنیتی نامعتبر است.", file_type: "فقط فایل PDF معتبر مجاز است. (حداکثر ۵ مگابایت)", file_too_large: "حجم فایل بیش از حد مجاز است.", cv_required: "لطفاً رزومه را انتخاب کنید.", config: "خطای پیکربندی.", send: "خطا در ارسال. لطفاً دوباره تلاش کنید." };
+                    status.textContent = errMap[json.error] || "خطایی رخ داد.";
+                    status.style.color = "#c62828";
+                    status.style.background = "#ffebee";
+                    status.style.display = "block";
+                }
+            })
+            .catch(() => {
+                status.textContent = "خطا در اتصال به سرور.";
+                status.style.color = "#c62828";
+                status.style.background = "#ffebee";
+                status.style.display = "block";
+            })
+            .finally(() => { btn.disabled = false; btn.textContent = "ارسال درخواست"; });
+    });
+</script>
+</body>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-T18QD069RY"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-T18QD069RY');
+</script>
+</html>

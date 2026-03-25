@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>به زودی | IraniU</title>
+    <style>
+        @font-face { font-family: 'Yekan'; src: url('https://cdn.jsdelivr.net/npm/typeface-yekan@1.0.11/dist/Yekan.woff') format('woff'); font-display: swap; }
+        @font-face { font-family: 'Yekan Bakh'; src: url('fonts/YekanBakh-Regular.woff') format('woff'); font-display: swap; }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #74208b;
+            --primary-dark: #3a0b47;
+            --purple-dark: #3a0b47;
+            --purple: #74208b;
+            --purple-light: rgba(255, 255, 255, 0.15);
+            --purple-border: rgba(255, 255, 255, 0.3);
+            --text: #fff;
+            --text-muted: rgba(255, 255, 255, 0.85);
+            --bg-start: #3a0b47;
+            --bg-end: #74208b;
+            --card-bg: rgba(255, 255, 255, 0.12);
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+            --shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.3);
+        }
+        html {
+            font-size: 14px;
+            -webkit-text-size-adjust: 100%;
+        }
+        body {
+            font-family: 'Yekan', 'Yekan Bakh', Tahoma, Arial, sans-serif;
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #3a0b47 0%, #74208b 100%);
+            padding: clamp(16px, 4vw, 32px);
+            padding-bottom: env(safe-area-inset-bottom, 0);
+            padding-top: env(safe-area-inset-top, 0);
+            direction: rtl;
+            color: var(--text);
+        }
+        .card {
+            text-align: center;
+            max-width: 480px;
+            width: 100%;
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: clamp(28px, 6vw, 48px);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--purple-border);
+            animation: fadeUp 0.6s ease-out;
+        }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .logo-wrap {
+            margin-bottom: clamp(24px, 5vw, 36px);
+        }
+        .logo {
+            width: clamp(80px, 22vw, 140px);
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+        .badge {
+            display: inline-block;
+            background: var(--purple-light);
+            color: #fff;
+            padding: clamp(10px, 2.5vw, 14px) clamp(20px, 5vw, 28px);
+            border-radius: 50px;
+            font-size: clamp(0.875rem, 2.5vw, 1.125rem);
+            font-weight: bold;
+            margin-bottom: clamp(16px, 4vw, 24px);
+            border: 2px solid var(--purple-border);
+            letter-spacing: 0.02em;
+        }
+        h1 {
+            font-size: clamp(1.75rem, 5vw, 2.5rem);
+            color: #fff;
+            margin-bottom: clamp(10px, 2.5vw, 16px);
+            font-weight: bold;
+            line-height: 1.2;
+        }
+        .tagline {
+            font-size: clamp(0.9rem, 2.2vw, 1.05rem);
+            color: var(--text-muted);
+            margin-bottom: clamp(20px, 4vw, 32px);
+            line-height: 1.6;
+        }
+        .divider {
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--purple), transparent);
+            margin: 0 auto clamp(20px, 4vw, 28px);
+            border-radius: 2px;
+        }
+        .slogan {
+            font-size: clamp(0.8rem, 2vw, 0.95rem);
+            color: var(--text-muted);
+            font-style: italic;
+            line-height: 1.7;
+            opacity: 0.9;
+        }
+        @media (max-width: 480px) {
+            html { font-size: 13px; }
+            .card { padding: 24px 20px; border-radius: 20px; }
+            .badge { padding: 10px 20px; }
+        }
+        @media (min-width: 768px) {
+            .card { box-shadow: var(--shadow-hover); transition: box-shadow 0.3s ease; }
+            .card:hover { box-shadow: 0 16px 48px rgba(58, 11, 71, 0.15); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .card { animation: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="logo-wrap">
+            <img src="https://panel.cybercina.co.uk/storage/logos/N0yQlVchcj4ucrQfVJwbXXB13FhWTMFccUBmWLpI.png" alt="IraniU" class="logo">
+        </div>
+        <span class="badge">به زودی</span>
+        <h1>IraniU</h1>
+        <p class="tagline">پلتفرم دیجیتال ایرانیان بریتانیا</p>
+        <div class="divider"></div>
+        <p class="slogan">در کنار هم جامعه ایرانیان بریتانیا را تقویت کنیم</p>
+    </div>
+</body>
+</html>

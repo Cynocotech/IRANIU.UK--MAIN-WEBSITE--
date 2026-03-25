@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#3a0b47">
+    <title>شرایط و ضوابط استفاده | IraniU</title>
+    <link rel="icon" type="image/gif" href="https://panel.cybercina.co.uk//storage/logos/1JAs6UIE0Qiq5OwDODGsueoPVVNh7S1VtHriltIa.gif">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @font-face { font-family: 'Yekan Bakh'; src: url('fonts/YekanBakh-Regular.woff') format('woff'); }
+        :root { --brand-purple: #74208b; --dark-purple: #3a0b47; --live-red: #ff4d4d; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Yekan Bakh', Tahoma, sans-serif; text-decoration: none; }
+        body { background-color: #fdfdfd; color: #1a1a1a; overflow-x: hidden; line-height: 1.8; }
+        header { background: var(--dark-purple); padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.1); position: sticky; top: 0; z-index: 1000; }
+        .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
+        .logo img { height: 50px; display: block; }
+        .desktop-nav a { color: white; font-weight: bold; margin-right: 25px; font-size: 0.9rem; opacity: 0.9; }
+        .desktop-nav a:hover { color: var(--brand-purple); opacity: 1; }
+        .hamburger { display: none; font-size: 1.5rem; color: white; cursor: pointer; }
+        .mobile-nav { position: fixed; top: 74px; right: -100%; width: 100%; height: 100vh; background: var(--dark-purple); display: flex; flex-direction: column; align-items: center; padding-top: 50px; transition: 0.4s; z-index: 999; }
+        .mobile-nav.active { right: 0; }
+        .mobile-nav a { font-size: 1.2rem; color: white; margin-bottom: 25px; font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.1); width: 80%; text-align: center; padding-bottom: 10px; }
+        .page-hero { background: linear-gradient(135deg, var(--dark-purple), var(--brand-purple)); color: white; padding: 70px 20px; text-align: center; }
+        .page-hero h1 { font-size: 2.2rem; margin-bottom: 15px; font-weight: 800; }
+        .container { max-width: 800px; margin: -40px auto 100px; padding: 0 20px; }
+        .legal-card { background: white; padding: 45px; border-radius: 25px; box-shadow: 0 15px 40px rgba(0,0,0,0.1); border: 1px solid #eee; }
+        .legal-card h2 { color: var(--dark-purple); font-size: 1.3rem; margin: 30px 0 12px; border-right: 4px solid var(--brand-purple); padding-right: 12px; }
+        .legal-card p { margin-bottom: 15px; text-align: justify; }
+        .legal-card .meta { color: #777; font-size: 0.9rem; margin-bottom: 25px; }
+        .legal-card .neutrality-box { background: var(--dark-purple); color: white; padding: 20px; border-radius: 15px; margin: 25px 0; text-align: center; font-weight: bold; }
+        .legal-card .app-desc-box { background: #f3e8f5; border: 1px solid rgba(116, 32, 139, 0.2); border-radius: 15px; padding: 25px; margin: 25px 0; }
+        .legal-card .app-desc-box h2 { margin-top: 0; border-right: 4px solid var(--brand-purple); padding-right: 12px; }
+        .legal-card .app-desc-box ul { margin-right: 20px; margin-bottom: 12px; }
+        .legal-card .app-desc-box li { margin-bottom: 6px; }
+        footer { background: var(--dark-purple); color: white; padding: 60px 20px 80px; text-align: center; }
+        .footer-links { margin-bottom: 25px; }
+        .footer-links a { color: white; margin: 0 12px; font-size: 0.85rem; opacity: 0.7; }
+        .footer-links a:hover { opacity: 1; }
+        .footer-logo img { height: 60px; margin-bottom: 20px; }
+        .social-links { display: flex; justify-content: center; gap: 15px; margin: 20px 0; }
+        .social-links a { color: white; font-size: 1.2rem; background: rgba(255,255,255,0.1); width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: 0.3s; }
+        @media (max-width: 992px) { .desktop-nav { display: none; } .hamburger { display: block; } .legal-card { padding: 25px; } }
+    </style>
+</head>
+<body>
+<header>
+    <div class="nav-container">
+        <a href="index.html" class="logo"><img src="https://panel.cybercina.co.uk//storage/logos/N0yQlVchcj4ucrQfVJwbXXB13FhWTMFccUBmWLpI.png" alt="IraniU"></a>
+        <nav class="desktop-nav">
+            <a href="index.html">صفحه اصلی</a>
+            <a href="careers.html">فرصت‌های شغلی</a>
+            <a href="report.html">گزارش تخلف</a>
+            <a href="contact.html">تماس با ما</a>
+        </nav>
+        <div class="hamburger" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
+    </div>
+</header>
+<nav class="mobile-nav" id="mobileNav">
+    <a href="index.html" onclick="toggleMenu()">صفحه اصلی</a>
+    <a href="careers.html" onclick="toggleMenu()">فرصت‌های شغلی</a>
+    <a href="report.html" onclick="toggleMenu()">گزارش تخلف</a>
+    <a href="contact.html" onclick="toggleMenu()">تماس با ما</a>
+</nav>
+
+<section class="page-hero">
+    <h1>شرایط و ضوابط استفاده</h1>
+    <p class="meta">آخرین بروزرسانی: ۱۵ اسفند ۱۴۰۴</p>
+</section>
+
+<div class="container">
+    <div class="legal-card">
+        <p>خوش آمدید. استفاده شما از خدمات و محتوای پلتفرم «ایرانیو» منوط به پذیرش و پایبندی به شرایط و ضوابط زیر است. تمامی فعالیت‌های این برند تحت امتیاز قانونی شرکت Iraniu Global Ltd مدیریت و اجرا می‌شود.</p>
+
+        <p><strong>توجه حقوقی:</strong> «ایرانیو» یک نهاد دولتی، خبرگزاری مستقل یا صادرکننده قانون نیست. ما صرفاً به عنوان یک «تسهیل‌گر» در امر بازنشر، تجمیع و ترجمه اخبار، اطلاعات عمومی و دستورالعمل‌های رسمی فعالیت می‌کنیم که از مراجع قانونی، سایت‌های دولتی بریتانیا و منابع آزاد خبری استخراج شده‌اند.</p>
+
+        <div class="app-desc-box">
+            <h2>اپلیکیشن ایرانیو چه می‌کند؟</h2>
+            <p>اپلیکیشن ایرانیو یک پلتفرم دیجیتال جامع برای جامعه فارسی‌زبان مقیم بریتانیا است. این اپلیکیشن ارائه می‌دهد:</p>
+            <ul style="margin-right: 25px; margin-bottom: 12px;">
+                <li><strong>رادیو زنده ۲۴ ساعته</strong> — پخش موسیقی و اخبار فارسی بدون وقفه</li>
+                <li><strong>اخبار و دستورالعمل‌های رسمی</strong> — ترجمه و بازنشر راهنماهای دولتی بریتانیا (GOV.UK، NHS و غیره)</li>
+                <li><strong>دایرکتوری خدمات</strong> — صرافی، وکیل، کاریابی، مسکن، پزشکان، خودرو، رستوران و سایر نیازمندی‌ها</li>
+                <li><strong>فرصت‌های شغلی و آگهی‌ها</strong> — اتصال ایرانیان به فرصت‌ها و کسب‌وکارهای محلی</li>
+            </ul>
+            <p>هدف ما تسهیل زندگی و اتصال ایرانیان به منابع معتبر و جامعه محلی است.</p>
+        </div>
+
+        <div class="neutrality-box">
+            ما به هیچ گروه سیاسی وابسته نیستیم و از هیچ گروهی تبلیغ نمی‌کنیم.
+        </div>
+
+        <h2>۱. ماهیت محتوا و خدمات (سه‌گانه محتوایی)</h2>
+        <p>هدف اصلی «ایرانیو» کمک به انتشار و ساده‌سازی دستورالعمل‌های رسمی، اخبار روز و اطلاعات کاربردی برای جامعه فارسی‌زبان است.</p>
+        <p>محتوای ما ترکیبی از آخرین راهنماهای موجود در دپارتمان‌های قانونی و اخبار استخراج شده از منابع آزاد (مانند Google News) است.</p>
+        <p>ما تمام تلاش خود را برای به‌روزرسانی مستمر این موارد انجام می‌دهیم، اما مسئولیتی در قبال تغییرات ناگهانی در قوانین، صحت اخبار منابع ثالث یا تأخیر در انعکاس آن‌ها بر عهده نمی‌گیریم.</p>
+
+        <h2>۲. محدودیت مسئولیت و سلب مسئولیت (Disclaimer)</h2>
+        <p>مطالب موجود در این سایت (شامل اخبار، اطلاعات و ترجمه دستورالعمل‌ها) صرفاً جنبه اطلاع‌رسانی و آموزشی دارند.</p>
+        <p>Iraniu Global Ltd هیچ‌گونه مسئولیت قانونی در قبال تصمیمات اداری، مالی یا حقوقی کاربران که بر اساس این محتوا اتخاذ شده باشد، نمی‌پذیرند.</p>
+        <p>با توجه به ماهیت متغیر اخبار و قوانین، ما تضمین نمی‌کنیم که محتوا در هر لحظه عاری از خطا یا کاملاً به‌روز باشد. قویاً توصیه می‌شود برای موارد حساس، همواره با متخصصان واجد شرایط مشورت نمایید.</p>
+
+        <h2>۳. مرجع نهایی و زبان اصلی</h2>
+        <p>در صورت وجود هرگونه تناقض یا ابهام در ترجمه اخبار، اطلاعات یا دستورالعمل‌های قانونی، همواره متن اصلی انگلیسی در وب‌سایت‌های مرجع (دپارتمان‌های دولتی یا خبرگزاری‌های منبع) ملاک نهایی و قانونی خواهد بود. ترجمه‌های ما تنها ابزاری کمکی برای درک بهتر مفاهیم هستند.</p>
+
+        <h2>۴. حقوق مالکیت معنوی و ممنوعیت اسکراپینگ (Scraping)</h2>
+        <p>در حالی که اصل اخبار و قوانین متعلق به منابع مرجع است، اما فرآیند انتخاب، چیدمان، ساختار داده‌ها و ترجمه‌های اختصاصی انجام شده در «ایرانیو» متعلق به شرکت Iraniu Global Ltd می‌باشد.</p>
+        <p>هرگونه کپی‌برداری تجاری یا استفاده از ربات و سیستم‌های خودکار (Scrapers) برای استخراج توده‌ای این اخبار، اطلاعات و دستورالعمل‌ها اکیداً ممنوع بوده و پیگرد قانونی دارد.</p>
+
+        <h2>۵. تعاملات کاربری و لینک‌های ثالث</h2>
+        <p>کاربران مسئول نظراتی هستند که در ذیل اخبار یا اطلاعات منتشر می‌کنند. همچنین لینک‌های موجود در اپلیکیشن صرفاً جهت سهولت دسترسی به منابع اصلی است و ما مسئولیتی در قبال محتوای این سایت‌های خارجی نداریم.</p>
+
+        <h2>۶. قانون حاکم و تغییرات</h2>
+        <p>این شرایط تحت قوانین کشور بریتانیا تنظیم شده است. این شرایط ممکن است برای انطباق با تغییرات در نحوه ارائه اخبار و دستورالعمل‌ها به‌روزرسانی شود. استفاده مداوم شما به معنای پذیرش نسخه جدید است.</p>
+
+        <p style="margin-top: 35px; font-size: 0.9rem; opacity: 0.85;">برند «ایرانیو» زیرمجموعه شرکت Iraniu Global Ltd است.<br>© 2026 Iraniu Global Ltd. All rights reserved.</p>
+    </div>
+</div>
+
+<footer>
+    <div class="footer-links">
+        <a href="index.html">صفحه اصلی</a>
+        <a href="careers.html">فرصت‌های شغلی</a>
+        <a href="report.html">گزارش تخلف</a>
+        <a href="contact.html">تماس با ما</a>
+        <a href="terms.html">شرایط و ضوابط</a>
+        <a href="privacy.html">حریم خصوصی</a>
+    </div>
+    <div class="footer-logo"><img src="https://panel.cybercina.co.uk//storage/logos/N0yQlVchcj4ucrQfVJwbXXB13FhWTMFccUBmWLpI.png" alt="IraniU"></div>
+    <div class="social-links">
+        <a href="https://instagram.com/iraniu.uk" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://t.me/iraniu_uk" target="_blank"><i class="fab fa-telegram-plane"></i></a>
+        <a href="mailto:hello@iraniu.uk"><i class="fas fa-envelope"></i></a>
+    </div>
+    <p style="font-size:0.8rem; opacity:0.6;">© 2026 IraniU</p>
+</footer>
+
+<script>function toggleMenu() { document.getElementById("mobileNav").classList.toggle("active"); }</script>
+</body>
+</html>

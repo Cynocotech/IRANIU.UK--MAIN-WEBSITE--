@@ -1,0 +1,7 @@
+# Serve index.html for root URL (removes index.html from address bar)
+DirectoryIndex index.html
+
+# Redirect /index.html to clean URL
+RewriteEngine On
+RewriteCond %{THE_REQUEST} /index\.html [NC]
+RewriteRule ^index\.html$ / [L,R=301]
