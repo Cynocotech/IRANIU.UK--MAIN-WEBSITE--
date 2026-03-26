@@ -19,4 +19,7 @@ return [
     'NEWS_CATEGORY_TABLE' => 'tbl_category',
     'APP_STORE_URL' => 'https://apps.apple.com/us/app/iraniu/id6760209069',
     'GOOGLE_PLAY_URL' => 'https://play.google.com/store/apps/details?id=uk.iraniu.app',
+    'OPENAI_API_KEY' => 'sk-your-openai-api-key',
+    'OPENAI_MODEL' => 'gpt-4o-mini',
+    'WHATSAPP_NUMBER' => '447000000000',
 ];

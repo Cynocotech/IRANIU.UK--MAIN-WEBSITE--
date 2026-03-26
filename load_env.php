@@ -26,6 +26,7 @@ if (file_exists($configFile)) {
             'DB_NAME', 'DB_USER',
             'NEWS_IMAGE_BASE_URL', 'NEWS_CATEGORY_TABLE',
             'APP_STORE_URL', 'GOOGLE_PLAY_URL',
+            'OPENAI_API_KEY', 'OPENAI_MODEL', 'WHATSAPP_NUMBER',
         ] as $k) {
             if (!empty($cfg[$k]) && empty($_ENV[$k] ?? '')) {
                 $_ENV[$k] = $cfg[$k];
