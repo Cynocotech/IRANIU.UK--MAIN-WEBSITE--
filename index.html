@@ -114,6 +114,27 @@
             display: flex; align-items: center; justify-content: center;
             min-height: 700px; position: relative; overflow: hidden;
         }
+        .hero-video-bg{
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            opacity: 0.12; /* low opacity background */
+            pointer-events: none;
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(58,11,71,0.85), rgba(116,32,139,0.55));
+        }
+        .hero-video-bg iframe{
+            width: 120%;
+            height: 120%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 0;
+        }
+        @media (prefers-reduced-motion: reduce){
+            .hero-video-bg{ display:none !important; }
+        }
         .hero-container { max-width: 1200px; width: 100%; display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 40px; align-items: center; z-index: 10; }
         .rating-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.1); padding: 6px 15px; border-radius: 50px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.2); }
         .phone-mockup { perspective: 1200px; display: flex; justify-content: center; }
@@ -331,6 +352,13 @@
 </header>
 
 <section class="hero">
+    <div class="hero-video-bg" aria-hidden="true">
+        <iframe
+            src="https://www.youtube.com/embed/WyyN-9GNIf0?autoplay=1&mute=1&controls=0&showinfo=0&loop=1&playlist=WyyN-9GNIf0&playsinline=1&rel=0&modestbranding=1"
+            allow="autoplay; encrypted-media"
+            frameborder="0"
+            loading="eager"></iframe>
+    </div>
     <div class="hero-container">
         <div class="hero-text" style="text-align: right;">
             <div class="rating-badge">
