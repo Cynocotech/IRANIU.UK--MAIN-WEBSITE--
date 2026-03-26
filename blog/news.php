@@ -353,6 +353,27 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
         @media (max-width: 992px) { .desktop-nav { display: none; } .hamburger { display: block; } }
     </style>
     <link rel="stylesheet" href="/assets/css/content-protection.css">
+    <noscript>
+    <style>
+    #page-loader{display:none!important}
+    body{margin:0!important;overflow:hidden!important}
+    .iraniu-noscript-wall{
+      position:fixed!important;
+      top:0!important;left:0!important;right:0!important;bottom:0!important;
+      width:100%!important;height:100%!important;
+      min-height:100vh!important;min-height:100dvh!important;
+      margin:0!important;padding:clamp(24px,5vw,48px)!important;box-sizing:border-box!important;
+      z-index:2147483647!important;background:#fff!important;
+      display:flex!important;align-items:center!important;justify-content:center!important;
+      text-align:center!important;direction:rtl!important;font-family:Tahoma,Arial,sans-serif!important;
+    }
+    .iraniu-noscript-inner{max-width:36rem!important;width:100%!important}
+    .iraniu-noscript-title{
+      margin:0!important;font-size:clamp(1.2rem,4vw,1.65rem)!important;font-weight:800!important;
+      line-height:1.65!important;color:#3a0b47!important
+    }
+    </style>
+    </noscript>
 </head>
 <body>
 <noscript>
