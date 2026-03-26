@@ -12,6 +12,7 @@
   var state = {
     history: []
   };
+  var MIN_TYPING_MS = 900;
 
   function el(tag, cls, text) {
     var n = document.createElement(tag);
@@ -112,6 +113,7 @@
 
       send.disabled = true;
       var typingEl = addTyping(log);
+      var typingStartedAt = Date.now();
       fetch(ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -120,23 +122,31 @@
       })
         .then(function (r) { return r.json(); })
         .then(function (data) {
-          if (typingEl && typingEl.parentNode) typingEl.parentNode.removeChild(typingEl);
-          if (!data || !data.ok) {
-            addMsg(log, 'assistant', 'در حال حاضر پاسخ‌گویی با اختلال مواجه شده. لطفا از واتساپ ادامه دهید.');
-            return;
-          }
-          var reply = (data.reply || '').trim();
-          if (!reply) reply = 'برای ادامه، از واتساپ با ما در ارتباط باشید.';
-          addMsg(log, 'assistant', reply);
-          state.history.push({ role: 'assistant', content: reply });
-          if (state.history.length > 12) state.history = state.history.slice(-12);
-          if (typeof data.whatsapp_url === 'string' && data.whatsapp_url) {
-            wa.href = data.whatsapp_url;
-          }
+          return { ok: true, data: data };
         })
         .catch(function () {
-          if (typingEl && typingEl.parentNode) typingEl.parentNode.removeChild(typingEl);
-          addMsg(log, 'assistant', 'خطا در اتصال. لطفا از واتساپ ادامه دهید.');
+          return { ok: false, data: null };
+        })
+        .then(function (result) {
+          var elapsed = Date.now() - typingStartedAt;
+          var wait = elapsed < MIN_TYPING_MS ? (MIN_TYPING_MS - elapsed) : 0;
+          setTimeout(function () {
+            if (typingEl && typingEl.parentNode) typingEl.parentNode.removeChild(typingEl);
+
+            if (!result.ok || !result.data || !result.data.ok) {
+              addMsg(log, 'assistant', 'در حال حاضر پاسخ‌گویی با اختلال مواجه شده. لطفا از واتساپ ادامه دهید.');
+              return;
+            }
+
+            var reply = (result.data.reply || '').trim();
+            if (!reply) reply = 'برای ادامه، از واتساپ با ما در ارتباط باشید.';
+            addMsg(log, 'assistant', reply);
+            state.history.push({ role: 'assistant', content: reply });
+            if (state.history.length > 12) state.history = state.history.slice(-12);
+            if (typeof result.data.whatsapp_url === 'string' && result.data.whatsapp_url) {
+              wa.href = result.data.whatsapp_url;
+            }
+          }, wait);
         })
         .finally(function () {
           send.disabled = false;
