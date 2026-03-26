@@ -485,7 +485,7 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
                             <a href="<?= news_h($appAndroid) ?>" rel="noopener noreferrer"><i class="fab fa-google-play fa-lg"></i> Google Play</a>
                         </div>
                         <div class="qr-download-wrap">
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=https%3A%2F%2Firaniu.uk%2FBiolink%2F" alt="QR code for IraniU Biolink">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=https%3A%2F%2Firaniu.uk%2Fapp-link.php" alt="QR code for IraniU app smart link">
                             <p>برای نصب اپلیکیشن، QR را با موبایل اسکن کنید</p>
                         </div>
                     </div>
