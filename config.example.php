@@ -17,6 +17,6 @@ return [
     'DB_USERNAME' => 'cybercinaco_app',
     'DB_PASSWORD' => 'your-db-password',
     'NEWS_CATEGORY_TABLE' => 'tbl_category',
-    'APP_STORE_URL' => 'https://apps.apple.com/app/iraniu/id000000000',
+    'APP_STORE_URL' => 'https://apps.apple.com/us/app/iraniu/id6760209069',
     'GOOGLE_PLAY_URL' => 'https://play.google.com/store/apps/details?id=uk.iraniu.app',
 ];

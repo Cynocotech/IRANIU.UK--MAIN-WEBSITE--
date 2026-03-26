@@ -65,10 +65,10 @@ try {
     $err = $e->getMessage();
 }
 
-$appIos = trim((string)($_ENV['APP_STORE_URL'] ?? getenv('APP_STORE_URL') ?: '#'));
+$appIos = trim((string)($_ENV['APP_STORE_URL'] ?? getenv('APP_STORE_URL') ?: 'https://apps.apple.com/us/app/iraniu/id6760209069'));
 $appAndroid = trim((string)($_ENV['GOOGLE_PLAY_URL'] ?? getenv('GOOGLE_PLAY_URL') ?: '#'));
 
-$ogImageDefault = 'https://panel.cybercina.co.uk/storage/logos/N0yQlVchcj4ucrQfVJwbXXB13FhWTMFccUBmWLpI.png';
+$ogImageDefault = 'https://panel.cybercina.co.uk//storage/logos/1JAs6UIE0Qiq5OwDODGsueoPVVNh7S1VtHriltIa.gif';
 $articleCanonical = ($row !== null && $id >= 1)
     ? ($siteUrl . news_article_public_path($id))
     : ($siteUrl . '/blog/news');
@@ -158,6 +158,7 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
     <meta name="twitter:title" content="<?= news_h($seoPageTitle) ?>">
     <meta name="twitter:description" content="<?= news_h($seoDescription) ?>">
     <meta name="twitter:image" content="<?= news_h($ogImageDefault) ?>">
+    <meta name="apple-itunes-app" content="app-id=6760209069">
     <?php if ($jsonLdArticle !== null): ?>
     <script type="application/ld+json"><?= news_json_encode_ld($jsonLdArticle) ?></script>
     <?php endif; ?>

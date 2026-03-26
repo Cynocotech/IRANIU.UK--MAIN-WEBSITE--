@@ -114,7 +114,7 @@ $buildPageUrl = static function (int $p) use ($blogIndexPath, $catFilter): strin
 };
 
 $siteUrl = 'https://iraniu.uk';
-$ogImageDefault = 'https://panel.cybercina.co.uk/storage/logos/N0yQlVchcj4ucrQfVJwbXXB13FhWTMFccUBmWLpI.png';
+$ogImageDefault = 'https://panel.cybercina.co.uk//storage/logos/1JAs6UIE0Qiq5OwDODGsueoPVVNh7S1VtHriltIa.gif';
 
 $canonicalQuery = [];
 if ($page > 1) {
