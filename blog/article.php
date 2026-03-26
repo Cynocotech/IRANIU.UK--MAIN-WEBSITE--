@@ -158,7 +158,6 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
     <meta name="twitter:title" content="<?= news_h($seoPageTitle) ?>">
     <meta name="twitter:description" content="<?= news_h($seoDescription) ?>">
     <meta name="twitter:image" content="<?= news_h($ogImageDefault) ?>">
-    <meta name="apple-itunes-app" content="app-id=6760209069">
     <?php if ($jsonLdArticle !== null): ?>
     <script type="application/ld+json"><?= news_json_encode_ld($jsonLdArticle) ?></script>
     <?php endif; ?>
@@ -296,6 +295,65 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
         @media (max-width: 992px) { .desktop-nav { display: none; } .hamburger { display: block; } }
     </style>
     <link rel="stylesheet" href="/assets/css/content-protection.css">
+    <style>
+        .iraniu-ios-floating-banner{
+            position: fixed;
+            top: 14px;
+            left: 14px;
+            right: 14px;
+            margin: 0 auto;
+            max-width: 560px;
+            z-index: 12000;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 22px 60px rgba(0,0,0,0.18);
+            border: 1px solid rgba(116, 32, 139, 0.14);
+            padding: 12px 14px;
+            direction: rtl;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+        .iraniu-ios-floating-banner[hidden]{ display:none !important; }
+        .iraniu-ios-floating-banner-text{
+            font-weight: 900;
+            color: #3a0b47;
+            font-size: 0.98rem;
+            line-height: 1.3;
+        }
+        .iraniu-ios-floating-banner-actions{
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+        .iraniu-ios-floating-banner-btn{
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #111111;
+            color: #fff !important;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-weight: 800;
+            text-decoration: none !important;
+        }
+        .iraniu-ios-floating-banner-close{
+            width: 36px;
+            height: 36px;
+            border-radius: 999px;
+            border: 1px solid rgba(116,32,139,0.16);
+            background: rgba(116,32,139,0.04);
+            color: #3a0b47;
+            cursor: pointer;
+            font-size: 18px;
+            line-height: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
     <noscript>
     <style>
     #page-loader{display:none!important}
@@ -326,6 +384,16 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
   </div>
 </div>
 </noscript>
+
+<div id="iraniu-ios-floating-banner" class="iraniu-ios-floating-banner" hidden role="dialog" aria-label="دانلود اپلیکیشن">
+    <div class="iraniu-ios-floating-banner-text">برای نصب اپلیکیشن ایرانیو از App Store استفاده کنید</div>
+    <div class="iraniu-ios-floating-banner-actions">
+        <a class="iraniu-ios-floating-banner-btn" href="https://apps.apple.com/us/app/iraniu/id6760209069" rel="noopener noreferrer">
+            <i class="fab fa-apple" aria-hidden="true"></i> App Store
+        </a>
+        <button class="iraniu-ios-floating-banner-close" type="button" data-close aria-label="بستن">×</button>
+    </div>
+</div>
 
 <header>
     <div class="nav-container">
@@ -444,5 +512,31 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
     </div>
 </footer>
 <script src="/assets/js/copy-guard.js" defer></script>
+<script>
+    (function(){
+        try{
+            var ua = navigator.userAgent || '';
+            var isIOS = /iPad|iPhone|iPod/.test(ua) && !/MSStream/.test(ua);
+            if (!isIOS) return;
+
+            var el = document.getElementById('iraniu-ios-floating-banner');
+            if (!el) return;
+
+            var key = 'iraniu_ios_floating_banner_dismissed_v1';
+            var dismissed = false;
+            try { dismissed = window.localStorage.getItem(key) === '1'; } catch(e) { dismissed = false; }
+            if (dismissed) return;
+
+            el.hidden = false;
+            var btn = el.querySelector('[data-close]');
+            if (btn) {
+                btn.addEventListener('click', function(){
+                    el.hidden = true;
+                    try { window.localStorage.setItem(key, '1'); } catch(e) {}
+                });
+            }
+        }catch(e){}
+    })();
+</script>
 </body>
 </html>
