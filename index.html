@@ -109,15 +109,15 @@
 
         /* --- Hero Section --- */
         .hero {
-            background: transparent;
+            background: linear-gradient(135deg, var(--dark-purple), var(--brand-purple));
             color: white; padding: 60px 20px 160px;
             display: flex; align-items: center; justify-content: center;
             min-height: 700px; position: relative; overflow: hidden;
         }
         .hero-video-bg{
-            position: fixed;
+            position: absolute;
             inset: 0;
-            z-index: 0;
+            z-index: 1;
             opacity: 0.12; /* low opacity background */
             pointer-events: none;
             overflow: hidden;
