@@ -301,7 +301,6 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
 <div class="iraniu-noscript-wall" role="alert" aria-live="polite">
   <div class="iraniu-noscript-inner">
     <p class="iraniu-noscript-title">برای مشاهده و استفاده از این سایت، جاوااسکریپت را در مرورگر فعال کنید.</p>
-    <p class="iraniu-noscript-sub">Please enable JavaScript to use IraniU.</p>
   </div>
 </div>
 </noscript>
