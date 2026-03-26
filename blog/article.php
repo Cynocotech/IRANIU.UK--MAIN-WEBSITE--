@@ -298,6 +298,7 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
         }
         .social-links a:hover { background: rgba(255, 255, 255, 0.22); transform: translateY(-2px); }
         .footer-copy { margin-top: 22px; opacity: 0.78; font-size: 0.84rem; line-height: 1.6; }
+        @media (max-width: 992px) { .qr-download-wrap { display: none !important; } }
         @media (max-width: 992px) { .desktop-nav { display: none; } .hamburger { display: block; } }
     </style>
     <link rel="stylesheet" href="/assets/css/content-protection.css">
