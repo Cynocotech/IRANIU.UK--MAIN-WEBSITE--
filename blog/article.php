@@ -302,7 +302,6 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
         @media (max-width: 992px) { .desktop-nav { display: none; } .hamburger { display: block; } }
     </style>
     <link rel="stylesheet" href="/assets/css/content-protection.css">
-    <link rel="stylesheet" href="/assets/css/chat-widget.css">
     <style>
         .iraniu-ios-floating-banner{
             position: fixed;
@@ -550,6 +549,5 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
         }catch(e){}
     })();
 </script>
-<script src="/assets/js/chat-widget.js" defer></script>
 </body>
 </html>

@@ -309,7 +309,6 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
         @media (max-width: 992px) { .desktop-nav { display: none; } .hamburger { display: block; } }
     </style>
     <link rel="stylesheet" href="/assets/css/content-protection.css">
-    <link rel="stylesheet" href="/assets/css/chat-widget.css">
     <noscript>
     <style>
     #page-loader{display:none!important}
@@ -531,6 +530,5 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
 </footer>
 <script src="/assets/js/copy-guard.js" defer></script>
 <script src="/blog/blog-search.js" defer></script>
-<script src="/assets/js/chat-widget.js" defer></script>
 </body>
 </html>
