@@ -266,6 +266,12 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
             padding: 12px 22px; border-radius: 12px; font-size: 0.9rem; font-weight: 700;
         }
         .store-btns a:hover { filter: brightness(1.12); color: #fff !important; }
+        .qr-download-wrap { margin-top: 16px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        .qr-download-wrap img {
+            width: 120px; height: 120px; border-radius: 10px; background: #fff;
+            border: 1px solid rgba(116,32,139,0.2); padding: 6px;
+        }
+        .qr-download-wrap p { margin: 0; font-size: 0.82rem; color: #5a4d62; font-weight: 700; }
         .back-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 28px; font-size: 0.95rem; }
         .alert { background: #ffebee; color: #b71c1c; padding: 20px; border-radius: 14px; border: 1px solid #ffcdd2; }
         footer {
@@ -477,6 +483,10 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
                         <div class="store-btns">
                             <a href="<?= news_h($appIos) ?>" rel="noopener noreferrer"><i class="fab fa-apple fa-lg"></i> App Store</a>
                             <a href="<?= news_h($appAndroid) ?>" rel="noopener noreferrer"><i class="fab fa-google-play fa-lg"></i> Google Play</a>
+                        </div>
+                        <div class="qr-download-wrap">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=https%3A%2F%2Firaniu.uk%2FBiolink%2F" alt="QR code for IraniU Biolink">
+                            <p>برای نصب اپلیکیشن، QR را با موبایل اسکن کنید</p>
                         </div>
                     </div>
                     <div class="body-blur-wrap">
