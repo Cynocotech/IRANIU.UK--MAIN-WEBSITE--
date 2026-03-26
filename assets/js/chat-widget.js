@@ -3,6 +3,12 @@
 
   var ENDPOINT = '/chat-assistant.php';
   var GREETING = 'سلام! من دستیار ایرانیو هستم. چه کمکی از دستم برمیاد؟';
+  var QUICK_QUESTIONS = [
+    'چطور در IraniU آگهی ثبت کنم؟',
+    'چطور آگهی مناسب در شهر خودم پیدا کنم؟',
+    'چه دسته‌بندی‌هایی در اپ وجود دارد؟',
+    'چطور با پشتیبانی انسانی در واتساپ صحبت کنم؟'
+  ];
   var state = {
     history: []
   };
@@ -18,12 +24,22 @@
     var row = el('div', 'iraniu-chat-msg ' + (role === 'user' ? 'iraniu-chat-msg--user' : 'iraniu-chat-msg--bot'), text);
     log.appendChild(row);
     log.scrollTop = log.scrollHeight;
+    return row;
+  }
+
+  function addTyping(log) {
+    var row = el('div', 'iraniu-chat-msg iraniu-chat-msg--bot iraniu-chat-msg--typing');
+    row.innerHTML = '<span class="iraniu-chat-dot"></span><span class="iraniu-chat-dot"></span><span class="iraniu-chat-dot"></span>';
+    log.appendChild(row);
+    log.scrollTop = log.scrollHeight;
+    return row;
   }
 
   function buildWidget() {
-    var launcher = el('button', 'iraniu-chat-launcher', '💬');
+    var launcher = el('button', 'iraniu-chat-launcher');
     launcher.type = 'button';
     launcher.setAttribute('aria-label', 'باز کردن چت');
+    launcher.innerHTML = '<i class="fas fa-comments" aria-hidden="true"></i>';
 
     var panel = el('section', 'iraniu-chat-panel');
     panel.hidden = true;
@@ -57,8 +73,20 @@
     wa.rel = 'noopener';
     actions.appendChild(wa);
 
+    var quick = el('div', 'iraniu-chat-quick');
+    QUICK_QUESTIONS.forEach(function (q) {
+      var chip = el('button', 'iraniu-chat-chip', q);
+      chip.type = 'button';
+      chip.addEventListener('click', function () {
+        input.value = q;
+        form.dispatchEvent(new Event('submit', { cancelable: true }));
+      });
+      quick.appendChild(chip);
+    });
+
     panel.appendChild(head);
     panel.appendChild(log);
+    panel.appendChild(quick);
     panel.appendChild(form);
     panel.appendChild(actions);
 
@@ -83,6 +111,7 @@
       if (state.history.length > 12) state.history = state.history.slice(-12);
 
       send.disabled = true;
+      var typingEl = addTyping(log);
       fetch(ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -91,6 +120,7 @@
       })
         .then(function (r) { return r.json(); })
         .then(function (data) {
+          if (typingEl && typingEl.parentNode) typingEl.parentNode.removeChild(typingEl);
           if (!data || !data.ok) {
             addMsg(log, 'assistant', 'در حال حاضر پاسخ‌گویی با اختلال مواجه شده. لطفا از واتساپ ادامه دهید.');
             return;
@@ -105,6 +135,7 @@
           }
         })
         .catch(function () {
+          if (typingEl && typingEl.parentNode) typingEl.parentNode.removeChild(typingEl);
           addMsg(log, 'assistant', 'خطا در اتصال. لطفا از واتساپ ادامه دهید.');
         })
         .finally(function () {
