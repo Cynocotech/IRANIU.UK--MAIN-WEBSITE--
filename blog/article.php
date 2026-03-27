@@ -408,6 +408,7 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
         <nav class="desktop-nav">
             <a href="/">صفحه اصلی</a>
             <a href="/blog/">مقالات</a>
+            <a href="/adverts-prices">لیست قیمت تبلیغات</a>
             <a href="/blog/news">اخبار</a>
             <a href="/contact">تماس</a>
         </nav>
@@ -416,6 +417,7 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
     <nav class="mobile-nav" id="mnav">
         <a href="/">صفحه اصلی</a>
         <a href="/blog/">مقالات</a>
+        <a href="/adverts-prices">لیست قیمت تبلیغات</a>
         <a href="/blog/news">اخبار</a>
         <a href="/contact">تماس</a>
     </nav>
@@ -507,6 +509,7 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
         <div class="footer-links">
             <a href="/">صفحه اصلی</a>
             <a href="/blog/">مقالات</a>
+            <a href="/adverts-prices">لیست قیمت تبلیغات</a>
             <a href="/blog/news">فهرست مطالب</a>
             <a href="/careers">فرصت‌های شغلی</a>
             <a href="/report">گزارش تخلف</a>

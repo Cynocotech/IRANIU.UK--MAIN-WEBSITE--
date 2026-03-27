@@ -346,6 +346,7 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
         <nav class="desktop-nav">
             <a href="/">صفحه اصلی</a>
             <a href="/blog/">مقالات</a>
+            <a href="/adverts-prices">لیست قیمت تبلیغات</a>
             <a href="/careers">فرصت‌های شغلی</a>
             <a href="/report">گزارش تخلف</a>
             <a href="/contact">تماس با ما</a>
@@ -355,6 +356,7 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
     <nav class="mobile-nav" id="mnav">
         <a href="/" onclick="document.getElementById('mnav').classList.remove('open')">صفحه اصلی</a>
         <a href="/blog/" onclick="document.getElementById('mnav').classList.remove('open')">مقالات</a>
+        <a href="/adverts-prices" onclick="document.getElementById('mnav').classList.remove('open')">لیست قیمت تبلیغات</a>
         <a href="/careers" onclick="document.getElementById('mnav').classList.remove('open')">فرصت‌های شغلی</a>
         <a href="/report" onclick="document.getElementById('mnav').classList.remove('open')">گزارش تخلف</a>
         <a href="/contact" onclick="document.getElementById('mnav').classList.remove('open')">تماس با ما</a>
@@ -515,6 +517,7 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
     <div class="footer-links">
         <a href="/">صفحه اصلی</a>
         <a href="/blog/">مقالات</a>
+        <a href="/adverts-prices">لیست قیمت تبلیغات</a>
         <a href="/careers">فرصت‌های شغلی</a>
         <a href="/report">گزارش تخلف</a>
         <a href="/contact">تماس با ما</a>
