@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#3a0b47">
     <title>لیست قیمت تبلیغات | IraniU</title>
-    <meta name="description" content="تعرفهٔ هفتگی جایگاه‌های تبلیغاتی ایرانیو — صفحه اصلی، اخبار، نیازمندی‌ها، صرافی و سایر بخش‌ها.">
-    <meta name="keywords" content="تعرفه تبلیغات ایرانیو, قیمت آگهی IraniU, تبلیغات UK, advertising rates">
+    <meta name="description" content="تعرفهٔ هفتگی و پکیج ترکیبی تبلیغات در اپلیکیشن ایرانیو — صفحهٔ خانه، اخبار، نیازمندی‌ها، صرافی و اعلان‌ها.">
+    <meta name="keywords" content="تعرفه تبلیغات ایرانیو, قیمت آگهی IraniU, تبلیغات UK">
     <meta name="author" content="IraniU">
     <meta name="robots" content="index, follow, max-image-preview:large">
     <link rel="canonical" href="https://iraniu.uk/adverts-prices">
@@ -15,11 +15,11 @@
     <meta property="og:locale" content="fa_IR">
     <meta property="og:url" content="https://iraniu.uk/adverts-prices">
     <meta property="og:title" content="لیست قیمت تبلیغات | IraniU">
-    <meta property="og:description" content="تعرفهٔ هفتگی جایگاه‌های تبلیغاتی پلتفرم ایرانیو.">
+    <meta property="og:description" content="تعرفهٔ هفتگی جایگاه‌ها و پکیج‌های ترکیبی تبلیغات در ایرانیو.">
     <meta property="og:image" content="https://panel.cybercina.co.uk//storage/logos/1JAs6UIE0Qiq5OwDODGsueoPVVNh7S1VtHriltIa.gif">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="لیست قیمت تبلیغات | IraniU">
-    <meta name="twitter:description" content="تعرفهٔ هفتگی جایگاه‌های تبلیغاتی ایرانیو.">
+    <meta name="twitter:description" content="تعرفهٔ هفتگی جایگاه‌ها و پکیج‌های ترکیبی تبلیغات در ایرانیو.">
     <meta name="twitter:image" content="https://panel.cybercina.co.uk//storage/logos/1JAs6UIE0Qiq5OwDODGsueoPVVNh7S1VtHriltIa.gif">
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-4R1H98RJ7J"></script>
@@ -33,14 +33,16 @@
     <link rel="icon" type="image/gif" href="https://panel.cybercina.co.uk//storage/logos/1JAs6UIE0Qiq5OwDODGsueoPVVNh7S1VtHriltIa.gif">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
     <style>
-        @font-face { font-family: 'Yekan Bakh'; src: url('fonts/YekanBakh-Regular.woff') format('woff'); }
+        @font-face { font-family: 'Yekan Bakh'; src: url('fonts/YekanBakh-Regular.woff') format('woff'); font-weight: normal; }
+        @font-face { font-family: 'Yekan Bakh'; src: url('fonts/YekanBakh-Bold.woff') format('woff'); font-weight: bold; }
         :root { --brand-purple: #74208b; --dark-purple: #3a0b47; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Yekan Bakh', Tahoma, sans-serif; text-decoration: none; }
         body { background-color: #fdfdfd; color: #1a1a1a; overflow-x: hidden; line-height: 1.8; }
         header { background: var(--dark-purple); padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.1); position: sticky; top: 0; z-index: 1000; }
         .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
         .logo img { height: 50px; display: block; }
-        .desktop-nav a { color: white; font-weight: bold; margin-right: 25px; font-size: 0.9rem; opacity: 0.9; }
+        .desktop-nav { display: flex; flex-wrap: wrap; gap: 22px; align-items: center; }
+        .desktop-nav a { color: white; font-weight: bold; font-size: 0.9rem; opacity: 0.9; }
         .desktop-nav a:hover { color: var(--brand-purple); opacity: 1; }
         .hamburger { display: none; font-size: 1.5rem; color: white; cursor: pointer; }
         .mobile-nav { position: fixed; top: 74px; right: -100%; width: 100%; height: 100vh; background: var(--dark-purple); display: flex; flex-direction: column; align-items: center; padding-top: 50px; transition: 0.4s; z-index: 999; }
@@ -48,10 +50,95 @@
         .mobile-nav a { font-size: 1.2rem; color: white; margin-bottom: 25px; font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.1); width: 80%; text-align: center; padding-bottom: 10px; }
         .page-hero { background: linear-gradient(135deg, var(--dark-purple), var(--brand-purple)); color: white; padding: 70px 20px; text-align: center; }
         .page-hero h1 { font-size: 2.2rem; margin-bottom: 15px; font-weight: 800; }
-        .page-hero .meta { opacity: 0.92; font-size: 1rem; margin: 0; }
-        .container { max-width: 900px; margin: -40px auto 100px; padding: 0 20px; }
-        .price-card { background: white; padding: 40px; border-radius: 25px; box-shadow: 0 15px 40px rgba(0,0,0,0.1); border: 1px solid #eee; }
-        .price-card .intro { margin-bottom: 28px; color: #444; text-align: justify; }
+        .page-hero .meta { opacity: 0.92; font-size: 1rem; margin: 0 auto; max-width: 36rem; }
+        .container { max-width: 1100px; margin: -40px auto 100px; padding: 0 20px; }
+        .price-card { background: transparent; padding: 0; border-radius: 0; box-shadow: none; border: none; }
+        .price-card .intro { margin-bottom: 24px; color: #444; text-align: justify; }
+        .price-card .intro.intro-cta {
+            text-align: center;
+            color: #fff;
+            background: linear-gradient(135deg, var(--dark-purple), var(--brand-purple));
+            padding: 16px 22px;
+            border-radius: 14px;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            box-shadow: 0 8px 28px rgba(58, 11, 71, 0.2);
+        }
+        .price-card .intro.intro-cta a { color: #fff; font-weight: 800; text-decoration: underline; text-underline-offset: 4px; }
+        .price-card .intro.intro-cta a:hover { opacity: 0.92; }
+        .price-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.15rem;
+            margin-bottom: 2rem;
+        }
+        .price-block {
+            background: #fff;
+            border: 1px solid #e8e4ec;
+            border-radius: 18px;
+            padding: 1.25rem 1.35rem;
+            box-shadow: 0 10px 32px rgba(58, 11, 71, 0.07);
+            min-width: 0;
+        }
+        .price-block h3 {
+            font-size: 1.05rem;
+            color: var(--dark-purple);
+            margin: 0 0 14px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(116, 32, 139, 0.22);
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .price-block h3 i { color: var(--brand-purple); opacity: 0.9; font-size: 1rem; }
+        .price-block .price-table-wrap { border-radius: 10px; border-color: #e6e0eb; }
+        .price-block .price-table { font-size: 0.9rem; }
+        .price-block .price-table tbody td { padding: 10px 12px; }
+        .package-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.15rem;
+            margin-bottom: 0.5rem;
+        }
+        .package-block {
+            background: linear-gradient(165deg, #fff 0%, #faf7fc 100%);
+            border: 1px solid rgba(116, 32, 139, 0.18);
+            border-radius: 18px;
+            padding: 1.35rem 1.25rem;
+            box-shadow: 0 12px 36px rgba(58, 11, 71, 0.08);
+        }
+        .package-block h3 {
+            font-size: 1.1rem;
+            color: var(--dark-purple);
+            margin: 0 0 14px;
+            font-weight: 900;
+            text-align: center;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(116, 32, 139, 0.15);
+        }
+        .package-block .pkg-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 12px;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 0.88rem;
+        }
+        .package-block .pkg-row:last-child { border-bottom: none; }
+        .package-block .pkg-label { color: #555; }
+        .package-block .pkg-price { direction: ltr; font-variant-numeric: tabular-nums; font-weight: 700; color: var(--dark-purple); white-space: nowrap; }
+        .package-block.bronze { border-top: 4px solid #cd7f32; }
+        .package-block.silver { border-top: 4px solid #a8a8a8; }
+        .package-block.gold { border-top: 4px solid #d4af37; }
+        .package-tier-sub { text-align: center; font-size: 0.82rem; color: #666; margin: -6px 0 10px; }
+        .package-includes { margin: 0 0 14px; padding: 12px 12px 10px; background: rgba(116, 32, 139, 0.06); border-radius: 12px; border: 1px solid rgba(116, 32, 139, 0.12); text-align: right; }
+        .package-includes-title { font-size: 0.78rem; font-weight: 800; color: var(--dark-purple); margin: 0 0 8px; }
+        .package-list { margin: 0; padding: 0 1rem 0 0; font-size: 0.78rem; color: #444; line-height: 1.6; list-style: disc; }
+        .package-list li { margin-bottom: 6px; }
+        .package-list li:last-child { margin-bottom: 0; }
+        .pkg-prices-head { font-size: 0.78rem; font-weight: 800; color: #555; margin: 4px 0 8px; text-align: center; padding-top: 4px; border-top: 1px dashed rgba(116, 32, 139, 0.2); }
         .price-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 12px; border: 1px solid #e0e7ef; }
         .price-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
         .price-table thead th { background: #cfe8f8; color: #1a3a52; font-weight: 800; padding: 14px 16px; text-align: right; border-bottom: 2px solid #b8d9ee; }
@@ -61,6 +148,14 @@
         .price-table tbody td:nth-child(2) { text-align: center; font-variant-numeric: tabular-nums; direction: ltr; }
         .price-table tbody tr:nth-child(even) { background: #fafbfc; }
         .price-note { margin-top: 22px; font-size: 0.9rem; color: #666; }
+        .price-section-title {
+            color: var(--dark-purple);
+            font-size: 1.35rem;
+            margin: 8px 0 16px;
+            font-weight: 800;
+            border-right: 4px solid var(--brand-purple);
+            padding-right: 12px;
+        }
         footer { background: var(--dark-purple); color: white; padding: 60px 20px 80px; text-align: center; }
         .footer-links { margin-bottom: 25px; }
         .footer-links a { color: white; margin: 0 12px; font-size: 0.85rem; opacity: 0.7; }
@@ -68,7 +163,69 @@
         .footer-logo img { height: 60px; margin-bottom: 20px; }
         .social-links { display: flex; justify-content: center; gap: 15px; margin: 20px 0; }
         .social-links a { color: white; font-size: 1.2rem; background: rgba(255,255,255,0.1); width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: 0.3s; }
-        @media (max-width: 992px) { .desktop-nav { display: none; } .hamburger { display: block; } .price-card { padding: 24px; } }
+        .pkg-req-btn {
+            width: 100%;
+            margin-top: 14px;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 0.92rem;
+            cursor: pointer;
+            font-family: inherit;
+            transition: opacity 0.2s, transform 0.15s;
+        }
+        .pkg-req-btn:hover { opacity: 0.95; transform: translateY(-1px); }
+        .package-block.bronze .pkg-req-btn { background: linear-gradient(135deg, #8b5a2b, #cd7f32); color: #fff; }
+        .package-block.silver .pkg-req-btn { background: linear-gradient(135deg, #6a6a6a, #b8b8b8); color: #fff; }
+        .package-block.gold .pkg-req-btn { background: linear-gradient(135deg, #b8860b, #e8c547); color: #1a1a1a; }
+        .package-request-section {
+            background: #fff;
+            border: 1px solid #e8e4ec;
+            border-radius: 18px;
+            padding: 1.5rem 1.35rem 1.65rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 10px 32px rgba(58, 11, 71, 0.07);
+        }
+        .package-request-section h3 {
+            color: var(--dark-purple);
+            font-size: 1.15rem;
+            margin: 0 0 8px;
+            text-align: center;
+            font-weight: 900;
+        }
+        .pkg-selected-display { text-align: center; font-weight: 800; color: var(--brand-purple); margin-bottom: 16px; font-size: 0.92rem; min-height: 1.4em; }
+        .pkg-form .form-group { margin-bottom: 14px; }
+        .pkg-form .form-group label { display: block; font-weight: 700; color: var(--dark-purple); margin-bottom: 6px; font-size: 0.88rem; }
+        .pkg-form .form-group input, .pkg-form .form-group textarea, .pkg-form .phone-prefix-select {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            font-family: inherit;
+            font-size: 0.92rem;
+        }
+        .pkg-form .form-group textarea { resize: vertical; min-height: 88px; }
+        .submit-btn-pkg {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--dark-purple), var(--brand-purple));
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 6px;
+            font-family: inherit;
+        }
+        .submit-btn-pkg:disabled { opacity: 0.65; cursor: not-allowed; }
+        #pkg-form-status { margin-top: 12px; text-align: center; font-size: 0.88rem; min-height: 1.3em; }
+        .turnstile-label { font-size: 0.88rem; font-weight: 700; color: var(--dark-purple); margin-bottom: 8px; display: block; }
+        .iraniu-turnstile-mount { min-height: 72px; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; }
+        .iraniu-turnstile-mount iframe { max-width: 100%; }
+        .turnstile-hint { font-size: 0.78rem; color: #666; margin-top: 10px; line-height: 1.5; }
+        @media (max-width: 992px) { .desktop-nav { display: none; } .hamburger { display: block; } }
     </style>
     <link rel="stylesheet" href="/assets/css/content-protection.css">
     <noscript>
@@ -127,36 +284,205 @@
 
 <section class="page-hero">
     <h1>لیست قیمت تبلیغات</h1>
-    <p class="meta">قیمت‌ها به پوند استرلینگ، به‌ازای هر هفته</p>
 </section>
 
 <div class="container">
     <div class="price-card">
-        <p class="intro">جدول زیر تعرفهٔ هفتگی جایگاه‌های تبلیغاتی در پلتفرم ایرانیو را نشان می‌دهد. برای رزرو یا سوال بیشتر با ما از طریق صفحهٔ تماس در ارتباط باشید.</p>
-        <div class="price-table-wrap">
-            <table class="price-table">
-                <thead>
-                    <tr>
-                        <th scope="col">جایگاه</th>
-                        <th scope="col">قیمت هفتگی (£)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td>Main Page 1</td><td>30</td></tr>
-                    <tr><td>Main Page 2</td><td>20</td></tr>
-                    <tr><td>Main Page 3</td><td>10</td></tr>
-                    <tr><td>Main Page 4</td><td>5</td></tr>
-                    <tr><td>News Header</td><td>15</td></tr>
-                    <tr><td>News Footer</td><td>5</td></tr>
-                    <tr><td>Niazmandiha 1</td><td>20</td></tr>
-                    <tr><td>Niazmandiha 2</td><td>20</td></tr>
-                    <tr><td>Sarafi Convert</td><td>30</td></tr>
-                    <tr><td>Sarafi Main</td><td>30</td></tr>
-                    <tr><td>Full Page Ads - News</td><td>30</td></tr>
-                </tbody>
-            </table>
+        <p class="intro intro-cta">برای رزرو یا پرسش بیشتر لطفاً از طریق <a href="/contact">تماس با ما</a> اقدام کنید.</p>
+
+        <div class="price-grid" aria-label="جایگاه‌های تبلیغاتی هفتگی">
+            <section class="price-block">
+                <h3><i class="fas fa-house-chimney" aria-hidden="true"></i> صفحهٔ خانه — بالای بخش‌ها</h3>
+                <div class="price-table-wrap">
+                    <table class="price-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">جایگاه</th>
+                                <th scope="col">هفتگی (£)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>بالای بخش جدیدترین‌ها</td><td>£30.00</td></tr>
+                            <tr><td>بالای رویدادهای بین‌المللی</td><td>£20.00</td></tr>
+                            <tr><td>بالای اخبار روزانهٔ GOV.UK</td><td>£10.00</td></tr>
+                            <tr><td>بالای اخبار سایبری</td><td>£5.00</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="price-block">
+                <h3><i class="fas fa-newspaper" aria-hidden="true"></i> بخش اخبار</h3>
+                <div class="price-table-wrap">
+                    <table class="price-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">جایگاه</th>
+                                <th scope="col">هفتگی (£)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>سربرگ بخش اخبار</td><td>£15.00</td></tr>
+                            <tr><td>پاورقی بخش اخبار</td><td>£5.00</td></tr>
+                            <tr><td>تبلیغ تمام‌صفحه در بخش اخبار</td><td>£30.00</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="price-block">
+                <h3><i class="fas fa-bullhorn" aria-hidden="true"></i> نیازمندی‌ها و صرافی</h3>
+                <div class="price-table-wrap">
+                    <table class="price-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">جایگاه</th>
+                                <th scope="col">هفتگی (£)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>نیازمندی‌ها — جایگاه اول</td><td>£20.00</td></tr>
+                            <tr><td>نیازمندی‌ها — جایگاه دوم</td><td>£20.00</td></tr>
+                            <tr><td>صرافی — بخش تبدیل ارز</td><td>£30.00</td></tr>
+                            <tr><td>صرافی — صفحهٔ اصلی</td><td>£30.00</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="price-block">
+                <h3><i class="fas fa-bell" aria-hidden="true"></i> اعلان‌ها</h3>
+                <div class="price-table-wrap">
+                    <table class="price-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">جایگاه</th>
+                                <th scope="col">هفتگی (£)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>پوش ناتیفیکیشن</td><td>£250.00</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
         </div>
-        <p class="price-note">قیمت‌ها ممکن است بدون اطلاع قبلی به‌روز شوند؛ نسخهٔ معتبر همان است که در همین صفحه منتشر می‌شود.</p>
+
+        <h2 class="price-section-title">پکیج‌های ترکیبی</h2>
+        <p class="intro">برای آگهی در چند جایگاه هم‌زمان، سه سطح پکیج با دورهٔ پرداخت <strong>ماهانه</strong>، <strong>۳ ماهه</strong>، <strong>۶ ماهه</strong> و <strong>یک‌ساله</strong> در دسترس است. تخفیف دوره‌ای نسبت به پرداخت ماه‌به‌ماه لحاظ شده است. محتوای هر پکیج در کارت همان سطح آمده است.</p>
+
+        <div class="package-grid" aria-label="پکیج‌های ترکیبی">
+            <div class="package-block bronze">
+                <h3>پکیج برنز</h3>
+                <p class="package-tier-sub">ترکیبی — پایه</p>
+                <div class="package-includes">
+                    <p class="package-includes-title">این پکیج شامل:</p>
+                    <ul class="package-list">
+                        <li>یک جایگاه از بین: بالای اخبار روزانهٔ GOV.UK یا بالای اخبار سایبری</li>
+                        <li>پاورقی بخش اخبار</li>
+                        <li>یک جایگاه نیازمندی‌ها (جایگاه اول یا دوم، به انتخاب شما)</li>
+                    </ul>
+                </div>
+                <p class="pkg-prices-head">تعرفهٔ دوره‌ای</p>
+                <div class="pkg-row"><span class="pkg-label">ماهانه</span><span class="pkg-price">£249.00</span></div>
+                <div class="pkg-row"><span class="pkg-label">۳ ماهه</span><span class="pkg-price">£649.00</span></div>
+                <div class="pkg-row"><span class="pkg-label">۶ ماهه</span><span class="pkg-price">£1,199.00</span></div>
+                <div class="pkg-row"><span class="pkg-label">یک‌ساله</span><span class="pkg-price">£2,199.00</span></div>
+                <button type="button" class="pkg-req-btn" data-package="bronze" onclick="iraniuSelectPackage('bronze')">ارسال درخواست این پکیج</button>
+            </div>
+            <div class="package-block silver">
+                <h3>پکیج نقره‌ای</h3>
+                <p class="package-tier-sub">ترکیبی — استاندارد</p>
+                <div class="package-includes">
+                    <p class="package-includes-title">این پکیج شامل:</p>
+                    <ul class="package-list">
+                        <li>بالای رویدادهای بین‌المللی و بالای اخبار روزانهٔ GOV.UK (هر دو هم‌زمان)</li>
+                        <li>سربرگ بخش اخبار</li>
+                        <li>هر دو جایگاه نیازمندی‌ها (اول و دوم)</li>
+                    </ul>
+                </div>
+                <p class="pkg-prices-head">تعرفهٔ دوره‌ای</p>
+                <div class="pkg-row"><span class="pkg-label">ماهانه</span><span class="pkg-price">£449.00</span></div>
+                <div class="pkg-row"><span class="pkg-label">۳ ماهه</span><span class="pkg-price">£1,149.00</span></div>
+                <div class="pkg-row"><span class="pkg-label">۶ ماهه</span><span class="pkg-price">£2,099.00</span></div>
+                <div class="pkg-row"><span class="pkg-label">یک‌ساله</span><span class="pkg-price">£3,899.00</span></div>
+                <button type="button" class="pkg-req-btn" data-package="silver" onclick="iraniuSelectPackage('silver')">ارسال درخواست این پکیج</button>
+            </div>
+            <div class="package-block gold">
+                <h3>پکیج طلا</h3>
+                <p class="package-tier-sub">ترکیبی — ویژه</p>
+                <div class="package-includes">
+                    <p class="package-includes-title">این پکیج شامل:</p>
+                    <ul class="package-list">
+                        <li>بالای بخش جدیدترین‌ها و بالای رویدادهای بین‌المللی</li>
+                        <li>سربرگ بخش اخبار و تبلیغ تمام‌صفحه در بخش اخبار</li>
+                        <li>هر دو جایگاه صرافی (تبدیل ارز و صفحهٔ اصلی)</li>
+                        <li>یک پوش ناتیفیکیشن در طول دورهٔ قرارداد</li>
+                    </ul>
+                </div>
+                <p class="pkg-prices-head">تعرفهٔ دوره‌ای</p>
+                <div class="pkg-row"><span class="pkg-label">ماهانه</span><span class="pkg-price">£749.00</span></div>
+                <div class="pkg-row"><span class="pkg-label">۳ ماهه</span><span class="pkg-price">£1,899.00</span></div>
+                <div class="pkg-row"><span class="pkg-label">۶ ماهه</span><span class="pkg-price">£3,499.00</span></div>
+                <div class="pkg-row"><span class="pkg-label">یک‌ساله</span><span class="pkg-price">£6,499.00</span></div>
+                <button type="button" class="pkg-req-btn" data-package="gold" onclick="iraniuSelectPackage('gold')">ارسال درخواست این پکیج</button>
+            </div>
+        </div>
+
+        <section class="package-request-section" id="package-request-section" aria-label="فرم درخواست پکیج">
+            <h3>درخواست پکیج تبلیغات</h3>
+            <p class="pkg-selected-display" id="pkg-selected-display">ابتدا یکی از دکمه‌های «ارسال درخواست این پکیج» را در کارت بالا بزنید، سپس فرم را تکمیل کنید.</p>
+            <form id="package-request-form" class="pkg-form" action="/package-request.php" method="post">
+                <input type="hidden" name="package" id="package-request-package" value="" autocomplete="off">
+                <div class="form-group">
+                    <label for="pkg-name">نام و نام خانوادگی</label>
+                    <input type="text" id="pkg-name" name="name" required maxlength="200" placeholder="مثلاً: علی رضایی" autocomplete="name">
+                </div>
+                <div class="form-group">
+                    <label for="pkg-email">ایمیل</label>
+                    <input type="email" id="pkg-email" name="email" required maxlength="254" placeholder="example@mail.com" dir="ltr" style="direction:ltr;text-align:left;" autocomplete="email">
+                </div>
+                <div class="form-group">
+                    <label>شماره تماس <span style="font-weight:400;opacity:.75">(اختیاری)</span></label>
+                    <div dir="ltr" style="display:flex;flex-direction:row;gap:10px;direction:ltr;text-align:left;">
+                        <select name="phone_prefix" class="phone-prefix-select" style="max-width:130px;">
+                            <option value="">—</option>
+                            <option value="+44">🇬🇧 +44</option>
+                            <option value="+98">🇮🇷 +98</option>
+                            <option value="+1">🇺🇸 +1</option>
+                            <option value="+61">🇦🇺 +61</option>
+                            <option value="+49">🇩🇪 +49</option>
+                            <option value="+33">🇫🇷 +33</option>
+                            <option value="+39">🇮🇹 +39</option>
+                            <option value="+34">🇪🇸 +34</option>
+                            <option value="+31">🇳🇱 +31</option>
+                            <option value="+971">🇦🇪 +971</option>
+                            <option value="+90">🇹🇷 +90</option>
+                            <option value="+966">🇸🇦 +966</option>
+                            <option value="+46">🇸🇪 +46</option>
+                            <option value="+41">🇨🇭 +41</option>
+                            <option value="+81">🇯🇵 +81</option>
+                            <option value="+91">🇮🇳 +91</option>
+                            <option value="+27">🇿🇦 +27</option>
+                        </select>
+                        <input type="tel" name="phone" placeholder="7700 900000" maxlength="30" style="flex:1;direction:ltr;">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="pkg-message">توضیحات <span style="font-weight:400;opacity:.75">(اختیاری)</span></label>
+                    <textarea id="pkg-message" name="message" rows="3" maxlength="5000" placeholder="در صورت تمایل، توضیح کوتاه یا سوال خود را بنویسید."></textarea>
+                </div>
+                <div class="form-group" data-copy-allowed>
+                    <span class="turnstile-label">تأیید امنیتی (ربات نیستید)</span>
+                    <div id="iraniu-turnstile-pkg" class="iraniu-turnstile-mount" data-copy-allowed></div>
+                    <p class="turnstile-hint">اگر کادر بالا بعد از چند ثانیه ظاهر نشد، صفحه را یک‌بار رفرش کنید یا موقتاً فیلترشکن/بلاکر تبلیغات را خاموش کنید.</p>
+                </div>
+                <button type="submit" class="submit-btn-pkg" id="pkg-submit-btn">ثبت درخواست</button>
+                <p id="pkg-form-status" role="status" aria-live="polite"></p>
+            </form>
+        </section>
+
+        <p class="price-note">پکیج‌های ترکیبی بر اساس انتخاب هم‌زمان چند جایگاه از بلوک‌های بالا تعریف می‌شوند؛ جزئیات دقیق و قیمت نهایی پس از هماهنگی با شما اعلام می‌شود. قیمت‌ها ممکن است بدون اطلاع قبلی به‌روز شوند؛ نسخهٔ معتبر همان است که در همین صفحه منتشر می‌شود.</p>
     </div>
 </div>
 
@@ -173,14 +499,110 @@
     </div>
     <div class="footer-logo"><img src="https://panel.cybercina.co.uk//storage/logos/N0yQlVchcj4ucrQfVJwbXXB13FhWTMFccUBmWLpI.png" alt="IraniU"></div>
     <div class="social-links">
-        <a href="https://instagram.com/iraniu.uk" target="_blank"><i class="fab fa-instagram"></i></a>
-        <a href="https://t.me/iraniu_uk" target="_blank"><i class="fab fa-telegram-plane"></i></a>
+        <a href="https://instagram.com/iraniu.uk" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+        <a href="https://t.me/iraniu_uk" target="_blank" rel="noopener noreferrer"><i class="fab fa-telegram-plane"></i></a>
         <a href="mailto:hello@iraniu.uk"><i class="fas fa-envelope"></i></a>
     </div>
     <p style="font-size:0.8rem; opacity:0.6;">© 2026 IraniU</p>
 </footer>
 
-<script>function toggleMenu() { document.getElementById("mobileNav").classList.toggle("active"); }</script>
+<script>
+window.iraniuTurnstileWidgetId = null;
+window.iraniuTurnstileReady = function() {
+    try {
+        if (typeof turnstile === 'undefined') return;
+        var el = document.getElementById('iraniu-turnstile-pkg');
+        if (!el) return;
+        window.iraniuTurnstileWidgetId = turnstile.render('#iraniu-turnstile-pkg', {
+            sitekey: '0x4AAAAAACrrdSotzvEhuCwr',
+            theme: 'light',
+            size: 'normal'
+        });
+    } catch (err) {}
+};
+function iraniuResetTurnstile() {
+    if (typeof turnstile === 'undefined' || !turnstile.reset) return;
+    try {
+        if (window.iraniuTurnstileWidgetId != null) {
+            turnstile.reset(window.iraniuTurnstileWidgetId);
+        } else {
+            turnstile.reset();
+        }
+    } catch (err) {}
+}
+</script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=iraniuTurnstileReady&amp;render=explicit" async defer></script>
+<script>
+function toggleMenu() { document.getElementById("mobileNav").classList.toggle("active"); }
+
+var IRANIU_PKG_LABELS = { bronze: 'پکیج برنز', silver: 'پکیج نقره‌ای', gold: 'پکیج طلا' };
+function iraniuSelectPackage(key) {
+    var hid = document.getElementById('package-request-package');
+    var disp = document.getElementById('pkg-selected-display');
+    if (hid) hid.value = key;
+    if (disp) disp.textContent = 'پکیج انتخاب‌شده: ' + (IRANIU_PKG_LABELS[key] || key);
+    var sec = document.getElementById('package-request-section');
+    if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+document.getElementById('package-request-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var status = document.getElementById('pkg-form-status');
+    var btn = document.getElementById('pkg-submit-btn');
+    var pkg = document.getElementById('package-request-package').value;
+    status.style.color = '';
+    if (!pkg) {
+        status.textContent = 'لطفاً ابتدا یک پکیج را با دکمهٔ «ارسال درخواست این پکیج» انتخاب کنید.';
+        status.style.color = '#c62828';
+        return;
+    }
+    var tokenEl = document.querySelector('#package-request-form [name="cf-turnstile-response"]');
+    var token = tokenEl && tokenEl.value ? tokenEl.value.trim() : '';
+    if (!token) {
+        status.textContent = 'لطفاً کادر تأیید امنیتی «ربات نیستید» را در فرم زیر تکمیل کنید.';
+        status.style.color = '#c62828';
+        return;
+    }
+    var data = new FormData(e.target);
+    btn.textContent = 'در حال ارسال...';
+    btn.disabled = true;
+    status.textContent = '';
+
+    fetch(e.target.action, {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' }
+    }).then(function(response) {
+        if (!response.ok) throw new Error('Server error');
+        return response.json();
+    }).then(function(json) {
+        if (json.success) {
+            window.location.href = '/thank-you';
+            return;
+        }
+        var errMap = {
+            missing: 'لطفاً نام و ایمیل را به‌درستی وارد کنید.',
+            config: 'تنظیمات ایمیل یافت نشد. با مدیر تماس بگیرید.',
+            send: 'خطا در ارسال. لطفاً دوباره تلاش کنید یا به hello@iraniu.uk ایمیل بزنید.',
+            captcha: 'لطفاً کادر تأیید امنیتی را دوباره تکمیل کنید.',
+            invalid_package: 'پکیج نامعتبر است. یک پکیج را دوباره انتخاب کنید.',
+            method: 'درخواست نامعتبر است.',
+            setup: 'خطای نصب سرور.'
+        };
+        var code = (typeof json.error === 'string' && /^[a-z_]+$/.test(json.error)) ? json.error : null;
+        status.textContent = (code && errMap[code]) ? errMap[code] : 'خطایی رخ داد.';
+        status.style.color = '#c62828';
+        iraniuResetTurnstile();
+    }).catch(function() {
+        status.textContent = 'خطا در اتصال.';
+        status.style.color = '#c62828';
+        iraniuResetTurnstile();
+    }).finally(function() {
+        btn.textContent = 'ثبت درخواست';
+        btn.disabled = false;
+    });
+});
+</script>
 <script src="/assets/js/copy-guard.js" defer></script>
 </body>
 </html>
