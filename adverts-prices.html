@@ -35,84 +35,315 @@
     <style>
         @font-face { font-family: 'Yekan Bakh'; src: url('fonts/YekanBakh-Regular.woff') format('woff'); font-weight: normal; }
         @font-face { font-family: 'Yekan Bakh'; src: url('fonts/YekanBakh-Bold.woff') format('woff'); font-weight: bold; }
-        :root { --brand-purple: #74208b; --dark-purple: #3a0b47; }
+        :root {
+            --brand-purple: #74208b;
+            --dark-purple: #3a0b47;
+            --bronze: #b87333;
+            --silver: #8a8a9a;
+            --gold: #c9a227;
+            --surface: #ffffff;
+            --surface-soft: #faf7fc;
+            --border-soft: rgba(116, 32, 139, 0.12);
+            --shadow-sm: 0 4px 20px rgba(58, 11, 71, 0.06);
+            --shadow-md: 0 12px 40px rgba(58, 11, 71, 0.1);
+            --radius-lg: 22px;
+            --radius-md: 14px;
+        }
+        html { overflow-x: hidden; max-width: 100%; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Yekan Bakh', Tahoma, sans-serif; text-decoration: none; }
-        body { background-color: #fdfdfd; color: #1a1a1a; overflow-x: hidden; line-height: 1.8; }
+        body {
+            color: #1a1a1a;
+            overflow-x: hidden;
+            max-width: 100%;
+            line-height: 1.75;
+            background: linear-gradient(180deg, #f3ecf8 0%, #fdfdfd 28%, #fafafa 100%);
+            min-height: 100vh;
+        }
+        body strong, body b { font-weight: 500; }
         header { background: var(--dark-purple); padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.1); position: sticky; top: 0; z-index: 1000; }
         .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
         .logo img { height: 50px; display: block; }
         .desktop-nav { display: flex; flex-wrap: wrap; gap: 22px; align-items: center; }
-        .desktop-nav a { color: white; font-weight: bold; font-size: 0.9rem; opacity: 0.9; }
+        .desktop-nav a { color: white; font-weight: 500; font-size: 0.9rem; opacity: 0.9; }
         .desktop-nav a:hover { color: var(--brand-purple); opacity: 1; }
         .hamburger { display: none; font-size: 1.5rem; color: white; cursor: pointer; }
         .mobile-nav { position: fixed; top: 74px; right: -100%; width: 100%; height: 100vh; background: var(--dark-purple); display: flex; flex-direction: column; align-items: center; padding-top: 50px; transition: 0.4s; z-index: 999; }
         .mobile-nav.active { right: 0; }
-        .mobile-nav a { font-size: 1.2rem; color: white; margin-bottom: 25px; font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.1); width: 80%; text-align: center; padding-bottom: 10px; }
-        .page-hero { background: linear-gradient(135deg, var(--dark-purple), var(--brand-purple)); color: white; padding: 70px 20px; text-align: center; }
-        .page-hero h1 { font-size: 2.2rem; margin-bottom: 15px; font-weight: 800; }
-        .page-hero .meta { opacity: 0.92; font-size: 1rem; margin: 0 auto; max-width: 36rem; }
-        .container { max-width: 1100px; margin: -40px auto 100px; padding: 0 20px; }
-        .price-card { background: transparent; padding: 0; border-radius: 0; box-shadow: none; border: none; }
-        .price-card .intro { margin-bottom: 24px; color: #444; text-align: justify; }
+        .mobile-nav a { font-size: 1.2rem; color: white; margin-bottom: 25px; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,0.1); width: 80%; text-align: center; padding-bottom: 10px; }
+        .page-hero {
+            position: relative;
+            background: linear-gradient(145deg, #2d0838 0%, var(--dark-purple) 35%, var(--brand-purple) 100%);
+            color: white;
+            padding: clamp(3rem, 8vw, 4.5rem) 20px 4.5rem;
+            text-align: center;
+            overflow: hidden;
+        }
+        .page-hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 72px;
+            background: linear-gradient(to top, rgba(253,253,253,0.95), transparent);
+            pointer-events: none;
+        }
+        .page-hero-inner { position: relative; z-index: 1; max-width: 42rem; margin: 0 auto; }
+        .page-hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.22);
+            font-size: 0.82rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+            letter-spacing: 0.02em;
+        }
+        .page-hero h1 {
+            font-size: clamp(1.65rem, 4.5vw, 2.35rem);
+            margin-bottom: 12px;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            text-shadow: 0 2px 24px rgba(0,0,0,0.15);
+        }
+        .page-hero .meta {
+            opacity: 0.94;
+            font-size: 1.02rem;
+            margin: 0 auto;
+            line-height: 1.75;
+        }
+        .container {
+            width: 100%;
+            max-width: min(1400px, 100%);
+            margin: -2.75rem auto 5rem;
+            padding: 0 clamp(10px, 2.5vw, 32px);
+            position: relative;
+            z-index: 2;
+        }
+        .price-card {
+            width: 100%;
+            max-width: 100%;
+            background: var(--surface);
+            padding: clamp(1.1rem, 2.8vw, 2rem);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-soft);
+            box-shadow: var(--shadow-md);
+        }
+        .price-card .intro { margin-bottom: 1.25rem; color: #4a4a4a; text-align: justify; font-size: 0.95rem; }
         .price-card .intro.intro-cta {
             text-align: center;
             color: #fff;
-            background: linear-gradient(135deg, var(--dark-purple), var(--brand-purple));
-            padding: 16px 22px;
-            border-radius: 14px;
+            background: linear-gradient(135deg, #4a1560, var(--brand-purple) 55%, #8e3ca8);
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius-md);
             margin-bottom: 1.5rem;
-            font-weight: 600;
-            box-shadow: 0 8px 28px rgba(58, 11, 71, 0.2);
+            font-weight: 500;
+            box-shadow: 0 10px 36px rgba(58, 11, 71, 0.22);
+            border: 1px solid rgba(255,255,255,0.12);
         }
-        .price-card .intro.intro-cta a { color: #fff; font-weight: 800; text-decoration: underline; text-underline-offset: 4px; }
+        .price-card .intro.intro-cta a { color: #fff; font-weight: 500; text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 2px; }
         .price-card .intro.intro-cta a:hover { opacity: 0.92; }
-        .price-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 1.15rem;
-            margin-bottom: 2rem;
+        .consultant-section {
+            margin-bottom: 1.5rem;
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(116, 32, 139, 0.18);
+            background: linear-gradient(165deg, #fffefb 0%, #faf5fc 45%, #f3e9f8 100%);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
         }
-        .price-block {
-            background: #fff;
-            border: 1px solid #e8e4ec;
-            border-radius: 18px;
-            padding: 1.25rem 1.35rem;
-            box-shadow: 0 10px 32px rgba(58, 11, 71, 0.07);
-            min-width: 0;
+        .consultant-section-inner {
+            padding: clamp(1.15rem, 3vw, 1.65rem) clamp(1rem, 2.5vw, 1.5rem);
+            text-align: center;
         }
-        .price-block h3 {
-            font-size: 1.05rem;
-            color: var(--dark-purple);
-            margin: 0 0 14px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid rgba(116, 32, 139, 0.22);
-            font-weight: 800;
+        .consultant-section-icon {
+            width: 52px;
+            height: 52px;
+            margin: 0 auto 12px;
+            border-radius: 16px;
+            background: linear-gradient(145deg, rgba(116, 32, 139, 0.18), rgba(116, 32, 139, 0.06));
+            color: var(--brand-purple);
             display: flex;
             align-items: center;
-            gap: 10px;
+            justify-content: center;
+            font-size: 1.35rem;
         }
-        .price-block h3 i { color: var(--brand-purple); opacity: 0.9; font-size: 1rem; }
+        .consultant-section h2 {
+            font-size: clamp(1.12rem, 2.8vw, 1.35rem);
+            color: var(--dark-purple);
+            font-weight: 500;
+            margin: 0 0 10px;
+            letter-spacing: -0.02em;
+        }
+        .consultant-lead {
+            color: #444;
+            font-size: 0.95rem;
+            line-height: 1.75;
+            margin: 0 auto 14px;
+            max-width: 36rem;
+            text-align: justify;
+            text-align-last: center;
+        }
+        .consultant-checklist {
+            list-style: none;
+            margin: 0 auto 14px;
+            padding: 0;
+            max-width: 28rem;
+            text-align: right;
+        }
+        .consultant-checklist li {
+            position: relative;
+            padding-right: 1.35rem;
+            margin-bottom: 8px;
+            font-size: 0.88rem;
+            color: #3d3d3d;
+            line-height: 1.55;
+        }
+        .consultant-checklist li::before {
+            content: '\2713';
+            position: absolute;
+            right: 0;
+            color: var(--brand-purple);
+            font-weight: 500;
+            font-size: 0.85rem;
+        }
+        .consultant-checklist li:last-child { margin-bottom: 0; }
+        .consultant-en {
+            font-size: 0.82rem;
+            color: #666;
+            margin: 0 0 16px;
+            line-height: 1.5;
+        }
+        .consultant-cta {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 13px 22px;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #fff;
+            background: linear-gradient(135deg, var(--dark-purple), var(--brand-purple) 55%, #9b4db5);
+            box-shadow: 0 10px 28px rgba(58, 11, 71, 0.28);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s;
+        }
+        .consultant-cta:hover { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(58, 11, 71, 0.34); opacity: 0.98; }
+        .consultant-cta:focus-visible {
+            outline: 3px solid rgba(116, 32, 139, 0.45);
+            outline-offset: 3px;
+        }
+        .tier-legend {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px 14px;
+            margin-bottom: 1.35rem;
+            padding: 12px 14px;
+            background: var(--surface-soft);
+            border-radius: var(--radius-md);
+            border: 1px dashed var(--border-soft);
+        }
+        .tier-legend span {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: var(--dark-purple);
+        }
+        .tier-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+        .tier-dot.b { background: linear-gradient(135deg, #cd7f32, #e8a860); box-shadow: 0 0 0 2px rgba(205,127,50,0.25); }
+        .tier-dot.s { background: linear-gradient(135deg, #8e8e9e, #c4c4cc); box-shadow: 0 0 0 2px rgba(140,140,150,0.25); }
+        .tier-dot.g { background: linear-gradient(135deg, #c9a227, #e8d060); box-shadow: 0 0 0 2px rgba(201,162,39,0.3); }
+        .price-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+            gap: 1.35rem;
+            margin-bottom: 2.25rem;
+            width: 100%;
+            min-width: 0;
+        }
+        .price-block {
+            background: var(--surface);
+            border: 1px solid var(--border-soft);
+            border-radius: var(--radius-lg);
+            padding: 1.35rem 1.4rem 1.25rem;
+            box-shadow: var(--shadow-sm);
+            min-width: 0;
+            max-width: 100%;
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+        }
+        .price-block:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+        .price-block h3 {
+            font-size: 1.08rem;
+            color: var(--dark-purple);
+            margin: 0 0 14px;
+            padding-bottom: 12px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: none;
+            position: relative;
+        }
+        .price-block h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            left: 0;
+            height: 3px;
+            border-radius: 3px;
+            background: linear-gradient(90deg, var(--brand-purple), rgba(116,32,139,0.25));
+        }
+        .price-block h3 i {
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: linear-gradient(145deg, rgba(116,32,139,0.12), rgba(116,32,139,0.05));
+            color: var(--brand-purple);
+            font-size: 1rem;
+        }
         .price-block .price-table-wrap { border-radius: 10px; border-color: #e6e0eb; }
         .price-block .price-table { font-size: 0.9rem; }
         .price-block .price-table tbody td { padding: 10px 12px; }
         .package-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 1.15rem;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+            gap: 1.35rem;
             margin-bottom: 0.5rem;
+            width: 100%;
+            min-width: 0;
         }
         .package-block {
             background: linear-gradient(165deg, #fff 0%, #faf7fc 100%);
-            border: 1px solid rgba(116, 32, 139, 0.18);
-            border-radius: 18px;
-            padding: 1.35rem 1.25rem;
-            box-shadow: 0 12px 36px rgba(58, 11, 71, 0.08);
+            border: 1px solid var(--border-soft);
+            border-radius: var(--radius-lg);
+            padding: 1.45rem 1.35rem;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .package-block:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
         }
         .package-block h3 {
             font-size: 1.1rem;
             color: var(--dark-purple);
             margin: 0 0 14px;
-            font-weight: 900;
+            font-weight: 500;
             text-align: center;
             padding-bottom: 12px;
             border-bottom: 1px solid rgba(116, 32, 139, 0.15);
@@ -128,33 +359,107 @@
         }
         .package-block .pkg-row:last-child { border-bottom: none; }
         .package-block .pkg-label { color: #555; }
-        .package-block .pkg-price { direction: ltr; font-variant-numeric: tabular-nums; font-weight: 700; color: var(--dark-purple); white-space: nowrap; }
+        .package-block .pkg-price { direction: ltr; font-variant-numeric: tabular-nums; font-weight: 500; color: var(--dark-purple); white-space: nowrap; }
         .package-block.bronze { border-top: 4px solid #cd7f32; }
         .package-block.silver { border-top: 4px solid #a8a8a8; }
         .package-block.gold { border-top: 4px solid #d4af37; }
         .package-tier-sub { text-align: center; font-size: 0.82rem; color: #666; margin: -6px 0 10px; }
         .package-includes { margin: 0 0 14px; padding: 12px 12px 10px; background: rgba(116, 32, 139, 0.06); border-radius: 12px; border: 1px solid rgba(116, 32, 139, 0.12); text-align: right; }
-        .package-includes-title { font-size: 0.78rem; font-weight: 800; color: var(--dark-purple); margin: 0 0 8px; }
+        .package-includes-title { font-size: 0.78rem; font-weight: 500; color: var(--dark-purple); margin: 0 0 8px; }
         .package-list { margin: 0; padding: 0 1rem 0 0; font-size: 0.78rem; color: #444; line-height: 1.6; list-style: disc; }
         .package-list li { margin-bottom: 6px; }
         .package-list li:last-child { margin-bottom: 0; }
-        .pkg-prices-head { font-size: 0.78rem; font-weight: 800; color: #555; margin: 4px 0 8px; text-align: center; padding-top: 4px; border-top: 1px dashed rgba(116, 32, 139, 0.2); }
-        .price-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 12px; border: 1px solid #e0e7ef; }
-        .price-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
-        .price-table thead th { background: #cfe8f8; color: #1a3a52; font-weight: 800; padding: 14px 16px; text-align: right; border-bottom: 2px solid #b8d9ee; }
-        .price-table thead th:nth-child(2) { text-align: center; }
-        .price-table tbody td { padding: 12px 16px; border-bottom: 1px solid #eee; }
-        .price-table tbody td:nth-child(1) { font-weight: 600; }
-        .price-table tbody td:nth-child(2) { text-align: center; font-variant-numeric: tabular-nums; direction: ltr; }
-        .price-table tbody tr:nth-child(even) { background: #fafbfc; }
-        .price-note { margin-top: 22px; font-size: 0.9rem; color: #666; }
+        .pkg-prices-head { font-size: 0.78rem; font-weight: 500; color: #555; margin: 4px 0 8px; text-align: center; padding-top: 4px; border-top: 1px dashed rgba(116, 32, 139, 0.2); }
+        .pkg-tier-note { font-size: 0.8rem; color: #555; text-align: center; line-height: 1.65; margin: 0 0 10px; padding: 10px 8px; background: rgba(116, 32, 139, 0.06); border-radius: 10px; }
+        .price-table-wrap {
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-soft);
+            background: #fff;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.8);
+        }
+        .price-table {
+            width: 100%;
+            max-width: 100%;
+            table-layout: fixed;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 0.9rem;
+        }
+        .price-table.price-table--tiers thead th:nth-child(1) { width: 42%; }
+        .price-table.price-table--tiers thead th:nth-child(2),
+        .price-table.price-table--tiers thead th:nth-child(3),
+        .price-table.price-table--tiers thead th:nth-child(4) { width: 19.33%; }
+        .price-table:not(.price-table--tiers) thead th:nth-child(1) { width: 58%; }
+        .price-table:not(.price-table--tiers) thead th:nth-child(2) { width: 42%; }
+        .price-table thead th {
+            background: linear-gradient(180deg, #ede7f4 0%, #e2d8ec 100%);
+            color: var(--dark-purple);
+            font-weight: 500;
+            padding: 13px 10px;
+            text-align: right;
+            font-size: 0.78rem;
+            border-bottom: 1px solid rgba(116, 32, 139, 0.15);
+            letter-spacing: 0.02em;
+        }
+        .price-table thead th:first-child { border-start-start-radius: 12px; }
+        .price-table thead th:last-child { border-start-end-radius: 12px; }
+        .price-table thead th:nth-child(1) { min-width: 0; }
+        .price-table.price-table--tiers thead th:nth-child(2) { background: linear-gradient(180deg, rgba(205,127,50,0.22), rgba(205,127,50,0.1)); }
+        .price-table.price-table--tiers thead th:nth-child(3) { background: linear-gradient(180deg, rgba(160,160,175,0.35), rgba(160,160,175,0.14)); }
+        .price-table.price-table--tiers thead th:nth-child(4) { background: linear-gradient(180deg, rgba(212,175,55,0.28), rgba(212,175,55,0.1)); }
+        .price-table thead th:nth-child(2), .price-table thead th:nth-child(3), .price-table thead th:nth-child(4) { text-align: center; white-space: normal; line-height: 1.3; }
+        .price-table tbody td {
+            padding: 11px 10px;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            font-size: 0.86rem;
+            vertical-align: middle;
+        }
+        .price-table tbody td:nth-child(1) {
+            font-weight: 500;
+            color: #2d2d2d;
+            word-wrap: break-word;
+            overflow-wrap: anywhere;
+            hyphens: auto;
+        }
+        .price-table tbody td:nth-child(2), .price-table tbody td:nth-child(3), .price-table tbody td:nth-child(4) {
+            text-align: center;
+            font-variant-numeric: tabular-nums;
+            direction: ltr;
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: var(--dark-purple);
+        }
+        .price-table tbody tr:nth-child(even) td { background: rgba(116, 32, 139, 0.03); }
+        .price-table tbody tr:hover td { background: rgba(116, 32, 139, 0.06); }
+        .price-table tbody tr:last-child td { border-bottom: none; }
+        .price-td-muted {
+            text-align: center !important;
+            font-weight: 500 !important;
+            color: #666 !important;
+            font-size: 0.88rem !important;
+            font-style: italic;
+        }
         .price-section-title {
             color: var(--dark-purple);
-            font-size: 1.35rem;
-            margin: 8px 0 16px;
-            font-weight: 800;
-            border-right: 4px solid var(--brand-purple);
-            padding-right: 12px;
+            font-size: clamp(1.2rem, 3vw, 1.45rem);
+            margin: 2rem 0 1rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .price-section-title::before {
+            content: '';
+            width: 5px;
+            height: 1.35em;
+            border-radius: 4px;
+            background: linear-gradient(180deg, var(--brand-purple), #c084d9);
+            flex-shrink: 0;
         }
         footer { background: var(--dark-purple); color: white; padding: 60px 20px 80px; text-align: center; }
         .footer-links { margin-bottom: 25px; }
@@ -169,7 +474,7 @@
             padding: 12px 16px;
             border: none;
             border-radius: 12px;
-            font-weight: 800;
+            font-weight: 500;
             font-size: 0.92rem;
             cursor: pointer;
             font-family: inherit;
@@ -180,30 +485,39 @@
         .package-block.silver .pkg-req-btn { background: linear-gradient(135deg, #6a6a6a, #b8b8b8); color: #fff; }
         .package-block.gold .pkg-req-btn { background: linear-gradient(135deg, #b8860b, #e8c547); color: #1a1a1a; }
         .package-request-section {
-            background: #fff;
-            border: 1px solid #e8e4ec;
-            border-radius: 18px;
-            padding: 1.5rem 1.35rem 1.65rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 10px 32px rgba(58, 11, 71, 0.07);
+            background: linear-gradient(180deg, #fff 0%, #fcf9fd 100%);
+            border: 1px solid var(--border-soft);
+            border-radius: var(--radius-lg);
+            padding: 1.65rem 1.4rem 1.75rem;
+            margin-bottom: 0;
+            box-shadow: var(--shadow-sm);
+            max-width: 100%;
+            min-width: 0;
         }
+        .pkg-form .form-group div[dir="ltr"] { min-width: 0; max-width: 100%; }
         .package-request-section h3 {
             color: var(--dark-purple);
             font-size: 1.15rem;
             margin: 0 0 8px;
             text-align: center;
-            font-weight: 900;
+            font-weight: 500;
         }
-        .pkg-selected-display { text-align: center; font-weight: 800; color: var(--brand-purple); margin-bottom: 16px; font-size: 0.92rem; min-height: 1.4em; }
+        .pkg-selected-display { text-align: center; font-weight: 500; color: var(--brand-purple); margin-bottom: 16px; font-size: 0.92rem; min-height: 1.4em; }
         .pkg-form .form-group { margin-bottom: 14px; }
-        .pkg-form .form-group label { display: block; font-weight: 700; color: var(--dark-purple); margin-bottom: 6px; font-size: 0.88rem; }
+        .pkg-form .form-group label { display: block; font-weight: 500; color: var(--dark-purple); margin-bottom: 6px; font-size: 0.88rem; }
         .pkg-form .form-group input, .pkg-form .form-group textarea, .pkg-form .phone-prefix-select {
             width: 100%;
-            padding: 10px 12px;
-            border-radius: 10px;
-            border: 1px solid #ddd;
+            padding: 11px 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(0,0,0,0.1);
             font-family: inherit;
             font-size: 0.92rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .pkg-form .form-group input:focus, .pkg-form .form-group textarea:focus, .pkg-form .phone-prefix-select:focus {
+            outline: none;
+            border-color: rgba(116, 32, 139, 0.45);
+            box-shadow: 0 0 0 3px rgba(116, 32, 139, 0.12);
         }
         .pkg-form .form-group textarea { resize: vertical; min-height: 88px; }
         .submit-btn-pkg {
@@ -213,7 +527,7 @@
             color: #fff;
             border: none;
             border-radius: 12px;
-            font-weight: 800;
+            font-weight: 500;
             cursor: pointer;
             font-size: 1rem;
             margin-top: 6px;
@@ -221,11 +535,37 @@
         }
         .submit-btn-pkg:disabled { opacity: 0.65; cursor: not-allowed; }
         #pkg-form-status { margin-top: 12px; text-align: center; font-size: 0.88rem; min-height: 1.3em; }
-        .turnstile-label { font-size: 0.88rem; font-weight: 700; color: var(--dark-purple); margin-bottom: 8px; display: block; }
-        .iraniu-turnstile-mount { min-height: 72px; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; }
-        .iraniu-turnstile-mount iframe { max-width: 100%; }
+        .turnstile-label { font-size: 0.88rem; font-weight: 500; color: var(--dark-purple); margin-bottom: 8px; display: block; }
+        .iraniu-turnstile-mount {
+            min-height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 100%;
+            overflow: hidden;
+        }
+        .iraniu-turnstile-mount iframe { max-width: 100% !important; }
         .turnstile-hint { font-size: 0.78rem; color: #666; margin-top: 10px; line-height: 1.5; }
-        @media (max-width: 992px) { .desktop-nav { display: none; } .hamburger { display: block; } }
+        @media (max-width: 992px) {
+            .desktop-nav { display: none; }
+            .hamburger { display: block; }
+            .container { margin-top: -2rem; }
+            .price-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 640px) {
+            .price-table { font-size: 0.78rem; }
+            .price-table thead th { font-size: 0.65rem; padding: 9px 5px; }
+            .price-table tbody td { padding: 8px 5px; font-size: 0.74rem; }
+            .price-table tbody td:nth-child(2), .price-table tbody td:nth-child(3), .price-table tbody td:nth-child(4) { font-size: 0.78rem; }
+        }
+        @media (max-width: 480px) {
+            .tier-legend { justify-content: flex-start; }
+            .page-hero { padding-bottom: 3.5rem; padding-left: 12px; padding-right: 12px; }
+            .container { padding-left: 8px; padding-right: 8px; }
+            .price-table thead th { font-size: 0.6rem; padding: 8px 3px; }
+            .price-table tbody td { padding: 7px 3px; font-size: 0.7rem; }
+        }
     </style>
     <link rel="stylesheet" href="/assets/css/content-protection.css">
     <noscript>
@@ -244,7 +584,7 @@
     }
     .iraniu-noscript-inner{max-width:36rem!important;width:100%!important}
     .iraniu-noscript-title{
-      margin:0!important;font-size:clamp(1.2rem,4vw,1.65rem)!important;font-weight:800!important;
+      margin:0!important;font-size:clamp(1.2rem,4vw,1.65rem)!important;font-weight:500!important;
       line-height:1.65!important;color:#3a0b47!important
     }
     </style>
@@ -283,85 +623,133 @@
 </nav>
 
 <section class="page-hero">
-    <h1>لیست قیمت تبلیغات</h1>
+    <div class="page-hero-inner">
+        <p class="page-hero-badge" role="status"><i class="fas fa-calendar-week" aria-hidden="true"></i> تعرفهٔ هفتگی به £</p>
+        <h1>لیست قیمت تبلیغات</h1>
+        <p class="meta">سه سطح <strong>برنز</strong>، <strong>نقره</strong> و <strong>طلا</strong> برای هر جایگاه در جداول زیر آمده است.</p>
+    </div>
 </section>
 
 <div class="container">
     <div class="price-card">
         <p class="intro intro-cta">برای رزرو یا پرسش بیشتر لطفاً از طریق <a href="/contact">تماس با ما</a> اقدام کنید.</p>
 
+        <div class="iraniu-support-inline-wrap">
+            <a href="https://1440.3cx.cloud/iraniusupport1001" class="iraniu-support-inline" target="_blank" rel="noopener noreferrer">
+                <span class="iraniu-support-inline-icon" aria-hidden="true"><i class="fas fa-headset"></i></span>
+                <span class="iraniu-support-inline-body">
+                    <strong>پشتیبانی آنلاین (تماس و چت)</strong>
+                    <span>سوال دربارهٔ تعرفه و رزرو / Online support (call &amp; chat)</span>
+                </span>
+                <span class="iraniu-support-inline-action">باز کردن</span>
+            </a>
+        </div>
+
+        <section class="consultant-section" id="consultant-section" aria-labelledby="consultant-heading">
+            <div class="consultant-section-inner">
+                <div class="consultant-section-icon" aria-hidden="true"><i class="fas fa-comments"></i></div>
+                <h2 id="consultant-heading">مشاورهٔ اختصاصی تبلیغات</h2>
+                <p class="consultant-lead">چند جمله دربارهٔ کسب‌وکار، مخاطب و بودجهٔ شما کافی است تا بتوانیم مناسب‌ترین پکیج و جایگاه‌های تبلیغ در ایرانیو را پیشنهاد دهیم.</p>
+                <ul class="consultant-checklist">
+                    <li>نوع فعالیت، محصول یا خدمت</li>
+                    <li>مخاطب هدف و شهر یا منطقه</li>
+                    <li>بودجه و بازهٔ زمانی مدنظر (در صورت تمایل)</li>
+                </ul>
+                <p class="consultant-en" dir="ltr">Tell us about your business — we’ll suggest the best ad package.</p>
+                <button type="button" class="consultant-cta" onclick="iraniuSelectPackage('consult')">درخواست مشاوره و پیشنهاد پکیج</button>
+            </div>
+        </section>
+
+        <div class="tier-legend" aria-hidden="true">
+            <span><i class="tier-dot b" aria-hidden="true"></i> برنز</span>
+            <span><i class="tier-dot s" aria-hidden="true"></i> نقره</span>
+            <span><i class="tier-dot g" aria-hidden="true"></i> طلا</span>
+        </div>
+
         <div class="price-grid" aria-label="جایگاه‌های تبلیغاتی هفتگی">
             <section class="price-block">
-                <h3><i class="fas fa-house-chimney" aria-hidden="true"></i> صفحهٔ خانه — بالای بخش‌ها</h3>
+                <h3><i class="fas fa-house-chimney" aria-hidden="true"></i> صفحهٔ اصلی</h3>
                 <div class="price-table-wrap">
-                    <table class="price-table">
+                    <table class="price-table price-table--tiers">
                         <thead>
                             <tr>
                                 <th scope="col">جایگاه</th>
-                                <th scope="col">هفتگی (£)</th>
+                                <th scope="col">برنز (£)</th>
+                                <th scope="col">نقره (£)</th>
+                                <th scope="col">طلا (£)</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr><td>بالای بخش جدیدترین‌ها</td><td>£30.00</td></tr>
-                            <tr><td>بالای رویدادهای بین‌المللی</td><td>£20.00</td></tr>
-                            <tr><td>بالای اخبار روزانهٔ GOV.UK</td><td>£10.00</td></tr>
-                            <tr><td>بالای اخبار سایبری</td><td>£5.00</td></tr>
+                            <tr><td>آخرین آپدیت‌های GOV.UK</td><td>£30</td><td>£60</td><td>£350</td></tr>
+                            <tr><td>اخبار</td><td>£30</td><td>£60</td><td>£350</td></tr>
+                            <tr><td>رویدادهای بین‌المللی</td><td>£30</td><td>£60</td><td>£350</td></tr>
                         </tbody>
                     </table>
                 </div>
             </section>
 
             <section class="price-block">
-                <h3><i class="fas fa-newspaper" aria-hidden="true"></i> بخش اخبار</h3>
+                <h3><i class="fas fa-newspaper" aria-hidden="true"></i> دسته‌بندی و مطالب</h3>
                 <div class="price-table-wrap">
-                    <table class="price-table">
+                    <table class="price-table price-table--tiers">
                         <thead>
                             <tr>
                                 <th scope="col">جایگاه</th>
-                                <th scope="col">هفتگی (£)</th>
+                                <th scope="col">برنز (£)</th>
+                                <th scope="col">نقره (£)</th>
+                                <th scope="col">طلا (£)</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr><td>سربرگ بخش اخبار</td><td>£15.00</td></tr>
-                            <tr><td>پاورقی بخش اخبار</td><td>£5.00</td></tr>
-                            <tr><td>تبلیغ تمام‌صفحه در بخش اخبار</td><td>£30.00</td></tr>
+                            <tr><td>دسته‌بندی‌ها — موقعیت اول</td><td>£30</td><td>£60</td><td>£350</td></tr>
+                            <tr><td>دسته‌بندی‌ها — موقعیت دوم</td><td>£30</td><td>£60</td><td>£350</td></tr>
+                            <tr><td>مطالب — موقعیت بالای مطلب</td><td>£30</td><td>£60</td><td>£350</td></tr>
+                            <tr><td>پاورقی محتوا</td><td>£30</td><td>£60</td><td>£350</td></tr>
+                            <tr><td>محتوا — موقعیت دوم</td><td>£30</td><td>£60</td><td>£350</td></tr>
+                            <tr><td>مطالب — موقعیت انتهای مطلب</td><td>£30</td><td>£60</td><td>£350</td></tr>
                         </tbody>
                     </table>
                 </div>
             </section>
 
             <section class="price-block">
-                <h3><i class="fas fa-bullhorn" aria-hidden="true"></i> نیازمندی‌ها و صرافی</h3>
+                <h3><i class="fas fa-coins" aria-hidden="true"></i> صرافی</h3>
                 <div class="price-table-wrap">
-                    <table class="price-table">
+                    <table class="price-table price-table--tiers">
                         <thead>
                             <tr>
                                 <th scope="col">جایگاه</th>
-                                <th scope="col">هفتگی (£)</th>
+                                <th scope="col">برنز (£)</th>
+                                <th scope="col">نقره (£)</th>
+                                <th scope="col">طلا (£)</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr><td>نیازمندی‌ها — جایگاه اول</td><td>£20.00</td></tr>
-                            <tr><td>نیازمندی‌ها — جایگاه دوم</td><td>£20.00</td></tr>
-                            <tr><td>صرافی — بخش تبدیل ارز</td><td>£30.00</td></tr>
-                            <tr><td>صرافی — صفحهٔ اصلی</td><td>£30.00</td></tr>
+                            <tr><td>صرافی — موقعیت اول</td><td colspan="3" class="price-td-muted">طبق هماهنگی</td></tr>
+                            <tr><td>صرافی — موقعیت دوم</td><td>£120</td><td>£240</td><td>£1,200</td></tr>
+                            <tr><td>صرافی — موقعیت سوم</td><td colspan="3" class="price-td-muted">طبق هماهنگی</td></tr>
                         </tbody>
                     </table>
                 </div>
             </section>
 
             <section class="price-block">
-                <h3><i class="fas fa-bell" aria-hidden="true"></i> اعلان‌ها</h3>
+                <h3><i class="fas fa-layer-group" aria-hidden="true"></i> سایر جایگاه‌ها</h3>
                 <div class="price-table-wrap">
                     <table class="price-table">
                         <thead>
                             <tr>
                                 <th scope="col">جایگاه</th>
-                                <th scope="col">هفتگی (£)</th>
+                                <th scope="col">تعرفه</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr><td>پوش ناتیفیکیشن</td><td>£250.00</td></tr>
+                            <tr><td>تمام‌صفحه در اپ</td><td class="price-td-muted">طبق هماهنگی</td></tr>
+                            <tr><td>کسب‌وکارهای ویژه — موقعیت اول</td><td class="price-td-muted">طبق هماهنگی</td></tr>
+                            <tr><td>کسب‌وکارهای ویژه — موقعیت دوم</td><td class="price-td-muted">طبق هماهنگی</td></tr>
+                            <tr><td>کسب‌وکارهای ویژه — موقعیت سوم</td><td class="price-td-muted">طبق هماهنگی</td></tr>
+                            <tr><td>نوتیفیکیشن</td><td class="price-td-muted">طبق هماهنگی</td></tr>
+                            <tr><td>تمام‌صفحه راه‌اندازی — هر ۲۴ ساعت</td><td class="price-td-muted">طبق هماهنگی</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -369,7 +757,7 @@
         </div>
 
         <h2 class="price-section-title">پکیج‌های ترکیبی</h2>
-        <p class="intro">برای آگهی در چند جایگاه هم‌زمان، سه سطح پکیج با دورهٔ پرداخت <strong>ماهانه</strong>، <strong>۳ ماهه</strong>، <strong>۶ ماهه</strong> و <strong>یک‌ساله</strong> در دسترس است. تخفیف دوره‌ای نسبت به پرداخت ماه‌به‌ماه لحاظ شده است. محتوای هر پکیج در کارت همان سطح آمده است.</p>
+        <p class="intro">برای آگهی در چند جایگاه هم‌زمان، سه سطح پکیج با دورهٔ پرداخت <strong>ماهانه</strong>، <strong>۳ ماهه</strong>، <strong>۶ ماهه</strong> و <strong>یک‌ساله</strong> قابل‌هماهنگی است. تعرفهٔ دوره‌ای بر اساس جایگاه‌های انتخابی از جداول بالا و تخفیف بسته‌ای محاسبه می‌شود؛ برای پیش‌فاکتور دقیق درخواست بزنید یا از <a href="/contact">تماس با ما</a> استفاده کنید.</p>
 
         <div class="package-grid" aria-label="پکیج‌های ترکیبی">
             <div class="package-block bronze">
@@ -384,10 +772,7 @@
                     </ul>
                 </div>
                 <p class="pkg-prices-head">تعرفهٔ دوره‌ای</p>
-                <div class="pkg-row"><span class="pkg-label">ماهانه</span><span class="pkg-price">£249.00</span></div>
-                <div class="pkg-row"><span class="pkg-label">۳ ماهه</span><span class="pkg-price">£649.00</span></div>
-                <div class="pkg-row"><span class="pkg-label">۶ ماهه</span><span class="pkg-price">£1,199.00</span></div>
-                <div class="pkg-row"><span class="pkg-label">یک‌ساله</span><span class="pkg-price">£2,199.00</span></div>
+                <p class="pkg-tier-note">بر اساس جدول قیمت‌های هفتگی بالا و سطح برنز؛ مبلغ دقیق ماهانه / فصلی پس از هماهنگی اعلام می‌شود.</p>
                 <button type="button" class="pkg-req-btn" data-package="bronze" onclick="iraniuSelectPackage('bronze')">ارسال درخواست این پکیج</button>
             </div>
             <div class="package-block silver">
@@ -402,10 +787,7 @@
                     </ul>
                 </div>
                 <p class="pkg-prices-head">تعرفهٔ دوره‌ای</p>
-                <div class="pkg-row"><span class="pkg-label">ماهانه</span><span class="pkg-price">£449.00</span></div>
-                <div class="pkg-row"><span class="pkg-label">۳ ماهه</span><span class="pkg-price">£1,149.00</span></div>
-                <div class="pkg-row"><span class="pkg-label">۶ ماهه</span><span class="pkg-price">£2,099.00</span></div>
-                <div class="pkg-row"><span class="pkg-label">یک‌ساله</span><span class="pkg-price">£3,899.00</span></div>
+                <p class="pkg-tier-note">بر اساس جدول قیمت‌های هفتگی بالا و سطح نقره؛ مبلغ دقیق ماهانه / فصلی پس از هماهنگی اعلام می‌شود.</p>
                 <button type="button" class="pkg-req-btn" data-package="silver" onclick="iraniuSelectPackage('silver')">ارسال درخواست این پکیج</button>
             </div>
             <div class="package-block gold">
@@ -421,17 +803,14 @@
                     </ul>
                 </div>
                 <p class="pkg-prices-head">تعرفهٔ دوره‌ای</p>
-                <div class="pkg-row"><span class="pkg-label">ماهانه</span><span class="pkg-price">£749.00</span></div>
-                <div class="pkg-row"><span class="pkg-label">۳ ماهه</span><span class="pkg-price">£1,899.00</span></div>
-                <div class="pkg-row"><span class="pkg-label">۶ ماهه</span><span class="pkg-price">£3,499.00</span></div>
-                <div class="pkg-row"><span class="pkg-label">یک‌ساله</span><span class="pkg-price">£6,499.00</span></div>
+                <p class="pkg-tier-note">بر اساس جدول قیمت‌های هفتگی بالا و سطح طلا؛ مبلغ دقیق ماهانه / فصلی پس از هماهنگی اعلام می‌شود.</p>
                 <button type="button" class="pkg-req-btn" data-package="gold" onclick="iraniuSelectPackage('gold')">ارسال درخواست این پکیج</button>
             </div>
         </div>
 
-        <section class="package-request-section" id="package-request-section" aria-label="فرم درخواست پکیج">
-            <h3>درخواست پکیج تبلیغات</h3>
-            <p class="pkg-selected-display" id="pkg-selected-display">ابتدا یکی از دکمه‌های «ارسال درخواست این پکیج» را در کارت بالا بزنید، سپس فرم را تکمیل کنید.</p>
+        <section class="package-request-section" id="package-request-section" aria-label="فرم درخواست پکیج یا مشاوره">
+            <h3>درخواست پکیج یا مشاوره تبلیغات</h3>
+            <p class="pkg-selected-display" id="pkg-selected-display">ابتدا یکی از پکیج‌های ترکیبی، یا دکمهٔ «مشاوره» در بالا را بزنید، سپس فرم را تکمیل کنید.</p>
             <form id="package-request-form" class="pkg-form" action="/package-request.php" method="post">
                 <input type="hidden" name="package" id="package-request-package" value="" autocomplete="off">
                 <div class="form-group">
@@ -469,8 +848,8 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="pkg-message">توضیحات <span style="font-weight:400;opacity:.75">(اختیاری)</span></label>
-                    <textarea id="pkg-message" name="message" rows="3" maxlength="5000" placeholder="در صورت تمایل، توضیح کوتاه یا سوال خود را بنویسید."></textarea>
+                    <label for="pkg-message" id="pkg-message-label">توضیحات <span id="pkg-message-opt" style="font-weight:400;opacity:.75">(اختیاری)</span></label>
+                    <textarea id="pkg-message" name="message" rows="4" maxlength="5000" placeholder="در صورت تمایل، توضیح کوتاه یا سوال خود را بنویسید."></textarea>
                 </div>
                 <div class="form-group" data-copy-allowed>
                     <span class="turnstile-label">تأیید امنیتی (ربات نیستید)</span>
@@ -481,8 +860,6 @@
                 <p id="pkg-form-status" role="status" aria-live="polite"></p>
             </form>
         </section>
-
-        <p class="price-note">پکیج‌های ترکیبی بر اساس انتخاب هم‌زمان چند جایگاه از بلوک‌های بالا تعریف می‌شوند؛ جزئیات دقیق و قیمت نهایی پس از هماهنگی با شما اعلام می‌شود. قیمت‌ها ممکن است بدون اطلاع قبلی به‌روز شوند؛ نسخهٔ معتبر همان است که در همین صفحه منتشر می‌شود.</p>
     </div>
 </div>
 
@@ -500,7 +877,7 @@
     <div class="footer-logo"><img src="https://panel.cybercina.co.uk//storage/logos/N0yQlVchcj4ucrQfVJwbXXB13FhWTMFccUBmWLpI.png" alt="IraniU"></div>
     <div class="social-links">
         <a href="https://instagram.com/iraniu.uk" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
-        <a href="https://t.me/iraniu_uk" target="_blank" rel="noopener noreferrer"><i class="fab fa-telegram-plane"></i></a>
+        <a href="https://t.me/IraniU_Global" target="_blank" rel="noopener noreferrer"><i class="fab fa-telegram-plane"></i></a>
         <a href="mailto:hello@iraniu.uk"><i class="fas fa-envelope"></i></a>
     </div>
     <p style="font-size:0.8rem; opacity:0.6;">© 2026 IraniU</p>
@@ -535,12 +912,30 @@ function iraniuResetTurnstile() {
 <script>
 function toggleMenu() { document.getElementById("mobileNav").classList.toggle("active"); }
 
-var IRANIU_PKG_LABELS = { bronze: 'پکیج برنز', silver: 'پکیج نقره‌ای', gold: 'پکیج طلا' };
+var IRANIU_PKG_LABELS = {
+    bronze: 'پکیج برنز',
+    silver: 'پکیج نقره‌ای',
+    gold: 'پکیج طلا',
+    consult: 'مشاوره و پیشنهاد پکیج'
+};
 function iraniuSelectPackage(key) {
     var hid = document.getElementById('package-request-package');
     var disp = document.getElementById('pkg-selected-display');
+    var ta = document.getElementById('pkg-message');
+    var opt = document.getElementById('pkg-message-opt');
     if (hid) hid.value = key;
     if (disp) disp.textContent = 'پکیج انتخاب‌شده: ' + (IRANIU_PKG_LABELS[key] || key);
+    if (ta) {
+        ta.required = key === 'consult';
+        if (key === 'consult') {
+            ta.placeholder = 'مثلاً نوع کسب‌وکار، محصول یا خدمت، مخاطب هدف، شهر یا منطقه، بودجهٔ تقریبی و هر سوال دیگر...';
+        } else {
+            ta.placeholder = 'در صورت تمایل، توضیح کوتاه یا سوال خود را بنویسید.';
+        }
+    }
+    if (opt) {
+        opt.textContent = key === 'consult' ? '(برای مشاوره لازم است)' : '(اختیاری)';
+    }
     var sec = document.getElementById('package-request-section');
     if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
@@ -586,6 +981,7 @@ document.getElementById('package-request-form').addEventListener('submit', funct
             send: 'خطا در ارسال. لطفاً دوباره تلاش کنید یا به hello@iraniu.uk ایمیل بزنید.',
             captcha: 'لطفاً کادر تأیید امنیتی را دوباره تکمیل کنید.',
             invalid_package: 'پکیج نامعتبر است. یک پکیج را دوباره انتخاب کنید.',
+            consult_message: 'برای درخواست مشاوره، لطفاً در بخش توضیحات کمی دربارهٔ کسب‌وکار و نیاز خود بنویسید.',
             method: 'درخواست نامعتبر است.',
             setup: 'خطای نصب سرور.'
         };
@@ -603,6 +999,8 @@ document.getElementById('package-request-form').addEventListener('submit', funct
     });
 });
 </script>
+    <link rel="stylesheet" href="/assets/css/iraniu-support-widget.css">
+<script src="/assets/js/chatwoot-widget.js" defer></script>
 <script src="/assets/js/copy-guard.js" defer></script>
 </body>
 </html>

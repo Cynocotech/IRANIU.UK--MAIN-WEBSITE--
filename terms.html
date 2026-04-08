@@ -50,8 +50,30 @@
         .mobile-nav a { font-size: 1.2rem; color: white; margin-bottom: 25px; font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.1); width: 80%; text-align: center; padding-bottom: 10px; }
         .page-hero { background: linear-gradient(135deg, var(--dark-purple), var(--brand-purple)); color: white; padding: 70px 20px; text-align: center; }
         .page-hero h1 { font-size: 2.2rem; margin-bottom: 15px; font-weight: 800; }
+        .page-hero .meta { font-size: 0.95rem; opacity: 0.92; }
         .container { max-width: 800px; margin: -40px auto 100px; padding: 0 20px; }
         .legal-card { background: white; padding: 45px; border-radius: 25px; box-shadow: 0 15px 40px rgba(0,0,0,0.1); border: 1px solid #eee; }
+        .lang-tabs { display: flex; gap: 0; margin: 0 0 28px; border-radius: 14px; overflow: hidden; border: 1px solid rgba(116, 32, 139, 0.2); box-shadow: 0 4px 16px rgba(58, 11, 71, 0.08); }
+        .lang-tabs button {
+            flex: 1;
+            padding: 14px 18px;
+            border: none;
+            background: #f5f0f8;
+            color: var(--dark-purple);
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 700;
+            transition: background 0.2s, color 0.2s;
+        }
+        .lang-tabs button:hover { background: #ede7f4; }
+        .lang-tabs button[aria-selected="true"] { background: linear-gradient(135deg, var(--dark-purple), var(--brand-purple)); color: #fff; }
+        .lang-tabs button:focus-visible { outline: 2px solid var(--brand-purple); outline-offset: 2px; }
+        .legal-content--en { text-align: left; }
+        .legal-content--en h2 { border-right: none; border-left: 4px solid var(--brand-purple); padding-right: 0; padding-left: 12px; }
+        .legal-content--en .app-desc-box h2 { border-right: none; border-left: 4px solid var(--brand-purple); padding-left: 12px; }
+        .legal-content--en .app-desc-box ul { margin-right: 0; margin-left: 20px; padding-left: 1rem; }
+        .legal-content--en .app-desc-box ul[style] { margin-left: 25px !important; margin-right: 0 !important; }
         .legal-card h2 { color: var(--dark-purple); font-size: 1.3rem; margin: 30px 0 12px; border-right: 4px solid var(--brand-purple); padding-right: 12px; }
         .legal-card p { margin-bottom: 15px; text-align: justify; }
         .legal-card .meta { color: #777; font-size: 0.9rem; margin-bottom: 25px; }
@@ -125,12 +147,18 @@
 </nav>
 
 <section class="page-hero">
-    <h1>شرایط و ضوابط استفاده</h1>
-    <p class="meta">آخرین بروزرسانی: ۱۵ اسفند ۱۴۰۴</p>
+    <h1 id="terms-hero-title">شرایط و ضوابط استفاده</h1>
+    <p class="meta" id="terms-hero-meta">آخرین بروزرسانی: ۱۵ اسفند ۱۴۰۴</p>
 </section>
 
 <div class="container">
     <div class="legal-card">
+        <div class="lang-tabs" role="tablist" aria-label="انتخاب زبان / Language">
+            <button type="button" role="tab" id="tab-fa" aria-selected="true" aria-controls="panel-fa">فارسی</button>
+            <button type="button" role="tab" id="tab-en" aria-selected="false" aria-controls="panel-en" tabindex="-1">English</button>
+        </div>
+
+        <div id="panel-fa" class="legal-content" role="tabpanel" aria-labelledby="tab-fa">
         <p>خوش آمدید. استفاده شما از خدمات و محتوای پلتفرم «ایرانیو» منوط به پذیرش و پایبندی به شرایط و ضوابط زیر است. تمامی فعالیت‌های این برند تحت امتیاز قانونی شرکت Iraniu Global Ltd مدیریت و اجرا می‌شود.</p>
 
         <p><strong>توجه حقوقی:</strong> «ایرانیو» یک نهاد دولتی، خبرگزاری مستقل یا صادرکننده قانون نیست. ما صرفاً به عنوان یک «تسهیل‌گر» در امر بازنشر، تجمیع و ترجمه اخبار، اطلاعات عمومی و دستورالعمل‌های رسمی فعالیت می‌کنیم که از مراجع قانونی، سایت‌های دولتی بریتانیا و منابع آزاد خبری استخراج شده‌اند.</p>
@@ -175,6 +203,54 @@
         <p>این شرایط تحت قوانین کشور بریتانیا تنظیم شده است. این شرایط ممکن است برای انطباق با تغییرات در نحوه ارائه اخبار و دستورالعمل‌ها به‌روزرسانی شود. استفاده مداوم شما به معنای پذیرش نسخه جدید است.</p>
 
         <p style="margin-top: 35px; font-size: 0.9rem; opacity: 0.85;">برند «ایرانیو» زیرمجموعه شرکت Iraniu Global Ltd است.<br>© 2026 Iraniu Global Ltd. All rights reserved.</p>
+        </div>
+
+        <div id="panel-en" class="legal-content legal-content--en" role="tabpanel" aria-labelledby="tab-en" lang="en" dir="ltr" hidden>
+            <p>Welcome. Your use of the IraniU platform’s services and content is subject to your acceptance of and compliance with the terms below. All activities under this brand are operated under the legal rights of <strong>Iraniu Global Ltd</strong>.</p>
+
+            <p><strong>Legal notice:</strong> IraniU is not a government body, an independent news agency, or a source of law. We act solely as a <em>facilitator</em> for republication, aggregation, and translation of news, general information, and official guidance drawn from legal sources, UK government websites, and open news sources.</p>
+
+            <div class="app-desc-box">
+                <h2>What does the IraniU app do?</h2>
+                <p>The IraniU app is a comprehensive digital platform for the Farsi-speaking community in the United Kingdom. It provides:</p>
+                <ul style="margin-left: 25px; margin-bottom: 12px;">
+                    <li><strong>24/7 live radio</strong> — continuous Persian music and news</li>
+                    <li><strong>News and official guidance</strong> — translation and republication of UK government guidance (GOV.UK, NHS, etc.)</li>
+                    <li><strong>Service directory</strong> — exchange, legal, recruitment, housing, doctors, automotive, restaurants, and other listings</li>
+                    <li><strong>Jobs and classifieds</strong> — connecting users to opportunities and local businesses</li>
+                </ul>
+                <p>Our aim is to make daily life easier and to connect users with trusted resources and the wider community.</p>
+            </div>
+
+            <div class="neutrality-box">
+                We are not affiliated with any political group and we do not promote any political group.
+            </div>
+
+            <h2>1. Nature of content and services</h2>
+            <p>The main purpose of IraniU is to help publish and simplify official guidance, daily news, and practical information for the Farsi-speaking community.</p>
+            <p>Our content combines the latest guidance from relevant departments with news drawn from open sources (such as Google News).</p>
+            <p>We strive to keep this material updated, but we are not responsible for sudden changes in law, the accuracy of third-party news sources, or delays in reflecting updates.</p>
+
+            <h2>2. Limitation of liability (disclaimer)</h2>
+            <p>Material on this site (including news, information, and translated guidance) is provided for general information and educational purposes only.</p>
+            <p><strong>Iraniu Global Ltd</strong> accepts no legal responsibility for administrative, financial, or legal decisions users make based on this content.</p>
+            <p>Because news and rules change, we do not warrant that content is error-free or fully up to date at all times. For sensitive matters, you should always seek advice from qualified professionals.</p>
+
+            <h2>3. Authoritative source and original language</h2>
+            <p>If there is any conflict or ambiguity in translated news, information, or legal guidance, the original English text on the relevant reference websites (government departments or original publishers) shall prevail. Our translations are aids to understanding only.</p>
+
+            <h2>4. Intellectual property and scraping</h2>
+            <p>While underlying news and statutory rules belong to their sources, the selection, layout, data structure, and bespoke translations on IraniU are owned by <strong>Iraniu Global Ltd</strong>.</p>
+            <p>Commercial copying or automated extraction (including scrapers) of this material in bulk is strictly prohibited and may lead to legal action.</p>
+
+            <h2>5. User interaction and third-party links</h2>
+            <p>Users are responsible for comments they post under news or information. Links in the app are provided for convenience to original sources; we are not responsible for content on external websites.</p>
+
+            <h2>6. Governing law and changes</h2>
+            <p>These terms are governed by the laws of England and Wales (United Kingdom). We may update them to reflect changes in how we provide news and guidance. Continued use means you accept the updated version.</p>
+
+            <p style="margin-top: 35px; font-size: 0.9rem; opacity: 0.85;">The IraniU brand is part of <strong>Iraniu Global Ltd</strong>.<br>© 2026 Iraniu Global Ltd. All rights reserved.</p>
+        </div>
     </div>
 </div>
 
@@ -192,13 +268,57 @@
     <div class="footer-logo"><img src="https://panel.cybercina.co.uk//storage/logos/N0yQlVchcj4ucrQfVJwbXXB13FhWTMFccUBmWLpI.png" alt="IraniU"></div>
     <div class="social-links">
         <a href="https://instagram.com/iraniu.uk" target="_blank"><i class="fab fa-instagram"></i></a>
-        <a href="https://t.me/iraniu_uk" target="_blank"><i class="fab fa-telegram-plane"></i></a>
+        <a href="https://t.me/IraniU_Global" target="_blank"><i class="fab fa-telegram-plane"></i></a>
         <a href="mailto:hello@iraniu.uk"><i class="fas fa-envelope"></i></a>
     </div>
     <p style="font-size:0.8rem; opacity:0.6;">© 2026 IraniU</p>
 </footer>
 
-<script>function toggleMenu() { document.getElementById("mobileNav").classList.toggle("active"); }</script>
+<script>
+function toggleMenu() { document.getElementById("mobileNav").classList.toggle("active"); }
+
+(function () {
+    var tabFa = document.getElementById("tab-fa");
+    var tabEn = document.getElementById("tab-en");
+    var panelFa = document.getElementById("panel-fa");
+    var panelEn = document.getElementById("panel-en");
+    var heroTitle = document.getElementById("terms-hero-title");
+    var heroMeta = document.getElementById("terms-hero-meta");
+    var titleFa = "شرایط و ضوابط استفاده | IraniU";
+    var titleEn = "Terms of Use | IraniU";
+
+    function setLang(lang) {
+        var isFa = lang === "fa";
+        panelFa.hidden = !isFa;
+        panelEn.hidden = isFa;
+        tabFa.setAttribute("aria-selected", isFa ? "true" : "false");
+        tabEn.setAttribute("aria-selected", isFa ? "false" : "true");
+        tabFa.tabIndex = isFa ? 0 : -1;
+        tabEn.tabIndex = isFa ? -1 : 0;
+        if (heroTitle && heroMeta) {
+            if (isFa) {
+                heroTitle.textContent = "شرایط و ضوابط استفاده";
+                heroMeta.textContent = "آخرین بروزرسانی: ۱۵ اسفند ۱۴۰۴";
+            } else {
+                heroTitle.textContent = "Terms of Use";
+                heroMeta.textContent = "Last updated: 6 March 2026";
+            }
+        }
+        document.title = isFa ? titleFa : titleEn;
+        try {
+            history.replaceState(null, "", isFa ? "/terms" : "/terms?lang=en");
+        } catch (e) {}
+    }
+
+    tabFa.addEventListener("click", function () { setLang("fa"); });
+    tabEn.addEventListener("click", function () { setLang("en"); });
+
+    if (location.search.indexOf("lang=en") !== -1) {
+        setLang("en");
+    }
+})();
+</script>
+<script src="/assets/js/chatwoot-widget.js" defer></script>
 <script src="/assets/js/copy-guard.js" defer></script>
 </body>
 </html>

@@ -526,11 +526,12 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
     </div>
     <div class="social-links">
         <a href="https://instagram.com/iraniu.uk" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-        <a href="https://t.me/iraniu_uk" target="_blank" rel="noopener" aria-label="Telegram"><i class="fab fa-telegram-plane"></i></a>
+        <a href="https://t.me/IraniU_Global" target="_blank" rel="noopener" aria-label="Telegram"><i class="fab fa-telegram-plane"></i></a>
         <a href="mailto:hello@iraniu.uk" aria-label="Email"><i class="fas fa-envelope"></i></a>
     </div>
     <p style="margin-top:20px;opacity:0.75;font-size:0.85rem;">© IraniU — پلتفرم دیجیتال ایرانیان بریتانیا</p>
 </footer>
+<script src="/assets/js/chatwoot-widget.js" defer></script>
 <script src="/assets/js/copy-guard.js" defer></script>
 <script src="/blog/blog-search.js" defer></script>
 </body>

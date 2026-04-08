@@ -116,6 +116,30 @@
         .container { max-width: 800px; margin: -40px auto 100px; padding: 0 20px; }
         .card { background: white; padding: 40px; border-radius: 25px; box-shadow: 0 15px 40px rgba(0,0,0,0.1); border: 1px solid #eee; }
 
+        .contact-consult-banner {
+            margin-bottom: 1.25rem;
+            padding: 1rem 1.25rem;
+            border-radius: 16px;
+            border: 1px solid rgba(116, 32, 139, 0.15);
+            background: linear-gradient(180deg, #faf7fc 0%, #ffffff 100%);
+            text-align: center;
+        }
+        .contact-consult-title {
+            font-weight: bold;
+            color: var(--dark-purple);
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+        .contact-consult-title i { margin-left: 8px; color: var(--brand-purple); }
+        .contact-consult-text { font-size: 0.9rem; line-height: 1.65; color: #444; }
+        .contact-consult-text a {
+            color: var(--brand-purple);
+            font-weight: bold;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+        .contact-consult-text a:hover { opacity: 0.9; }
+
         /* Form Elements */
         .form-group { margin-bottom: 20px; text-align: right; }
         label { display: block; margin-bottom: 8px; font-weight: bold; color: var(--dark-purple); }
@@ -214,6 +238,20 @@
 
 <div class="container">
     <div class="card">
+        <div class="iraniu-support-inline-wrap">
+            <a href="https://1440.3cx.cloud/iraniusupport1001" class="iraniu-support-inline" target="_blank" rel="noopener noreferrer">
+                <span class="iraniu-support-inline-icon" aria-hidden="true"><i class="fas fa-headset"></i></span>
+                <span class="iraniu-support-inline-body">
+                    <strong>پشتیبانی آنلاین (تماس و چت)</strong>
+                    <span>پاسخ سریع‌تر از فرم ایمیل / Online support (call &amp; chat)</span>
+                </span>
+                <span class="iraniu-support-inline-action">باز کردن</span>
+            </a>
+        </div>
+        <div class="contact-consult-banner">
+            <p class="contact-consult-title"><i class="fas fa-bullhorn" aria-hidden="true"></i> مشاورهٔ تبلیغات و پیشنهاد پکیج</p>
+            <p class="contact-consult-text">برای معرفی کوتاه کسب‌وکار و دریافت پیشنهاد مناسب‌ترین پکیج و جایگاه‌ها، به صفحهٔ <a href="/adverts-prices#consultant-section">لیست قیمت — بخش مشاوره</a> بروید و فرم مشاوره را پر کنید.</p>
+        </div>
         <div id="error-msg" style="display:none; background:#ffebee; color:#c62828; padding:12px; border-radius:12px; margin-bottom:20px; text-align:center;"></div>
         <form id="contact-form" action="contact.php" method="POST">
             <div class="form-group">
@@ -289,7 +327,7 @@
     </div>
     <div class="social-links">
         <a href="https://instagram.com/iraniu.uk" target="_blank"><i class="fab fa-instagram"></i></a>
-        <a href="https://t.me/iraniu_uk" target="_blank"><i class="fab fa-telegram-plane"></i></a>
+        <a href="https://t.me/IraniU_Global" target="_blank"><i class="fab fa-telegram-plane"></i></a>
         <a href="mailto:hello@iraniu.uk"><i class="fas fa-envelope"></i></a>
     </div>
     <p style="font-size:0.8rem; opacity:0.6;">© 2026 IraniU</p>
@@ -366,6 +404,8 @@
         else { audio.pause(); playIcon.className = 'fa-solid fa-play'; }
     }
 </script>
+    <link rel="stylesheet" href="/assets/css/iraniu-support-widget.css">
+<script src="/assets/js/chatwoot-widget.js" defer></script>
 <script src="/assets/js/copy-guard.js" defer></script>
 </body>
 </html>

@@ -1,0 +1,73 @@
+/**
+ * Inline support banner (contact + price list pages).
+ */
+.iraniu-support-inline-wrap {
+  margin-bottom: 1.25rem;
+}
+a.iraniu-support-inline {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding: 14px 18px;
+  border-radius: 16px;
+  text-decoration: none !important;
+  color: #fff !important;
+  background: linear-gradient(135deg, #229ed9, #1a7cb5);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 24px rgba(34, 158, 217, 0.28);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+a.iraniu-support-inline:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(34, 158, 217, 0.38);
+  color: #fff !important;
+}
+.iraniu-support-inline-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+  flex-shrink: 0;
+}
+.iraniu-support-inline-body {
+  flex: 1;
+  min-width: 0;
+  text-align: right;
+  direction: rtl;
+}
+.iraniu-support-inline-body strong {
+  display: block;
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+.iraniu-support-inline-body span {
+  font-size: 0.82rem;
+  opacity: 0.95;
+  line-height: 1.45;
+}
+.iraniu-support-inline-action {
+  flex-shrink: 0;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.22);
+  font-weight: 800;
+  font-size: 0.88rem;
+}
+@media (max-width: 520px) {
+  a.iraniu-support-inline {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+  .iraniu-support-inline-body {
+    text-align: center;
+  }
+  .iraniu-support-inline-icon {
+    margin: 0 auto;
+  }
+}

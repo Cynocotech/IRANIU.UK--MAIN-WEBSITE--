@@ -52,6 +52,28 @@
         .page-hero h1 { font-size: 2.2rem; margin-bottom: 15px; font-weight: 800; }
         .container { max-width: 800px; margin: -40px auto 100px; padding: 0 20px; }
         .legal-card { background: white; padding: 45px; border-radius: 25px; box-shadow: 0 15px 40px rgba(0,0,0,0.1); border: 1px solid #eee; }
+        .lang-tabs { display: flex; gap: 0; margin: 0 0 28px; border-radius: 14px; overflow: hidden; border: 1px solid rgba(116, 32, 139, 0.2); box-shadow: 0 4px 16px rgba(58, 11, 71, 0.08); }
+        .lang-tabs button {
+            flex: 1;
+            padding: 14px 18px;
+            border: none;
+            background: #f5f0f8;
+            color: var(--dark-purple);
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 700;
+            transition: background 0.2s, color 0.2s;
+        }
+        .lang-tabs button:hover { background: #ede7f4; }
+        .lang-tabs button[aria-selected="true"] { background: linear-gradient(135deg, var(--dark-purple), var(--brand-purple)); color: #fff; }
+        .lang-tabs button:focus-visible { outline: 2px solid var(--brand-purple); outline-offset: 2px; }
+        .legal-content--en { text-align: left; }
+        .legal-content--en h2 { border-right: none; border-left: 4px solid var(--brand-purple); padding-right: 0; padding-left: 12px; }
+        .legal-content--en .app-desc-box h2 { border-right: none; border-left: 4px solid var(--brand-purple); padding-left: 12px; }
+        .legal-content--en .app-desc-box ul { margin-right: 0; margin-left: 20px; padding-left: 1rem; }
+        .legal-content--en .app-desc-box ul[style] { margin-left: 25px !important; margin-right: 0 !important; }
+        .legal-content--en ul[style] { margin-left: 25px !important; margin-right: 0 !important; }
         .legal-card h2 { color: var(--dark-purple); font-size: 1.3rem; margin: 30px 0 12px; border-right: 4px solid var(--brand-purple); padding-right: 12px; }
         .legal-card p { margin-bottom: 15px; text-align: justify; }
         .legal-card .meta { color: #777; font-size: 0.9rem; margin-bottom: 25px; }
@@ -127,12 +149,18 @@
 </nav>
 
 <section class="page-hero">
-    <h1>سیاست حریم خصوصی</h1>
-    <p class="meta">تاریخ اجرا: ۱۵ اسفند ۱۴۰۴ | آخرین بروزرسانی: ۱۵ اسفند ۱۴۰۴</p>
+    <h1 id="privacy-hero-title">سیاست حریم خصوصی</h1>
+    <p class="meta" id="privacy-hero-meta">تاریخ اجرا: ۱۵ اسفند ۱۴۰۴ | آخرین بروزرسانی: ۱۵ اسفند ۱۴۰۴</p>
 </section>
 
 <div class="container">
     <div class="legal-card">
+        <div class="lang-tabs" role="tablist" aria-label="انتخاب زبان / Language">
+            <button type="button" role="tab" id="tab-fa" aria-selected="true" aria-controls="panel-fa">فارسی</button>
+            <button type="button" role="tab" id="tab-en" aria-selected="false" aria-controls="panel-en" tabindex="-1">English</button>
+        </div>
+
+        <div id="panel-fa" class="legal-content" role="tabpanel" aria-labelledby="tab-fa">
         <p>به اپلیکیشن ما خوش آمدید. ما متعهد به حفاظت از حریم خصوصی شما و اطمینان از این هستیم که اطلاعات شخصی شما به شیوه‌ای امن و مسئولانه مدیریت می‌شود. این سیاست حریم خصوصی توضیح می‌دهد که ما چگونه داده‌های شما را در پلتفرم‌های موبایل و وب جمع‌آوری، استفاده و محافظت می‌کنیم.</p>
 
         <div class="app-desc-box">
@@ -198,6 +226,75 @@
         <p>Website: <a href="https://iraniu.uk" target="_blank" rel="noopener">https://iraniu.uk</a></p>
 
         <p style="margin-top: 35px; font-size: 0.9rem; opacity: 0.85;">برند «ایرانیو» زیرمجموعه شرکت Iraniu Global Ltd است.<br>© 2026 Iraniu Global Ltd. All rights reserved.</p>
+        </div>
+
+        <div id="panel-en" class="legal-content legal-content--en" role="tabpanel" aria-labelledby="tab-en" lang="en" dir="ltr" hidden>
+            <p>Welcome to our app. We are committed to protecting your privacy and ensuring your personal information is handled securely and responsibly. This privacy policy explains how we collect, use, and protect your data across our mobile and web platforms.</p>
+
+            <div class="app-desc-box">
+                <h2>What does the IraniU app do?</h2>
+                <p>The IraniU app is a comprehensive digital platform for the Farsi-speaking community in the United Kingdom. It provides:</p>
+                <ul style="margin-left: 25px; margin-bottom: 12px;">
+                    <li><strong>24/7 live radio</strong> — continuous Persian music and news</li>
+                    <li><strong>News and official guidance</strong> — translation and republication of UK government guidance (GOV.UK, NHS, etc.)</li>
+                    <li><strong>Service directory</strong> — exchange, legal, recruitment, housing, doctors, automotive, restaurants, and other listings</li>
+                    <li><strong>Jobs and classifieds</strong> — connecting users to opportunities and local businesses</li>
+                </ul>
+                <p>Our goal is to make daily life easier and to connect users with trusted resources and the local community.</p>
+            </div>
+
+            <div class="neutrality-box">
+                We are not affiliated with any political group and we do not promote any political group.
+            </div>
+
+            <h2>1. Information we collect</h2>
+            <p>We follow data minimisation. We only collect information that is strictly necessary to provide a practical and secure experience:</p>
+            <ul style="margin-left: 25px; margin-bottom: 15px;">
+                <li><strong>Personal identifiers:</strong> we collect your email address when you register in the app.</li>
+                <li><strong>Voluntary information:</strong> any information you provide when contacting support or giving feedback.</li>
+            </ul>
+            <p>We do not collect sensitive personal data such as postal address, telephone number, or financial information.</p>
+
+            <h2>2. How we use information</h2>
+            <p>Information we collect is used only for the following purposes:</p>
+            <ul style="margin-left: 25px; margin-bottom: 15px;">
+                <li><strong>Account identification:</strong> to access your data across devices.</li>
+                <li><strong>Personalisation:</strong> to tailor content and data to your preferences.</li>
+                <li><strong>Service improvement:</strong> to analyse usage, fix bugs, and optimise the service.</li>
+                <li><strong>Communications:</strong> to send essential notices relating to your account.</li>
+            </ul>
+
+            <h2>3. Data protection</h2>
+            <p>We apply industry-standard security measures to protect your data:</p>
+            <ul style="margin-left: 25px; margin-bottom: 15px;">
+                <li><strong>Encryption:</strong> data is encrypted in transit and at rest.</li>
+                <li><strong>Access control:</strong> access is limited to authorised personnel.</li>
+                <li><strong>Regular review:</strong> periodic review of security practices.</li>
+            </ul>
+
+            <h2>4. Third-party services</h2>
+            <p>We do not sell, rent, or share your personal information with third-party companies, advertisers, or marketers. Infrastructure providers (such as cloud services) are not permitted to use your email for their own marketing purposes.</p>
+
+            <h2>5. Data retention</h2>
+            <p>We keep your email address while your account remains active. If you request deletion, we will retain data only as long as required to meet legal obligations.</p>
+
+            <h2>6. Your rights</h2>
+            <p>You have the right to:</p>
+            <ul style="margin-left: 25px; margin-bottom: 15px;">
+                <li><strong>Access and rectification:</strong> request a copy of your data or update your email.</li>
+                <li><strong>Erasure:</strong> request permanent deletion of your account and related data (the “right to be forgotten”).</li>
+            </ul>
+
+            <h2>7. Changes to this policy</h2>
+            <p>We may update this policy from time to time. Any material change will be indicated by updating the effective date at the top of this page.</p>
+
+            <h2>8. Contact us</h2>
+            <p>If you have questions about this policy or your rights, please contact us:</p>
+            <p>Email: <a href="mailto:hello@iraniu.uk">hello@iraniu.uk</a></p>
+            <p>Website: <a href="https://iraniu.uk" target="_blank" rel="noopener">https://iraniu.uk</a></p>
+
+            <p style="margin-top: 35px; font-size: 0.9rem; opacity: 0.85;">The IraniU brand is part of <strong>Iraniu Global Ltd</strong>.<br>© 2026 Iraniu Global Ltd. All rights reserved.</p>
+        </div>
     </div>
 </div>
 
@@ -215,13 +312,57 @@
     <div class="footer-logo"><img src="https://panel.cybercina.co.uk//storage/logos/N0yQlVchcj4ucrQfVJwbXXB13FhWTMFccUBmWLpI.png" alt="IraniU"></div>
     <div class="social-links">
         <a href="https://instagram.com/iraniu.uk" target="_blank"><i class="fab fa-instagram"></i></a>
-        <a href="https://t.me/iraniu_uk" target="_blank"><i class="fab fa-telegram-plane"></i></a>
+        <a href="https://t.me/IraniU_Global" target="_blank"><i class="fab fa-telegram-plane"></i></a>
         <a href="mailto:hello@iraniu.uk"><i class="fas fa-envelope"></i></a>
     </div>
     <p style="font-size:0.8rem; opacity:0.6;">© 2026 IraniU</p>
 </footer>
 
-<script>function toggleMenu() { document.getElementById("mobileNav").classList.toggle("active"); }</script>
+<script>
+function toggleMenu() { document.getElementById("mobileNav").classList.toggle("active"); }
+
+(function () {
+    var tabFa = document.getElementById("tab-fa");
+    var tabEn = document.getElementById("tab-en");
+    var panelFa = document.getElementById("panel-fa");
+    var panelEn = document.getElementById("panel-en");
+    var heroTitle = document.getElementById("privacy-hero-title");
+    var heroMeta = document.getElementById("privacy-hero-meta");
+    var titleFa = "سیاست حریم خصوصی | IraniU";
+    var titleEn = "Privacy Policy | IraniU";
+
+    function setLang(lang) {
+        var isFa = lang === "fa";
+        panelFa.hidden = !isFa;
+        panelEn.hidden = isFa;
+        tabFa.setAttribute("aria-selected", isFa ? "true" : "false");
+        tabEn.setAttribute("aria-selected", isFa ? "false" : "true");
+        tabFa.tabIndex = isFa ? 0 : -1;
+        tabEn.tabIndex = isFa ? -1 : 0;
+        if (heroTitle && heroMeta) {
+            if (isFa) {
+                heroTitle.textContent = "سیاست حریم خصوصی";
+                heroMeta.textContent = "تاریخ اجرا: ۱۵ اسفند ۱۴۰۴ | آخرین بروزرسانی: ۱۵ اسفند ۱۴۰۴";
+            } else {
+                heroTitle.textContent = "Privacy Policy";
+                heroMeta.textContent = "Effective: 6 March 2026 | Last updated: 6 March 2026";
+            }
+        }
+        document.title = isFa ? titleFa : titleEn;
+        try {
+            history.replaceState(null, "", isFa ? "/privacy" : "/privacy?lang=en");
+        } catch (e) {}
+    }
+
+    tabFa.addEventListener("click", function () { setLang("fa"); });
+    tabEn.addEventListener("click", function () { setLang("en"); });
+
+    if (location.search.indexOf("lang=en") !== -1) {
+        setLang("en");
+    }
+})();
+</script>
+<script src="/assets/js/chatwoot-widget.js" defer></script>
 <script src="/assets/js/copy-guard.js" defer></script>
 </body>
 </html>

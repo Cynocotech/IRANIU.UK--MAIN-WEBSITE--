@@ -68,6 +68,7 @@ function package_info(?string $key): ?array {
         'bronze' => ['label' => 'پکیج برنز (ترکیبی — پایه)', 'label_en' => 'Bronze package (combined — entry)'],
         'silver' => ['label' => 'پکیج نقره‌ای (ترکیبی — استاندارد)', 'label_en' => 'Silver package (combined — standard)'],
         'gold' => ['label' => 'پکیج طلا (ترکیبی — ویژه)', 'label_en' => 'Gold package (combined — premium)'],
+        'consult' => ['label' => 'مشاوره و پیشنهاد پکیج (بر اساس کسب‌وکار)', 'label_en' => 'Consultation & recommended package (based on your business)'],
     ];
     if ($key === null || $key === '') {
         return null;
@@ -100,31 +101,50 @@ function adminEmailHtml(
 body{font-family:Tahoma,Arial,sans-serif;background:#fdfdfd;margin:0;padding:20px;direction:rtl;text-align:right;}
 .wrap{max-width:600px;margin:0 auto;}
 .header{background:linear-gradient(135deg,#3a0b47,#74208b);color:#fff;padding:28px;text-align:center;border-radius:12px 12px 0 0;}
+.header-en{font-size:0.95rem;margin:10px 0 0;opacity:0.95;direction:ltr;}
 .content{background:#fff;padding:28px;border:1px solid #eee;border-top:none;border-radius:0 0 12px 12px;}
 .row{margin-bottom:16px;}
 .label{font-weight:bold;color:#3a0b47;margin-bottom:6px;}
 .value{background:#f8f5fa;padding:12px;border-radius:8px;border:1px solid #e8e0ee;}
 .pkg-highlight{background:#ede7f6;border:2px solid #74208b;padding:14px;border-radius:10px;margin-bottom:18px;font-size:1.05rem;font-weight:bold;color:#3a0b47;}
-.en-note{font-size:0.85rem;color:#555;margin-top:6px;direction:ltr;text-align:left;}
+.en-note{font-size:0.85rem;color:#e8e0ee;margin-top:8px;direction:ltr;text-align:center;}
+.lang-h2{font-size:1rem;color:#74208b;margin:0 0 14px;padding-bottom:8px;border-bottom:1px solid #e8e0ee;}
+.en-section{direction:ltr;text-align:left;margin-top:22px;padding-top:20px;border-top:2px solid #ede7f6;}
+.en-section .label{color:#3a0b47;}
+.en-section .value{direction:ltr;text-align:left;}
 </style></head>
 <body>
 <div class="wrap">
-<div class="header"><h1 style="margin:0;font-size:1.35rem;">درخواست پکیج تبلیغات — IraniU</h1></div>
+<div class="header">
+<h1 style="margin:0;font-size:1.35rem;">درخواست پکیج تبلیغات — IraniU</h1>
+<div class="header-en">Advertising package request — IraniU</div>
+</div>
 <div class="content">
-<div class="pkg-highlight">پکیج: {$pkgLabel}<div class="en-note">{$pkgLabelEn}</div></div>
+<p class="lang-h2" style="text-align:right;">فارسی</p>
+<div class="pkg-highlight">پکیج: {$pkgLabel}<div class="en-note" style="color:#555;background:transparent;padding:8px 0 0;">{$pkgLabelEn}</div></div>
 <div class="row"><div class="label">نام</div><div class="value">{$name}</div></div>
 <div class="row"><div class="label">ایمیل</div><div class="value">{$email}</div></div>
 <div class="row"><div class="label">شماره تماس</div><div class="value">{$phoneHtml}</div></div>
 <div class="row"><div class="label">IP</div><div class="value">{$ip}</div></div>
 <div class="row"><div class="label">پیام / توضیحات</div><div class="value">{$msg}</div></div>
+<div class="en-section">
+<h2 class="lang-h2" style="text-align:left;border-bottom:1px solid #e8e0ee;">English</h2>
+<div class="pkg-highlight" style="text-align:left;">Package: {$pkgLabelEn}<div style="font-size:0.88rem;font-weight:normal;color:#555;margin-top:8px;">(Farsi label: {$pkgLabel})</div></div>
+<div class="row"><div class="label">Name</div><div class="value">{$name}</div></div>
+<div class="row"><div class="label">Email</div><div class="value">{$email}</div></div>
+<div class="row"><div class="label">Phone</div><div class="value">{$phoneHtml}</div></div>
+<div class="row"><div class="label">IP address</div><div class="value">{$ip}</div></div>
+<div class="row"><div class="label">Message / notes</div><div class="value">{$msg}</div></div>
+</div>
 </div></div>
 </body></html>
 HTML;
 }
 
-function thankYouEmailHtml(string $name, string $pkgLabel): string {
+function thankYouEmailHtml(string $name, string $pkgLabel, string $pkgLabelEn): string {
     $name = escapeHtml($name);
     $pkgLabel = escapeHtml($pkgLabel);
+    $pkgLabelEn = escapeHtml($pkgLabelEn);
     return <<<HTML
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
@@ -134,22 +154,30 @@ body{font-family:Tahoma,Arial,sans-serif;background:#fdfdfd;margin:0;padding:20p
 .wrap{max-width:600px;margin:0 auto;}
 .header{background:#3a0b47;color:#fff;padding:28px;text-align:center;border-radius:12px 12px 0 0;}
 .header img{height:50px;margin:0 auto 12px;display:block;}
+.header-en{font-size:0.95rem;margin:10px 0 0;opacity:0.95;direction:ltr;}
 .content{background:#fff;padding:28px;border:1px solid #eee;border-top:none;border-radius:0 0 12px 12px;line-height:1.85;}
-.en{margin-top:16px;padding-top:16px;border-top:1px solid #eee;direction:ltr;text-align:left;color:#333;}
+.en-block{margin-top:18px;padding-top:18px;border-top:1px solid #e8e0ee;direction:ltr;text-align:left;color:#222;}
+.en-block p{margin:0 0 12px;}
+.pkg-pair{font-size:0.9rem;color:#555;margin-top:6px;}
 </style></head>
 <body>
 <div class="wrap">
 <div class="header">
 <img src="https://panel.cybercina.co.uk/storage/logos/N0yQlVchcj4ucrQfVJwbXXB13FhWTMFccUBmWLpI.png" alt="IraniU">
 <h1 style="margin:0;font-size:1.3rem;">درخواست شما ثبت شد</h1>
+<div class="header-en">Your advertising package request was received</div>
 </div>
 <div class="content">
 <p>{$name} عزیز،</p>
 <p>درخواست شما برای <strong>{$pkgLabel}</strong> دریافت شد. همکاران ما به زودی با شما تماس خواهند گرفت.</p>
-<div class="en">
-<p><strong>We have received your advertising package request.</strong> We will contact you soon.</p>
+<p class="pkg-pair" dir="ltr" style="text-align:left;">Package (English): <strong>{$pkgLabelEn}</strong></p>
+<div class="en-block">
+<p><strong>Dear {$name},</strong></p>
+<p>We have received your request for <strong>{$pkgLabelEn}</strong> ({$pkgLabel}). Our team will contact you shortly.</p>
+<p style="margin-bottom:0;">Thank you for your interest in advertising with IraniU.</p>
 </div>
 <p style="margin-top:20px;">با احترام،<br>تیم IraniU</p>
+<p style="margin-top:16px;font-size:0.9rem;direction:ltr;text-align:left;color:#555;">Best regards,<br>IraniU Team</p>
 </div>
 </div>
 </body></html>
@@ -179,6 +207,10 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 }
 if ($name === '') {
     jsonFail('missing');
+}
+
+if ($pkgKey === 'consult' && $message === '') {
+    jsonFail('consult_message');
 }
 
 $turnstileToken = trim((string) ($_POST['cf-turnstile-response'] ?? ''));
@@ -250,7 +282,7 @@ foreach ($hosts as $host) {
             }
             $mail->addReplyTo($email, security_strip_mailer_header_value($name));
             $mail->isHTML(true);
-            $mail->Subject = 'درخواست پکیج تبلیغات: ' . $pkgLabel . ' — ' . mb_substr($subjectSafe, 0, 80);
+            $mail->Subject = 'درخواست پکیج تبلیغات / Ad package: ' . $pkgLabelEn . ' — ' . mb_substr($subjectSafe, 0, 60);
             $mail->Body = adminEmailHtml($pkgLabel, $pkgLabelEn, $name, $email, $phone, $message, getClientIp());
 
             $mail->send();
@@ -269,8 +301,8 @@ if ($sent) {
         $mail->clearAddresses();
         $mail->clearReplyTos();
         $mail->addAddress($email);
-        $mail->Subject = 'درخواست پکیج تبلیغات ثبت شد - IraniU';
-        $mail->Body = thankYouEmailHtml($name, $pkgLabel);
+        $mail->Subject = 'درخواست شما ثبت شد | Request received — IraniU';
+        $mail->Body = thankYouEmailHtml($name, $pkgLabel, $pkgLabelEn);
         $mail->send();
     } catch (Exception $e) {
         error_log('IraniU package-request thank-you: ' . $e->getMessage());

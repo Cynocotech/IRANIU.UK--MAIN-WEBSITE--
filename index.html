@@ -43,7 +43,7 @@
           },
           "sameAs": [
             "https://www.instagram.com/iraniu.uk",
-            "https://t.me/iraniu_uk",
+            "https://t.me/IraniU_Global",
             "https://www.youtube.com/@iraniu"
           ]
         }
@@ -116,6 +116,9 @@
         }
         .hero-container { max-width: 1200px; width: 100%; display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 40px; align-items: center; z-index: 10; }
         .rating-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.1); padding: 6px 15px; border-radius: 50px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.2); }
+        .hero-cta-links { display:flex; gap:15px; flex-wrap:wrap; }
+        .hero-cta-btn { background:black; color:white; padding:12px 25px; border-radius:12px; display:flex; align-items:center; gap:10px; font-weight:700; }
+        .hero-cta-btn.telegram { background: #229ed9; }
         .phone-mockup { perspective: 1200px; display: flex; justify-content: center; }
         .phone-img { width: 440px; height: auto; filter: drop-shadow(0 40px 60px rgba(0,0,0,0.6)); animation: float 4s ease-in-out infinite; }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
@@ -340,9 +343,10 @@
             </div>
             <h1 style="font-size: 3.2rem; margin-bottom: 20px;">همراهِ هوشمند ایرانیان بریتانیا</h1>
             <p style="font-size: 1.25rem; margin-bottom: 35px; opacity: 0.9;">مرجع خدمات، نیازمندی‌ها و رادیو ۲۴ ساعته اختصاصی.</p>
-            <div style="display:flex; gap:15px; flex-wrap:wrap;">
-                <a href="https://apps.apple.com/us/app/iraniu/id6760209069" style="background:black; color:white; padding:12px 25px; border-radius:12px; display:flex; align-items:center; gap:10px;"><i class="fab fa-apple fa-lg"></i> App Store</a>
-                <a href="#" aria-disabled="true" onclick="return false;" style="background:black; color:white; opacity:0.85; padding:12px 25px; border-radius:12px; display:flex; align-items:center; gap:10px;"><i class="fab fa-google-play fa-lg"></i> Google Play (Coming soon)</a>
+            <div class="hero-cta-links">
+                <a href="https://apps.apple.com/us/app/iraniu/id6760209069" class="hero-cta-btn" target="_blank" rel="noopener noreferrer"><i class="fab fa-apple fa-lg"></i> App Store</a>
+                <a href="https://play.google.com/store/apps/details?id=uk.iraniu.app" class="hero-cta-btn" target="_blank" rel="noopener noreferrer"><i class="fab fa-google-play fa-lg"></i> Google Play</a>
+                <a href="https://t.me/IraniU_Global" class="hero-cta-btn telegram" target="_blank" rel="noopener noreferrer"><i class="fab fa-telegram-plane fa-lg"></i> Telegram</a>
             </div>
         </div>
        <style>
@@ -441,7 +445,7 @@
     <div class="footer-logo"><img src="https://panel.cybercina.co.uk//storage/logos/N0yQlVchcj4ucrQfVJwbXXB13FhWTMFccUBmWLpI.png" height="70"></div>
     <div class="social-links">
         <a href="https://instagram.com/iraniu.uk" target="_blank"><i class="fab fa-instagram"></i></a>
-        <a href="https://t.me/iraniu_uk" target="_blank"><i class="fab fa-telegram-plane"></i></a>
+        <a href="https://t.me/IraniU_Global" target="_blank"><i class="fab fa-telegram-plane"></i></a>
         <a href="https://youtube.com/@iraniu" target="_blank"><i class="fab fa-youtube"></i></a>
     </div>
     <p style="margin-top: 20px; opacity: 0.7;">© 2026 IraniU - تمامی حقوق محفوظ است</p>
@@ -517,6 +521,7 @@
         else { audio.pause(); playIcon.className = 'fa-solid fa-play'; }
     }
 </script>
+<script src="/assets/js/chatwoot-widget.js" defer></script>
 <script src="/assets/js/copy-guard.js" defer></script>
 </body>
 </html>
