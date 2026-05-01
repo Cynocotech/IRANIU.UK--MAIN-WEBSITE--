@@ -8,5 +8,6 @@ vendor/
 .env
 config.php
 uploads/careers/*.pdf
+data/article_url_secret.txt
 
 composer.phar
