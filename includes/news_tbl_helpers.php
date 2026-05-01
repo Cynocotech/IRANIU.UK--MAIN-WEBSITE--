@@ -35,6 +35,28 @@ function news_strip_markdown_heading_marks(string $text): string
     return trim(preg_replace('/\s{2,}/u', ' ', $text) ?? $text);
 }
 
+/**
+ * Convert stored HTML (or escaped HTML) into readable plain text.
+ * Removes script/style blocks completely (not just the tags).
+ */
+function news_html_to_plain(string $htmlOrText): string
+{
+    $s = trim($htmlOrText);
+    if ($s === '') {
+        return '';
+    }
+
+    $decoded = html_entity_decode($s, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+    // Remove style/script blocks entirely (strip_tags would keep their inner text).
+    $decoded = preg_replace('#<\s*(script|style)\b[^>]*>.*?<\s*/\s*\1\s*>#is', ' ', $decoded) ?? $decoded;
+    $decoded = preg_replace('#<\s*(noscript)\b[^>]*>.*?<\s*/\s*\1\s*>#is', ' ', $decoded) ?? $decoded;
+
+    $plain = strip_tags($decoded);
+    $plain = preg_replace('/\s+/u', ' ', $plain) ?? $plain;
+    $plain = news_strip_markdown_heading_marks(trim($plain));
+    return $plain;
+}
+
 /** @return string[] */
 function news_table_columns(PDO $pdo, string $table): array
 {
@@ -121,9 +143,7 @@ function news_row_excerpt(array $row, int $maxLen = 280): string
     if ($raw === null) {
         return '';
     }
-    $decoded = html_entity_decode((string) $raw, ENT_QUOTES | ENT_HTML5, 'UTF-8');
-    $plain = preg_replace('/\s+/u', ' ', strip_tags($decoded)) ?? '';
-    $plain = news_strip_markdown_heading_marks(trim($plain));
+    $plain = news_html_to_plain((string) $raw);
     if (function_exists('mb_strlen') && function_exists('mb_substr')) {
         if (mb_strlen($plain, 'UTF-8') > $maxLen) {
             return rtrim(mb_substr($plain, 0, $maxLen - 1, 'UTF-8')) . '…';
@@ -280,9 +300,7 @@ function news_row_seo_description(array $row, int $maxLen = 158): string
     if ($raw === null) {
         return news_row_excerpt($row, $maxLen);
     }
-    $decoded = html_entity_decode((string) $raw, ENT_QUOTES | ENT_HTML5, 'UTF-8');
-    $plain = preg_replace('/\s+/u', ' ', strip_tags($decoded)) ?? '';
-    $plain = news_strip_markdown_heading_marks(trim($plain));
+    $plain = news_html_to_plain((string) $raw);
     if ($plain === '') {
         return news_row_excerpt($row, $maxLen);
     }
@@ -307,8 +325,7 @@ function news_row_meta_keywords_combined(array $row): string
         'focus_keyword', 'focus_keywords', 'keyword', 'Keyword',
     ]);
     if ($rawKw !== null && trim((string) $rawKw) !== '') {
-        $decoded = html_entity_decode((string) $rawKw, ENT_QUOTES | ENT_HTML5, 'UTF-8');
-        $chunks[] = trim(preg_replace('/\s+/u', ' ', strip_tags($decoded)) ?? '');
+        $chunks[] = news_html_to_plain((string) $rawKw);
     }
     foreach (news_row_tags_list($row) as $t) {
         $chunks[] = $t;
@@ -720,9 +737,7 @@ function news_split_teaser_plain(?string $htmlOrText, float $visibleRatio = 0.5)
         return ['visible' => '', 'rest' => '', 'show_gate' => false];
     }
     $htmlOrText = trim((string) $htmlOrText);
-    $decoded = html_entity_decode($htmlOrText, ENT_QUOTES | ENT_HTML5, 'UTF-8');
-    $plain = preg_replace('/\s+/u', ' ', strip_tags($decoded)) ?? '';
-    $plain = news_strip_markdown_heading_marks(trim($plain));
+    $plain = news_html_to_plain($htmlOrText);
     if ($plain === '') {
         return ['visible' => '', 'rest' => '', 'show_gate' => false];
     }
