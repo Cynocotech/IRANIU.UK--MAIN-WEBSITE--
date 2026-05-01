@@ -235,7 +235,7 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
         }
         .article-card { background: #fff; border-radius: 22px; padding: 32px 28px; border: 1px solid #eee; box-shadow: 0 14px 40px rgba(0,0,0,0.07); }
         .article-card .date { font-size: 0.85rem; color: #888; margin-bottom: 12px; }
-        .article-card h1 { font-size: 1.55rem; color: var(--dark-purple); line-height: 1.4; margin-bottom: 14px; font-weight: 900; }
+        .article-card h1 { font-size: 1.55rem; color: var(--dark-purple); line-height: 1.4; margin-bottom: 14px; font-weight: 600; }
         .article-tags-wrap { margin-bottom: 20px; }
         .article-tags-title { font-size: 0.82rem; font-weight: 800; color: var(--dark-purple); margin-bottom: 10px; letter-spacing: 0.02em; }
         .article-tags { display: flex; flex-wrap: wrap; gap: 8px; }

@@ -296,7 +296,7 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
         .card .post-tags span { font-size: 0.68rem; background: #f5f0fa; color: var(--brand-purple); padding: 2px 8px; border-radius: 999px; font-weight: 700; }
         .card .date { font-size: 0.78rem; color: #888; margin-bottom: 8px; }
         .card h2 { font-size: 1.2rem; color: var(--dark-purple); margin-bottom: 10px; line-height: 1.45; }
-        .card h2 a { color: inherit; font-weight: 900; }
+        .card h2 a { color: inherit; font-weight: 600; }
         .card p { color: #555; font-size: 0.95rem; margin-bottom: 16px; text-align: justify; }
         .card a.more { color: var(--brand-purple); font-weight: bold; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 8px; }
         .card a.more i { margin-right: 0; }
