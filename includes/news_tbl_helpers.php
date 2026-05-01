@@ -121,7 +121,8 @@ function news_row_excerpt(array $row, int $maxLen = 280): string
     if ($raw === null) {
         return '';
     }
-    $plain = preg_replace('/\s+/u', ' ', strip_tags($raw)) ?? '';
+    $decoded = html_entity_decode((string) $raw, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+    $plain = preg_replace('/\s+/u', ' ', strip_tags($decoded)) ?? '';
     $plain = news_strip_markdown_heading_marks(trim($plain));
     if (function_exists('mb_strlen') && function_exists('mb_substr')) {
         if (mb_strlen($plain, 'UTF-8') > $maxLen) {
@@ -279,7 +280,8 @@ function news_row_seo_description(array $row, int $maxLen = 158): string
     if ($raw === null) {
         return news_row_excerpt($row, $maxLen);
     }
-    $plain = preg_replace('/\s+/u', ' ', strip_tags($raw)) ?? '';
+    $decoded = html_entity_decode((string) $raw, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+    $plain = preg_replace('/\s+/u', ' ', strip_tags($decoded)) ?? '';
     $plain = news_strip_markdown_heading_marks(trim($plain));
     if ($plain === '') {
         return news_row_excerpt($row, $maxLen);
@@ -305,7 +307,8 @@ function news_row_meta_keywords_combined(array $row): string
         'focus_keyword', 'focus_keywords', 'keyword', 'Keyword',
     ]);
     if ($rawKw !== null && trim((string) $rawKw) !== '') {
-        $chunks[] = trim(preg_replace('/\s+/u', ' ', strip_tags((string) $rawKw)) ?? '');
+        $decoded = html_entity_decode((string) $rawKw, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        $chunks[] = trim(preg_replace('/\s+/u', ' ', strip_tags($decoded)) ?? '');
     }
     foreach (news_row_tags_list($row) as $t) {
         $chunks[] = $t;
@@ -717,7 +720,8 @@ function news_split_teaser_plain(?string $htmlOrText, float $visibleRatio = 0.5)
         return ['visible' => '', 'rest' => '', 'show_gate' => false];
     }
     $htmlOrText = trim((string) $htmlOrText);
-    $plain = preg_replace('/\s+/u', ' ', strip_tags($htmlOrText)) ?? '';
+    $decoded = html_entity_decode($htmlOrText, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+    $plain = preg_replace('/\s+/u', ' ', strip_tags($decoded)) ?? '';
     $plain = news_strip_markdown_heading_marks(trim($plain));
     if ($plain === '') {
         return ['visible' => '', 'rest' => '', 'show_gate' => false];
